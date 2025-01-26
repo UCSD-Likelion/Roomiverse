@@ -6,6 +6,7 @@ import {
   Link,
   Grid2 as Grid,
 } from "@mui/material";
+import { motion } from "framer-motion";
 
 export default function Login() {
   return (
@@ -31,14 +32,44 @@ export default function Login() {
           height: "100%",
           backgroundColor: "#FF6F61",
           width: "100%",
+          alignContent: "center",
+          justifyContent: "center",
+          px: "8rem",
         }}
       >
-        <Typography variant="h4" sx={{ margin: 0 }}>
-          Rommiverse
-        </Typography>
-        <Typography variant="body1" sx={{ marginTop: 1 }}>
-          Find your vibe, share your space
-        </Typography>
+        <motion.div
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          <Typography variant="h2" sx={{ color: "white", fontWeight: 700 }}>
+            Rommiverse
+          </Typography>
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, delay: 0.5 }}
+        >
+          <Typography
+            variant="h4"
+            sx={{ marginTop: 1, fontWeight: 300, color: "white" }}
+          >
+            Find your vibe,
+          </Typography>
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, delay: 0.5 }}
+        >
+          <Typography
+            variant="h4"
+            sx={{ margin: 0, fontWeight: 300, color: "white" }}
+          >
+            share your space.
+          </Typography>
+        </motion.div>
       </Box>
       <Box
         component="section"
@@ -53,10 +84,7 @@ export default function Login() {
           px: "3rem",
         }}
       >
-        <Typography
-          variant="h3"
-          sx={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 700 }}
-        >
+        <Typography variant="h3" sx={{ fontWeight: 700 }}>
           Login
         </Typography>
         <Box
@@ -92,7 +120,7 @@ export default function Login() {
                 sx={{ marginBottom: 1, marginTop: 1, color: "black" }}
               />
               <Link
-                href="#"
+                href="/forgot-password"
                 underline="hover"
                 sx={{
                   display: "display",
