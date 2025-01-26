@@ -37,6 +37,22 @@ export default function Login() {
           px: "8rem",
         }}
       >
+        <Box
+          sx={{
+            position: "absolute",
+            width: 650, // Adjust size of the circle
+            height: 650,
+            borderRadius: "50%",
+            background:
+              "linear-gradient(to bottom, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0))", // Top-down gradient
+
+            top: "50%", // Adjust vertical position
+            transform: "translateY(-50%)",
+            left: "2%",
+            zIndex: 1,
+          }}
+        />
+
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
@@ -147,6 +163,12 @@ export default function Login() {
               >
                 <Typography sx={{ fontSize: 24 }}>Sign In</Typography>
               </Button>
+              <Box sx={{ display: "flex", marginTop: 1, gap: 1 }}>
+                <Typography>Don&apos;t have an account?</Typography>
+                <Link sx={{ "&:hover": { cursor: "pointer" } }} href="/signup">
+                  <Typography>Sign up</Typography>
+                </Link>
+              </Box>
             </Grid>
           </Grid>
         </Box>
