@@ -19,8 +19,7 @@ export default function Login() {
         alignItems: "center",
         justifyContent: "center",
         height: "100vh",
-        width: "100%",
-        scrollSnapStop: true,
+        width: "100vw",
       }}
     >
       <Box
@@ -30,11 +29,16 @@ export default function Login() {
           display: "flex",
           flexDirection: "column",
           height: "100%",
-          backgroundColor: "blue",
+          backgroundColor: "#FF6F61",
           width: "100%",
         }}
       >
-        <Typography variant="h1">Roomiverse</Typography>
+        <Typography variant="h4" sx={{ margin: 0 }}>
+          Rommiverse
+        </Typography>
+        <Typography variant="body1" sx={{ marginTop: 1 }}>
+          Find your vibe, share your space
+        </Typography>
       </Box>
       <Box
         component="section"
@@ -101,10 +105,11 @@ export default function Login() {
                 type="submit"
                 variant="contained"
                 sx={{
-                  backgroundColor: "#0056FF",
+                  backgroundColor: "#FF6F61",
                   color: "white",
-                  "&:hover": { backgroundColor: "#0044cc" },
+                  "&:hover": { backgroundColor: "#ff5343" },
                   borderRadius: "0.5rem",
+                  py: "0.75rem",
                 }}
               >
                 <Typography sx={{ fontSize: 24 }}>Sign In</Typography>
