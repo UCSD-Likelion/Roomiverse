@@ -53,7 +53,12 @@ export default function Login() {
           px: "3rem",
         }}
       >
-        <Typography variant="h3">Login</Typography>
+        <Typography
+          variant="h3"
+          sx={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 700 }}
+        >
+          Login
+        </Typography>
         <Box
           variant="form"
           sx={{ display: "flex", flexDirection: "column", gap: 2 }}
@@ -107,7 +112,7 @@ export default function Login() {
                 sx={{
                   backgroundColor: "#FF6F61",
                   color: "white",
-                  "&:hover": { backgroundColor: "#ff5343" },
+                  "&:hover": { backgroundColor: "#ff7c70" },
                   borderRadius: "0.5rem",
                   py: "0.75rem",
                 }}
