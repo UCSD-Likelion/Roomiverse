@@ -170,18 +170,20 @@ export default function Login() {
                 onChange={handlePasswordChange}
                 error={errorPassword}
                 helperText={errorPassword}
-                InputProps={{
-                  endAdornment: showPassword ? (
-                    <VisibilityIcon
-                      onClick={() => setShowPassword(!showPassword)}
-                      sx={{ "&:hover": { cursor: "pointer" } }}
-                    />
-                  ) : (
-                    <VisibilityOffIcon
-                      onClick={() => setShowPassword(!showPassword)}
-                      sx={{ "&:hover": { cursor: "pointer" } }}
-                    />
-                  ),
+                slotProps={{
+                  input: {
+                    endAdornment: showPassword ? (
+                      <VisibilityIcon
+                        onClick={() => setShowPassword(!showPassword)}
+                        sx={{ "&:hover": { cursor: "pointer" } }}
+                      />
+                    ) : (
+                      <VisibilityOffIcon
+                        onClick={() => setShowPassword(!showPassword)}
+                        sx={{ "&:hover": { cursor: "pointer" } }}
+                      />
+                    ),
+                  },
                 }}
               />
               <Link
