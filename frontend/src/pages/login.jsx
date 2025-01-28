@@ -145,7 +145,7 @@ export default function Login() {
               <TextField
                 fullWidth
                 required
-                label="Email address"
+                label="Email"
                 variant="outlined"
                 color="black"
                 onChange={handleEmailChange}
