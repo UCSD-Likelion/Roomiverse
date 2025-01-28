@@ -13,6 +13,30 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorEmail, setErrorEmail] = useState("");
+  const [errorPassword, setErrorPassword] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!email || !password) {
+      setErrorEmail("Please fill in all fields");
+      setErrorPassword("Please fill in all fields");
+      return;
+    }
+    console.log(email, password);
+  };
+
+  const handleEmailChange = (e) => {
+    setErrorEmail("");
+    setEmail(e.target.value);
+  };
+
+  const handlePasswordChange = (e) => {
+    setErrorPassword("");
+    setPassword(e.target.value);
+  };
 
   return (
     <Box
@@ -124,6 +148,10 @@ export default function Login() {
                 label="Email address"
                 variant="outlined"
                 color="black"
+                onChange={handleEmailChange}
+                sx={{ color: "black" }}
+                error={errorEmail}
+                helperText={errorEmail}
               />
             </Grid>
             <Grid
@@ -139,6 +167,9 @@ export default function Login() {
                 variant="outlined"
                 color="black"
                 sx={{ marginBottom: 1, marginTop: 1, color: "black" }}
+                onChange={handlePasswordChange}
+                error={errorPassword}
+                helperText={errorPassword}
                 InputProps={{
                   endAdornment: showPassword ? (
                     <VisibilityIcon
@@ -171,6 +202,7 @@ export default function Login() {
                 fullWidth
                 type="submit"
                 variant="contained"
+                onClick={handleSubmit}
                 sx={{
                   backgroundColor: "#FF6F61",
                   color: "white",
