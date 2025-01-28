@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Box,
   Typography,
@@ -7,8 +8,12 @@ import {
   Grid2 as Grid,
 } from "@mui/material";
 import { motion } from "framer-motion";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 export default function Login() {
+  const [showPassword, setShowPassword] = useState(false);
+
   return (
     <Box
       component="section"
@@ -129,11 +134,24 @@ export default function Login() {
               <TextField
                 fullWidth
                 required
-                type="password"
+                type={showPassword ? "text" : "password"}
                 label="Password"
                 variant="outlined"
                 color="black"
                 sx={{ marginBottom: 1, marginTop: 1, color: "black" }}
+                InputProps={{
+                  endAdornment: showPassword ? (
+                    <VisibilityIcon
+                      onClick={() => setShowPassword(!showPassword)}
+                      sx={{ "&:hover": { cursor: "pointer" } }}
+                    />
+                  ) : (
+                    <VisibilityOffIcon
+                      onClick={() => setShowPassword(!showPassword)}
+                      sx={{ "&:hover": { cursor: "pointer" } }}
+                    />
+                  ),
+                }}
               />
               <Link
                 href="/forgot-password"
