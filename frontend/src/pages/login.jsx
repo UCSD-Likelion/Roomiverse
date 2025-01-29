@@ -88,7 +88,7 @@ export default function Login() {
           transition={{ duration: 0.8 }}
         >
           <Typography variant="h2" sx={{ color: "white", fontWeight: 700 }}>
-            Rommiverse
+            Roomiverse
           </Typography>
         </motion.div>
         <motion.div
