@@ -194,9 +194,13 @@ export default function Login() {
                   marginTop: 1,
                   fontSize: "0.9rem",
                   alignSelf: "flex-end",
+                  "&:hover": {
+                    cursor: "pointer",
+                    textDecoration: "underline",
+                  },
                 }}
               >
-                <Typography variant="body">Forgot password</Typography>
+                <Typography>Forgot password</Typography>
               </Link>
             </Grid>
             <Grid item xs={12}>
@@ -217,7 +221,16 @@ export default function Login() {
               </Button>
               <Box sx={{ display: "flex", marginTop: 1, gap: 1 }}>
                 <Typography>Don&apos;t have an account?</Typography>
-                <Link sx={{ "&:hover": { cursor: "pointer" } }} href="/signup">
+                <Link
+                  sx={{
+                    textDecoration: "none",
+                    "&:hover": {
+                      cursor: "pointer",
+                      textDecoration: "underline",
+                    },
+                  }}
+                  href="/signup"
+                >
                   <Typography>Sign up</Typography>
                 </Link>
               </Box>
