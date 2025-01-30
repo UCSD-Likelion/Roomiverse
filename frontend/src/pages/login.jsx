@@ -15,26 +15,17 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errorEmail, setErrorEmail] = useState("");
-  const [errorPassword, setErrorPassword] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!email || !password) {
-      setErrorEmail("Please fill in all fields");
-      setErrorPassword("Please fill in all fields");
-      return;
-    }
     console.log(email, password);
   };
 
   const handleEmailChange = (e) => {
-    setErrorEmail("");
     setEmail(e.target.value);
   };
 
   const handlePasswordChange = (e) => {
-    setErrorPassword("");
     setPassword(e.target.value);
   };
 
@@ -129,7 +120,7 @@ export default function Login() {
           px: "3rem",
         }}
       >
-        <Typography variant="h3" sx={{ fontWeight: 700 }}>
+        <Typography variant="h3" sx={{ fontWeight: 700, color: "#283b42" }}>
           Login
         </Typography>
         <Box
@@ -150,8 +141,6 @@ export default function Login() {
                 color="black"
                 onChange={handleEmailChange}
                 sx={{ color: "black" }}
-                error={errorEmail}
-                helperText={errorEmail}
               />
             </Grid>
             <Grid
@@ -168,8 +157,6 @@ export default function Login() {
                 color="black"
                 sx={{ marginBottom: 1, marginTop: 1, color: "black" }}
                 onChange={handlePasswordChange}
-                error={errorPassword}
-                helperText={errorPassword}
                 slotProps={{
                   input: {
                     endAdornment: showPassword ? (
@@ -216,6 +203,7 @@ export default function Login() {
                   borderRadius: "0.5rem",
                   py: "0.75rem",
                 }}
+                disabled={!email || !password}
               >
                 <Typography sx={{ fontSize: 24 }}>Sign In</Typography>
               </Button>
