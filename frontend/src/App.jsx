@@ -9,17 +9,16 @@ import Signup from "./pages/signup";
 function App() {
   return (
     <BrowserRouter>
-      <Header/>
+      <Header />
       <main style={{ paddingTop: "48px" }}>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-      </Routes>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+        </Routes>
       </main>
     </BrowserRouter>
   );
 }
 
 export default App;
-
