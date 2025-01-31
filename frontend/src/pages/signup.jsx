@@ -18,6 +18,9 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 export default function Signup() {
   const [dob, setDob] = useState(new Date());
+  const [email, setEmail] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
 
   return (
     <Box
@@ -210,10 +213,10 @@ export default function Signup() {
                   py: "0.75rem",
                 }}
               >
-                <Typography sx={{ fontSize: 24 }}>Sign In</Typography>
+                <Typography sx={{ fontSize: 24 }}>Sign Up</Typography>
               </Button>
               <Box sx={{ display: "flex", marginTop: 1, gap: 1 }}>
-                <Typography>Don&apos;t have an account?</Typography>
+                <Typography>Already have an account?</Typography>
                 <Link
                   sx={{
                     textDecoration: "none",
@@ -222,9 +225,9 @@ export default function Signup() {
                       textDecoration: "underline",
                     },
                   }}
-                  href="/signup"
+                  href="/login"
                 >
-                  <Typography>Sign up</Typography>
+                  <Typography>Login</Typography>
                 </Link>
               </Box>
             </Grid>

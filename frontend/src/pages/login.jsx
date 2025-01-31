@@ -219,7 +219,7 @@ export default function Login() {
                   }}
                   href="/signup"
                 >
-                  <Typography>Sign up</Typography>
+                  <Typography>Login</Typography>
                 </Link>
               </Box>
             </Grid>
