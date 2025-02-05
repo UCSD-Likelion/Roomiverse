@@ -23,6 +23,7 @@ export default function Signup() {
   const [lastName, setLastName] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -43,6 +44,14 @@ export default function Signup() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(email, firstName, lastName, dob);
+  };
+
+  const handleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleShowConfirmPassword = () => {
+    setShowConfirmPassword(!showConfirmPassword);
   };
 
   return (
@@ -168,6 +177,7 @@ export default function Signup() {
                 label="Last Name"
                 variant="outlined"
                 color="black"
+                onChange={handleLastNameChange}
                 sx={{ color: "black" }}
               />
             </Grid>
@@ -195,6 +205,23 @@ export default function Signup() {
                 color="black"
                 onChange={handlePasswordChange}
                 sx={{ color: "black" }}
+                slotProps={{
+                  input: {
+                    endAdornment: showPassword ? (
+                      <VisibilityIcon
+                        onClick={() => setShowPassword(!showPassword)}
+                        sx={{
+                          "&:hover": { cursor: "pointer" },
+                        }}
+                      />
+                    ) : (
+                      <VisibilityOffIcon
+                        onClick={() => setShowPassword(!showPassword)}
+                        sx={{ "&:hover": { cursor: "pointer" } }}
+                      />
+                    ),
+                  },
+                }}
               />
             </Grid>
             <Grid
@@ -209,6 +236,25 @@ export default function Signup() {
                 variant="outlined"
                 color="black"
                 sx={{ color: "black" }}
+                slotProps={{
+                  input: {
+                    endAdornment: showConfirmPassword ? (
+                      <VisibilityIcon
+                        onClick={() =>
+                          setShowConfirmPassword(!showConfirmPassword)
+                        }
+                        sx={{ "&:hover": { cursor: "pointer" } }}
+                      />
+                    ) : (
+                      <VisibilityOffIcon
+                        onClick={() =>
+                          setShowConfirmPassword(!showConfirmPassword)
+                        }
+                        sx={{ "&:hover": { cursor: "pointer" } }}
+                      />
+                    ),
+                  },
+                }}
               />
             </Grid>
             <Grid item xs={12}>
@@ -242,6 +288,7 @@ export default function Signup() {
                   borderRadius: "0.5rem",
                   py: "0.75rem",
                 }}
+                onClick={handleSubmit}
               >
                 <Typography sx={{ fontSize: 24 }}>Sign Up</Typography>
               </Button>
