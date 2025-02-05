@@ -25,6 +25,7 @@ export default function Signup() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [gender, setGender] = useState("");
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -47,12 +48,8 @@ export default function Signup() {
     console.log(email, firstName, lastName, dob);
   };
 
-  const handleShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
-
-  const handleShowConfirmPassword = () => {
-    setShowConfirmPassword(!showConfirmPassword);
+  const handleConfirmPasswordChange = (e) => {
+    setConfirmPassword(e.target.value);
   };
 
   return (
@@ -237,7 +234,7 @@ export default function Signup() {
                 variant="outlined"
                 color="black"
                 sx={{ color: "black" }}
-                onClick={handleShowConfirmPassword}
+                onClick={handleConfirmPasswordChange}
                 slotProps={{
                   input: {
                     endAdornment: showConfirmPassword ? (
@@ -273,7 +270,11 @@ export default function Signup() {
             </Grid>
             <Grid item sx={12}>
               <Typography variant="h6">Gender</Typography>
-              <Select fullWidth label="Select Gender">
+              <Select
+                fullWidth
+                label="Select Gender"
+                onChange={(e) => setGender(e.target.value)}
+              >
                 <MenuItem value={"Male"}>Male</MenuItem>
                 <MenuItem value={"Male"}>Female</MenuItem>
               </Select>
@@ -297,7 +298,8 @@ export default function Signup() {
                   !firstName ||
                   !lastName ||
                   !dob ||
-                  !confirmPassword
+                  !confirmPassword ||
+                  !gender
                 }
               >
                 <Typography sx={{ fontSize: 24 }}>Sign Up</Typography>
