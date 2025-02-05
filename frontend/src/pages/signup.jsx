@@ -22,6 +22,7 @@ export default function Signup() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -236,6 +237,7 @@ export default function Signup() {
                 variant="outlined"
                 color="black"
                 sx={{ color: "black" }}
+                onClick={handleShowConfirmPassword}
                 slotProps={{
                   input: {
                     endAdornment: showConfirmPassword ? (
@@ -289,6 +291,14 @@ export default function Signup() {
                   py: "0.75rem",
                 }}
                 onClick={handleSubmit}
+                disabled={
+                  !email ||
+                  !password ||
+                  !firstName ||
+                  !lastName ||
+                  !dob ||
+                  !confirmPassword
+                }
               >
                 <Typography sx={{ fontSize: 24 }}>Sign Up</Typography>
               </Button>
