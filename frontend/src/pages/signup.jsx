@@ -25,6 +25,7 @@ export default function Signup() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [gender, setGender] = useState("");
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -45,6 +46,14 @@ export default function Signup() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(email, firstName, lastName, dob);
+  };
+
+  const handleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleShowConfirmPassword = () => {
+    setShowConfirmPassword(!showConfirmPassword);
   };
 
   return (
@@ -229,6 +238,7 @@ export default function Signup() {
                 variant="outlined"
                 color="black"
                 sx={{ color: "black" }}
+                onClick={handleShowConfirmPassword}
                 slotProps={{
                   input: {
                     endAdornment: showConfirmPassword ? (
@@ -286,6 +296,15 @@ export default function Signup() {
                   py: "0.75rem",
                 }}
                 onClick={handleSubmit}
+                disabled={
+                  !email ||
+                  !password ||
+                  !firstName ||
+                  !lastName ||
+                  !dob ||
+                  !confirmPassword ||
+                  !gender
+                }
               >
                 <Typography sx={{ fontSize: 24 }}>Sign Up</Typography>
               </Button>
