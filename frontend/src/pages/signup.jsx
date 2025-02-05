@@ -25,7 +25,6 @@ export default function Signup() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [gender, setGender] = useState("");
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -46,10 +45,6 @@ export default function Signup() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(email, firstName, lastName, dob);
-  };
-
-  const handleConfirmPasswordChange = (e) => {
-    setConfirmPassword(e.target.value);
   };
 
   return (
@@ -234,26 +229,6 @@ export default function Signup() {
                 variant="outlined"
                 color="black"
                 sx={{ color: "black" }}
-                onClick={handleConfirmPasswordChange}
-                slotProps={{
-                  input: {
-                    endAdornment: showConfirmPassword ? (
-                      <VisibilityIcon
-                        onClick={() =>
-                          setShowConfirmPassword(!showConfirmPassword)
-                        }
-                        sx={{ "&:hover": { cursor: "pointer" } }}
-                      />
-                    ) : (
-                      <VisibilityOffIcon
-                        onClick={() =>
-                          setShowConfirmPassword(!showConfirmPassword)
-                        }
-                        sx={{ "&:hover": { cursor: "pointer" } }}
-                      />
-                    ),
-                  },
-                }}
               />
             </Grid>
             <Grid item xs={12}>
@@ -291,16 +266,6 @@ export default function Signup() {
                   borderRadius: "0.5rem",
                   py: "0.75rem",
                 }}
-                onClick={handleSubmit}
-                disabled={
-                  !email ||
-                  !password ||
-                  !firstName ||
-                  !lastName ||
-                  !dob ||
-                  !confirmPassword ||
-                  !gender
-                }
               >
                 <Typography sx={{ fontSize: 24 }}>Sign Up</Typography>
               </Button>
