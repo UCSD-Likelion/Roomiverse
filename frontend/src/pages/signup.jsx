@@ -21,6 +21,29 @@ export default function Signup() {
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const handleFirstNameChange = (e) => {
+    setFirstName(e.target.value);
+  };
+
+  const handleLastNameChange = (e) => {
+    setLastName(e.target.value);
+  };
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(email, firstName, lastName, dob);
+  };
 
   return (
     <Box
@@ -136,6 +159,7 @@ export default function Signup() {
                 label="First Name"
                 variant="outlined"
                 color="black"
+                onChange={handleFirstNameChange}
                 sx={{ color: "black" }}
               />
               <TextField
@@ -154,6 +178,7 @@ export default function Signup() {
                 label="Email"
                 variant="outlined"
                 color="black"
+                onChange={handleEmailChange}
                 sx={{ color: "black" }}
               />
             </Grid>
@@ -168,6 +193,7 @@ export default function Signup() {
                 label="Password"
                 variant="outlined"
                 color="black"
+                onChange={handlePasswordChange}
                 sx={{ color: "black" }}
               />
             </Grid>
@@ -199,6 +225,10 @@ export default function Signup() {
             </Grid>
             <Grid item sx={12}>
               <Typography variant="h6">Gender</Typography>
+              <Select fullWidth label="Select Gender">
+                <MenuItem value={"Male"}>Male</MenuItem>
+                <MenuItem value={"Male"}>Female</MenuItem>
+              </Select>
             </Grid>
             <Grid item xs={12}>
               <Button
