@@ -45,7 +45,7 @@ function Header() {
     <AppBar position="fixed" sx={{ backgroundColor: '#FF6F61', top: 0, left: 0, right: 0, minHeight: 56 }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters sx={{ minHeight: 56, padding: '0 16px' }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1, marginLeft: -4 }}>
+          <Box sx={{ position: "absolute", display: 'flex', alignItems: 'center', flexGrow: 1, left: '-16px'}}>
             <IconButton size="large" aria-label="menu" onClick={handleToggleDrawer(true)} sx={{ color: 'white' }}>
               <MenuIcon />
             </IconButton>
@@ -68,7 +68,7 @@ function Header() {
               <Typography variant="h5" sx={{ color: 'white', marginLeft: 1, fontWeight: 'bold' }}>Roomiverse</Typography>
             </IconButton>
           </Box>
-          <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 0 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 0, position:'absolute', right: '0px' }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt="User Profile" />
