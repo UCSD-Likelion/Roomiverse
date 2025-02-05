@@ -23,6 +23,7 @@ builder.Services.AddControllers();
 
 // (4) MongoDB UserService 등록
 builder.Services.AddSingleton<UserService>();
+builder.Services.AddSingleton<PreferencesService>();
 
 // (5) Swagger (선택)
 builder.Services.AddEndpointsApiExplorer();
