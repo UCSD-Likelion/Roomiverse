@@ -229,6 +229,25 @@ export default function Signup() {
                 variant="outlined"
                 color="black"
                 sx={{ color: "black" }}
+                slotProps={{
+                  input: {
+                    endAdornment: showConfirmPassword ? (
+                      <VisibilityIcon
+                        onClick={() =>
+                          setShowConfirmPassword(!showConfirmPassword)
+                        }
+                        sx={{ "&:hover": { cursor: "pointer" } }}
+                      />
+                    ) : (
+                      <VisibilityOffIcon
+                        onClick={() =>
+                          setShowConfirmPassword(!showConfirmPassword)
+                        }
+                        sx={{ "&:hover": { cursor: "pointer" } }}
+                      />
+                    ),
+                  },
+                }}
               />
             </Grid>
             <Grid item xs={12}>
@@ -266,6 +285,7 @@ export default function Signup() {
                   borderRadius: "0.5rem",
                   py: "0.75rem",
                 }}
+                onClick={handleSubmit}
               >
                 <Typography sx={{ fontSize: 24 }}>Sign Up</Typography>
               </Button>
