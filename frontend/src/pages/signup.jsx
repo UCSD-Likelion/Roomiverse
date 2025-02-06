@@ -47,6 +47,11 @@ export default function Signup() {
     console.log(password);
   };
 
+  const handleConfirmPasswordChange = (e) => {
+    setConfirmPassword(e.target.value);
+    console.log(confirmPassword);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(email, firstName, lastName, dob);
@@ -244,7 +249,7 @@ export default function Signup() {
                 color="black"
                 type={showConfirmPassword ? "text" : "password"}
                 sx={{ color: "black" }}
-                onClick={handleShowConfirmPassword}
+                onChange={handleConfirmPasswordChange}
                 slotProps={{
                   input: {
                     endAdornment: showConfirmPassword ? (
@@ -303,14 +308,12 @@ export default function Signup() {
                 }}
                 onClick={handleSubmit}
                 disabled={
-                  !email.trim() ||
-                  !password.trim() ||
-                  !confirmPassword.trim() ||
-                  !firstName.trim() ||
-                  !lastName.trim() ||
-                  !dob ||
-                  !gender ||
-                  password !== confirmPassword
+                  !firstName ||
+                  !lastName ||
+                  !email ||
+                  !password ||
+                  !confirmPassword ||
+                  !gender
                 }
               >
                 <Typography sx={{ fontSize: 24 }}>Sign Up</Typography>
