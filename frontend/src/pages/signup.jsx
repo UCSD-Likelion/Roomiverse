@@ -8,6 +8,8 @@ import {
   Grid2 as Grid,
   Select,
   MenuItem,
+  InputLabel,
+  FormControl,
 } from "@mui/material";
 import { motion } from "framer-motion";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -29,40 +31,27 @@ export default function Signup() {
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
-    console.log(email);
   };
 
   const handleFirstNameChange = (e) => {
     setFirstName(e.target.value);
-    console.log(firstName);
   };
 
   const handleLastNameChange = (e) => {
     setLastName(e.target.value);
-    console.log(lastName);
   };
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
-    console.log(password);
   };
 
   const handleConfirmPasswordChange = (e) => {
     setConfirmPassword(e.target.value);
-    console.log(confirmPassword);
   };
 
+  // TODO: Create a function to handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(email, firstName, lastName, dob);
-  };
-
-  const handleShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
-
-  const handleShowConfirmPassword = () => {
-    setShowConfirmPassword(!showConfirmPassword);
   };
 
   return (
@@ -272,7 +261,6 @@ export default function Signup() {
               />
             </Grid>
             <Grid item xs={12}>
-              <Typography variant="h6">Date of Birth</Typography>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
                   label="Date of Birth"
@@ -284,15 +272,21 @@ export default function Signup() {
               </LocalizationProvider>
             </Grid>
             <Grid item sx={12}>
-              <Typography variant="h6">Gender</Typography>
-              <Select
-                fullWidth
-                label="Select Gender"
-                onChange={(e) => setGender(e.target.value)}
-              >
-                <MenuItem value={"Male"}>Male</MenuItem>
-                <MenuItem value={"Male"}>Female</MenuItem>
-              </Select>
+              <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-standard-label">
+                  Gender
+                </InputLabel>
+
+                <Select
+                  fullWidth
+                  labelId="demo-simple-select-standard-label"
+                  label="Gender"
+                  onChange={(e) => setGender(e.target.value)}
+                >
+                  <MenuItem value={"Male"}>Male</MenuItem>
+                  <MenuItem value={"Female"}>Female</MenuItem>
+                </Select>
+              </FormControl>
             </Grid>
             <Grid item xs={12}>
               <Button
