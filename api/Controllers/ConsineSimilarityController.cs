@@ -15,50 +15,51 @@ namespace api.Controllers
         [HttpPost]
         public IActionResult CalculateSimilarity([FromBody] SimilarityRequest request)
         {
-            if (string.IsNullOrEmpty(request.Text1) || string.IsNullOrEmpty(request.Text2))
+            if (request == null)
             {
                 return BadRequest("Text1 and Text2 are required");
             }
-            double similarity = CalculateCosineSimilarity(request.Text1, request.Text2);
+            double[] vectorUser1 = ConvertToVector(request.User1);
+            double[] vectorUser2 = ConvertToVector(request.User2);
+            double similarity = CalculateCosineSimilarity(vectorUser1, vectorUser2);
             return Ok(similarity);
         }
 
-        private double CalculateCosineSimilarity(string text1, string text2)
+        private double[] ConvertToVector(UserData user)
         {
-            Dictionary<string, int> wordFrequency1 = GetWordFrequency(text1);
-            Dictionary<string, int> wordFrequency2 = GetWordFrequency(text2);
-
-            double dotProduct = 0;
-            double magnitude1 = 0;
-            double magnitude2 = 0;
-
-            foreach (var word in wordFrequency1.Keys.Union(wordFrequency2.Keys))
-            {
-                int frequency1 = wordFrequency1.GetValueOrDefault(word, 0);
-                int frequency2 = wordFrequency2.GetValueOrDefault(word, 0);
-
-                dotProduct += frequency1 * frequency2;
-                magnitude1 += frequency1 * frequency1;
-                magnitude2 += frequency2 * frequency2;
-            }
-
-            magnitude1 = Math.Sqrt(magnitude1);
-            magnitude2 = Math.Sqrt(magnitude2);
-
-            return dotProduct / (magnitude1 * magnitude2);
+            return new double[] {
+                user.GuestFrequency,
+                user.SleepTimeHours + user.SleepTimeMins / 60.0,
+                user.WakeTimeHours + user.WakeTimeMins / 60.0,
+                user.SleepImportance,
+                user.CleaningFrequency
+            };
         }
 
-        private Dictionary<string, int> GetWordFrequency(string text)
+        private double CalculateCosineSimilarity(double[] vector1, double[] vector2)
         {
-            return text.Split(' ', StringSplitOptions.RemoveEmptyEntries)
-                        .GroupBy(word => word)
-                        .ToDictionary(group => group.Key, group => group.Count());
+            double dotProduct = vector1.Zip(vector2, (x, y) => x * y).Sum();
+            double magnitude1 = Math.Sqrt(vector1.Sum(x => x * x));
+            double magnitude2 = Math.Sqrt(vector2.Sum(x => x * x));
+
+            return magnitude1 == 0 || magnitude2 == 0 ? 0 : dotProduct / (magnitude1 * magnitude2);
         }
     }
 
     public class SimilarityRequest
     {
-        public string Text1 { get; set; }
-        public string Text2 { get; set; }
+        public required UserData User1 { get; set; }
+        public required UserData User2 { get; set; }
+    }
+
+    public class UserData
+    {
+        public int GuestFrequency { get; set; }
+        public int SleepTimeHours { get; set; }
+        public int SleepTimeMins { get; set; }
+        public int WakeTimeHours { get; set; }
+        public int WakeTimeMins { get; set; }
+        public int SleepImportance { get; set; }
+        public int CleaningFrequency { get; set; }
     }
 }
