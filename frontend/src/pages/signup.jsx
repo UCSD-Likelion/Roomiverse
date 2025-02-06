@@ -29,18 +29,22 @@ export default function Signup() {
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
+    console.log(email);
   };
 
   const handleFirstNameChange = (e) => {
     setFirstName(e.target.value);
+    console.log(firstName);
   };
 
   const handleLastNameChange = (e) => {
     setLastName(e.target.value);
+    console.log(lastName);
   };
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
+    console.log(password);
   };
 
   const handleSubmit = (e) => {
@@ -66,7 +70,7 @@ export default function Signup() {
         alignContent: "center",
         alignItems: "center",
         justifyContent: "center",
-        height: "100vh",
+        height: "94.1vh",
         width: "100vw",
       }}
     >
@@ -204,6 +208,7 @@ export default function Signup() {
                 required
                 label="Password"
                 variant="outlined"
+                type={showPassword ? "text" : "password"}
                 color="black"
                 onChange={handlePasswordChange}
                 sx={{ color: "black" }}
@@ -237,6 +242,7 @@ export default function Signup() {
                 label="Confirm Password"
                 variant="outlined"
                 color="black"
+                type={showConfirmPassword ? "text" : "password"}
                 sx={{ color: "black" }}
                 onClick={handleShowConfirmPassword}
                 slotProps={{
@@ -297,13 +303,14 @@ export default function Signup() {
                 }}
                 onClick={handleSubmit}
                 disabled={
-                  !email ||
-                  !password ||
-                  !firstName ||
-                  !lastName ||
+                  !email.trim() ||
+                  !password.trim() ||
+                  !confirmPassword.trim() ||
+                  !firstName.trim() ||
+                  !lastName.trim() ||
                   !dob ||
-                  !confirmPassword ||
-                  !gender
+                  !gender ||
+                  password !== confirmPassword
                 }
               >
                 <Typography sx={{ fontSize: 24 }}>Sign Up</Typography>

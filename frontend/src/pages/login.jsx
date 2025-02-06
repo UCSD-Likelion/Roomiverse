@@ -39,7 +39,7 @@ export default function Login() {
         alignContent: "center",
         alignItems: "center",
         justifyContent: "center",
-        height: "100vh",
+        height: "94.1vh",
         width: "100vw",
       }}
     >
@@ -66,7 +66,7 @@ export default function Login() {
             background:
               "linear-gradient(to bottom, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0))",
 
-            top: "50%",
+            top: "55%",
             transform: "translateY(-50%)",
             left: "2%",
             zIndex: 1,
@@ -219,7 +219,7 @@ export default function Login() {
                   }}
                   href="/signup"
                 >
-                  <Typography>Login</Typography>
+                  <Typography>Signup</Typography>
                 </Link>
               </Box>
             </Grid>
