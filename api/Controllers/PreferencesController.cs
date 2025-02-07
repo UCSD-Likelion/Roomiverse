@@ -54,14 +54,16 @@ namespace api.Controllers  // Typical convention for controllers
         [HttpPut("{userId}")]
         public async Task<IActionResult> UpdatePreferences(string userId, [FromBody] Preferences updatedPrefs)
         {
-            // First, check if existing preferences are present
+            // Fetch existing preferences to retain the `_id` field
             var existing = await _preferencesService.GetByUserIdAsync(userId);
             if (existing == null)
             {
                 return NotFound(new { message = "Preferences not found" });
             }
 
-            // If found, update them
+            // Retain the existing `_id` to prevent modification
+            updatedPrefs.Id = existing.Id;
+
             await _preferencesService.UpdateAsync(userId, updatedPrefs);
             return NoContent();
         }

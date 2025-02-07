@@ -57,9 +57,28 @@ namespace api.Services
         // D) Update existing
         public async Task UpdateAsync(string userId, Preferences updatedPrefs)
         {
-            // Overwrite entire document
-            updatedPrefs.CreatedAt = DateTime.UtcNow;
-            await _preferencesCollection.ReplaceOneAsync(p => p.UserId == userId, updatedPrefs);
+            var filter = Builders<Preferences>.Filter.Eq(p => p.UserId, userId);
+
+            // Only update mutable fields, excluding `_id`
+            var update = Builders<Preferences>.Update
+                .Set(p => p.OffCampus, updatedPrefs.OffCampus)
+                .Set(p => p.GuestFrequency, updatedPrefs.GuestFrequency)
+                .Set(p => p.GenderPreference, updatedPrefs.GenderPreference)
+                .Set(p => p.Pets, updatedPrefs.Pets)
+                .Set(p => p.SmokingStatus, updatedPrefs.SmokingStatus)
+                .Set(p => p.OkayWithSmoker, updatedPrefs.OkayWithSmoker)
+                .Set(p => p.DrinkingStatus, updatedPrefs.DrinkingStatus)
+                .Set(p => p.OkayWithDrinker, updatedPrefs.OkayWithDrinker)
+                .Set(p => p.SleepTime, updatedPrefs.SleepTime)
+                .Set(p => p.WakeTime, updatedPrefs.WakeTime)
+                .Set(p => p.ImportanceOfSleepSchedule, updatedPrefs.ImportanceOfSleepSchedule)
+                .Set(p => p.CleaningFrequency, updatedPrefs.CleaningFrequency)
+                .Set(p => p.Major, updatedPrefs.Major)
+                .Set(p => p.College, updatedPrefs.College)
+                .Set(p => p.Ethnicity, updatedPrefs.Ethnicity)
+                .Set(p => p.OffCampusPreferences, updatedPrefs.OffCampusPreferences);
+
+            await _preferencesCollection.UpdateOneAsync(filter, update);
         }
 
         // E) Delete
