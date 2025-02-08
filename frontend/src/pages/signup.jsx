@@ -17,6 +17,8 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import { signIn } from "../api";
+import { formValidation } from "../utils/validators";
 
 export default function Signup() {
   const [dob, setDob] = useState(new Date());
@@ -50,8 +52,30 @@ export default function Signup() {
   };
 
   // TODO: Create a function to handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const userData = {
+      name: `${firstName} ${lastName}`,
+      email: email,
+      password: password,
+      birthdate: dob,
+      gender: gender,
+    };
+    console.log(userData);
+
+    const error = formValidation(userData);
+
+    if (error) {
+      console.error("Form validation failed: ", error);
+      return;
+    }
+
+    try {
+      const createdUser = await signIn(userData);
+      console.log(createdUser);
+    } catch (error) {
+      console.error("Faild to upload user: ", error);
+    }
   };
 
   return (

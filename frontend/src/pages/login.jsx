@@ -181,6 +181,7 @@ export default function Login() {
                   marginTop: 1,
                   fontSize: "0.9rem",
                   alignSelf: "flex-end",
+                  color: "#1d6a96",
                   "&:hover": {
                     cursor: "pointer",
                     textDecoration: "underline",
