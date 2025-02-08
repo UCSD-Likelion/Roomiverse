@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   Typography,
@@ -17,6 +18,8 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import { signIn } from "../api";
+import { formValidation } from "../utils/validators";
 
 export default function Signup() {
   const [dob, setDob] = useState(new Date());
@@ -28,6 +31,8 @@ export default function Signup() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [gender, setGender] = useState("");
+
+  const navigate = useNavigate();
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -49,9 +54,37 @@ export default function Signup() {
     setConfirmPassword(e.target.value);
   };
 
-  // TODO: Create a function to handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (password !== confirmPassword) {
+      console.error("Passwords do not match");
+      return;
+    }
+
+    const userData = {
+      name: `${firstName} ${lastName}`,
+      email: email,
+      password: password,
+      birthdate: dob,
+      gender: gender,
+    };
+    console.log(userData);
+
+    const error = formValidation(userData);
+
+    if (Object.keys(error).length > 0) {
+      console.error("Form validation failed: ", error);
+      return;
+    }
+
+    try {
+      const createdUser = await signIn(userData);
+      console.log(createdUser);
+      navigate("/login");
+    } catch (error) {
+      console.error("Faild to upload user: ", error);
+    }
   };
 
   return (
@@ -283,8 +316,8 @@ export default function Signup() {
                   label="Gender"
                   onChange={(e) => setGender(e.target.value)}
                 >
-                  <MenuItem value={"Male"}>Male</MenuItem>
-                  <MenuItem value={"Female"}>Female</MenuItem>
+                  <MenuItem value={"male"}>Male</MenuItem>
+                  <MenuItem value={"female"}>Female</MenuItem>
                 </Select>
               </FormControl>
             </Grid>

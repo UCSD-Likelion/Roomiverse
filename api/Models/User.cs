@@ -34,9 +34,4 @@ namespace api.Models
         [BsonElement("facebook")]
         public string? Facebook { get; set; }
     }
-
-
-
-
-
 }
