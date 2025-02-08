@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   Typography,
@@ -31,6 +32,8 @@ export default function Signup() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [gender, setGender] = useState("");
 
+  const navigate = useNavigate();
+
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
   };
@@ -51,9 +54,14 @@ export default function Signup() {
     setConfirmPassword(e.target.value);
   };
 
-  // TODO: Create a function to handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (password !== confirmPassword) {
+      console.error("Passwords do not match");
+      return;
+    }
+
     const userData = {
       name: `${firstName} ${lastName}`,
       email: email,
@@ -65,7 +73,7 @@ export default function Signup() {
 
     const error = formValidation(userData);
 
-    if (error) {
+    if (Object.keys(error).length > 0) {
       console.error("Form validation failed: ", error);
       return;
     }
@@ -73,6 +81,7 @@ export default function Signup() {
     try {
       const createdUser = await signIn(userData);
       console.log(createdUser);
+      navigate("/login");
     } catch (error) {
       console.error("Faild to upload user: ", error);
     }
@@ -307,8 +316,8 @@ export default function Signup() {
                   label="Gender"
                   onChange={(e) => setGender(e.target.value)}
                 >
-                  <MenuItem value={"Male"}>Male</MenuItem>
-                  <MenuItem value={"Female"}>Female</MenuItem>
+                  <MenuItem value={"male"}>Male</MenuItem>
+                  <MenuItem value={"female"}>Female</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
