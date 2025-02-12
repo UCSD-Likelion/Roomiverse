@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using api.Services;
 using api.Models;
+using BCrypt.Net;
 
 namespace api.Controllers
 {
