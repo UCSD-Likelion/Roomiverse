@@ -110,14 +110,14 @@ export default function Login() {
       <Box
         component="section"
         sx={{
-          flex: 1,
+          flex: 1.5,
           display: "flex",
           flexDirection: "column",
           gap: 2,
           width: "100%",
           height: "100%",
           justifyContent: "center",
-          px: "3rem",
+          px: "6rem",
         }}
       >
         <Typography variant="h3" sx={{ fontWeight: 700, color: "#283b42" }}>
