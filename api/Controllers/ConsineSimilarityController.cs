@@ -42,6 +42,11 @@ namespace api.Controllers
             double magnitude1 = Math.Sqrt(vector1.Sum(x => x * x));
             double magnitude2 = Math.Sqrt(vector2.Sum(x => x * x));
 
+            if (magnitude1 == 0 && magnitude2 == 0)
+            {
+                return 1;
+            }
+
             return magnitude1 == 0 || magnitude2 == 0 ? 0 : dotProduct / (magnitude1 * magnitude2);
         }
     }
