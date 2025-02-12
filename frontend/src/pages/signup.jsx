@@ -31,6 +31,7 @@ export default function Signup() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [gender, setGender] = useState("");
+  const [error, setError] = useState({});
 
   const navigate = useNavigate();
 
@@ -56,10 +57,12 @@ export default function Signup() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    let error = {};
 
     if (password !== confirmPassword) {
       console.error("Passwords do not match");
-      return;
+      error.password = "Passwords do not match";
+      setError(error);
     }
 
     const userData = {
@@ -69,9 +72,11 @@ export default function Signup() {
       birthdate: dob,
       gender: gender,
     };
-    console.log(userData);
 
-    const error = formValidation(userData);
+    const validationErrors = formValidation(userData);
+    error = { ...error, ...validationErrors };
+
+    setError(error);
 
     if (Object.keys(error).length > 0) {
       console.error("Form validation failed: ", error);
@@ -223,6 +228,8 @@ export default function Signup() {
                 color="black"
                 onChange={handleEmailChange}
                 sx={{ color: "black" }}
+                error={!!error.email}
+                helperText={error.email}
               />
             </Grid>
             <Grid
@@ -238,6 +245,8 @@ export default function Signup() {
                 type={showPassword ? "text" : "password"}
                 color="black"
                 onChange={handlePasswordChange}
+                error={!!error.password}
+                helperText={error.password}
                 sx={{ color: "black" }}
                 slotProps={{
                   input: {
@@ -299,7 +308,11 @@ export default function Signup() {
                   label="Date of Birth"
                   onChange={(newValue) => setDob(newValue)}
                   slotProps={{
-                    textField: { fullWidth: true },
+                    textField: {
+                      fullWidth: true,
+                      error: !!error.birthdate,
+                      helperText: error.birthdate,
+                    },
                   }}
                 />
               </LocalizationProvider>
