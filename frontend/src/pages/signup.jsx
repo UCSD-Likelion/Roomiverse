@@ -102,7 +102,7 @@ export default function Signup() {
         alignContent: "center",
         alignItems: "center",
         justifyContent: "center",
-        height: "94.1vh",
+        height: "100vh",
         width: "100vw",
       }}
     >
