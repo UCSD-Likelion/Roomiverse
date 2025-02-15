@@ -79,12 +79,16 @@ export default function Signup() {
     setError(error);
 
     if (Object.keys(error).length > 0) {
-      console.error("Form validation failed: ", error);
       return;
     }
 
     try {
       const createdUser = await signIn(userData);
+
+      if (!createdUser.ok) {
+        throw new Error(createdUser.statusText);
+      }
+      
       console.log(createdUser);
       navigate("/login");
     } catch (error) {
