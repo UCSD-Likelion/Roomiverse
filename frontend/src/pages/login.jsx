@@ -11,13 +11,34 @@ import { motion } from "framer-motion";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
+import { login } from "../api";
+import { loginValidation } from "../utils/validators";
+
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState({});
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const validation = loginValidation({ email, password });
+    setError(validation);
+
+    const user = {
+      email: email,
+      password: password,
+    };
+
+    try {
+      const response = await login(user);
+      console.log(response);
+
+    } catch (error) {
+      console.error(error);
+    }
+
     console.log(email, password);
   };
 
@@ -65,7 +86,6 @@ export default function Login() {
             borderRadius: "50%",
             background:
               "linear-gradient(to bottom, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0))",
-
             top: "55%",
             transform: "translateY(-50%)",
             left: "2%",
@@ -141,6 +161,8 @@ export default function Login() {
                 color="black"
                 onChange={handleEmailChange}
                 sx={{ color: "black" }}
+                error={!!error.email}
+                helperText={error.email}
               />
             </Grid>
             <Grid
@@ -157,6 +179,8 @@ export default function Login() {
                 color="black"
                 sx={{ marginBottom: 1, marginTop: 1, color: "black" }}
                 onChange={handlePasswordChange}
+                error={!!error.password}
+                helperText={error.password}
                 slotProps={{
                   input: {
                     endAdornment: showPassword ? (
