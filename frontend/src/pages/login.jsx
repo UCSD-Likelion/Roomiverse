@@ -39,7 +39,7 @@ export default function Login() {
         alignContent: "center",
         alignItems: "center",
         justifyContent: "center",
-        height: "94.1vh",
+        height: "100vh",
         width: "100vw",
       }}
     >
