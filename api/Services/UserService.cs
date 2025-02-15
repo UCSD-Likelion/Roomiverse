@@ -58,5 +58,9 @@ namespace api.Services
 
         public async Task DeleteAsync(string id) =>
             await _userCollection.DeleteOneAsync(u => u.Id == id);
+
+        public async Task<User?> GetByEmailAsync(string email) {
+            return await _userCollection.Find(u => u.Email == email).FirstOrDefaultAsync();
+        }
     }
 }

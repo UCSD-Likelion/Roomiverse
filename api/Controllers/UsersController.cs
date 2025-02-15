@@ -1,7 +1,12 @@
+using api.Config;
 using Microsoft.AspNetCore.Mvc;
 using api.Services;
 using api.Models;
 using BCrypt.Net;
+using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace api.Controllers
 {
@@ -10,10 +15,13 @@ namespace api.Controllers
     public class UsersController : ControllerBase
     {
         private readonly UserService _service;
+        private readonly JwtConfig _jwtConfig;
 
-        public UsersController(UserService service)
+        public UsersController(UserService service, JwtSettings jwtSettings)
         {
             _service = service;
+            _jwtConfig = jwtSettings;
+
         }
 
         // GET: api/users
@@ -39,11 +47,49 @@ namespace api.Controllers
         [HttpPost]
         public async Task<ActionResult> Create([FromBody] User newUser)
         {
-            // 새 User 문서 삽입
+            // Create user with hashed password
             await _service.CreateAsync(newUser);
 
-            // 생성된 user 반환 + Location 헤더
             return CreatedAtAction(nameof(Get), new { id = newUser.Id }, newUser);
+        }
+
+        // POST: api/users/login
+        // TODO: Test this method
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginModel user)
+        {
+            var existing = await _service.GetByEmailAsync(user.Email);
+
+            if (existing == null || !BCrypt.Net.BCrypt.Verify(user.Password, existing.Password))
+                return Unauthorized("Invalid email or password");
+            
+            
+            var token = GenerateJwtToken(existing);
+            return Ok(new { token });
+        }
+
+        // Generate JWT token
+        // TODO: Test this method
+        private string GenerateJwtToken(User user) {
+
+            var claims = new[] {
+                new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(ClaimTypes.NameIdentifier, user.Id)
+            };
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtConfig.Secret));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(
+                _jwtConfig.Issuer,
+                _jwtConfig.Audience,
+                claims,
+                expires: DateTime.Now.AddMinutes(2),
+                signingCredentials: creds
+            );
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
         // PUT: api/users/123456
