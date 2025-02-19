@@ -18,6 +18,9 @@ var jwtSettings = new JwtSettings
     Audience = Environment.GetEnvironmentVariable("JWT_AUDIENCE") ?? throw new Exception("JWT_AUDIENCE is required")
 };
 
+Console.WriteLine($"JWT_KEY: {jwtSettings.Key}");
+Console.WriteLine($"JWT_ISSUER: {jwtSettings.Issuer}");
+
 builder.Services.AddSingleton(jwtSettings);
 
 // Configure JWT

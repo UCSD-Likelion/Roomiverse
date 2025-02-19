@@ -15,7 +15,7 @@ namespace api.Controllers
     public class UsersController : ControllerBase
     {
         private readonly UserService _service;
-        private readonly JwtConfig _jwtConfig;
+        private readonly JwtSettings _jwtConfig;
 
         public UsersController(UserService service, JwtSettings jwtSettings)
         {
@@ -44,7 +44,7 @@ namespace api.Controllers
         }
 
         // POST: api/users
-        [HttpPost]
+        [HttpPost("register")]
         public async Task<ActionResult> Create([FromBody] User newUser)
         {
             // Create user with hashed password
@@ -54,7 +54,6 @@ namespace api.Controllers
         }
 
         // POST: api/users/login
-        // TODO: Test this method
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginModel user)
         {
@@ -69,7 +68,6 @@ namespace api.Controllers
         }
 
         // Generate JWT token
-        // TODO: Test this method
         private string GenerateJwtToken(User user) {
 
             var claims = new[] {
@@ -78,7 +76,7 @@ namespace api.Controllers
                 new Claim(ClaimTypes.NameIdentifier, user.Id)
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtConfig.Secret));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtConfig.Key));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
