@@ -42,6 +42,12 @@
         const response = await login(user);
 
         console.log(response);
+
+        const token = response.token;
+        console.log(token);
+        localStorage.setItem("token", token);
+        console.log(localStorage.getItem("token"));
+        console.log("Logged in successfully");
         navigate("/dashboard");
 
       } catch (error) {
@@ -249,7 +255,7 @@
                         textDecoration: "underline",
                       },
                     }}
-                    href="/signup"
+                    href="/register"
                   >
                     <Typography>Signup</Typography>
                   </Link>

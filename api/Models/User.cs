@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
@@ -7,7 +8,7 @@ namespace api.Models
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; } = null!; // MongoDB ObjectId
+        public string? Id { get; set; } = null!; // MongoDB ObjectId
 
         [BsonElement("name")]
         public string Name { get; set; } = string.Empty;
@@ -33,5 +34,6 @@ namespace api.Models
         // (4) 페이스북 - 선택 사항 (nullable)
         [BsonElement("facebook")]
         public string? Facebook { get; set; }
+        public string Role { get; set; } = "User";
     }
 }

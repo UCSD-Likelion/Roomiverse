@@ -7,6 +7,7 @@ using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
 
 namespace api.Controllers
 {
@@ -43,10 +44,34 @@ namespace api.Controllers
             return Ok(user);
         }
 
+        // GET: api/users/getuser
+        [HttpGet("getuser")]
+        [Authorize]
+        public async Task<ActionResult<User>> GetUser()
+        {
+            // Retrieve user ID from token
+            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+        
+
+            if (userId == null)
+                return Unauthorized("No user ID claim present in token.");
+
+            try
+            {
+                User? user = await _service.GetByIdAsync(userId);
+                return Ok(user);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         // POST: api/users
         [HttpPost("register")]
         public async Task<ActionResult> Create([FromBody] User newUser)
         {
+            newUser.Role ??= "User";
             // Create user with hashed password
             await _service.CreateAsync(newUser);
 
@@ -61,8 +86,7 @@ namespace api.Controllers
 
             if (existing == null || !BCrypt.Net.BCrypt.Verify(user.Password, existing.Password))
                 return Unauthorized("Invalid email or password");
-            
-            
+        
             var token = GenerateJwtToken(existing);
             return Ok(new { token });
         }
@@ -70,20 +94,23 @@ namespace api.Controllers
         // Generate JWT token
         private string GenerateJwtToken(User user) {
 
-            var claims = new[] {
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
                 new Claim(JwtRegisteredClaimNames.Sub, user.Email),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(ClaimTypes.NameIdentifier, user.Id)
+                new Claim(ClaimTypes.Role, user.Role)
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtConfig.Key));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
+
             var token = new JwtSecurityToken(
-                _jwtConfig.Issuer,
-                _jwtConfig.Audience,
-                claims,
-                expires: DateTime.Now.AddMinutes(2),
+                issuer: _jwtConfig.Issuer,
+                audience: _jwtConfig.Audience,
+                claims: claims,
+                expires: DateTime.Now.AddMinutes(10),
                 signingCredentials: creds
             );
 

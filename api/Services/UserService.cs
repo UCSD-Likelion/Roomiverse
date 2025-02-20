@@ -44,6 +44,7 @@ namespace api.Services
 
         public async Task CreateAsync(User user)
         {
+            user.Role ??= "User";
             user.Birthdate = user.Birthdate.Date;
             user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
             await _userCollection.InsertOneAsync(user);

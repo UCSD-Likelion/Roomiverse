@@ -18,7 +18,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { signIn } from "../api";
+import { registerUser } from "../api";
 import { formValidation } from "../utils/validators";
 
 export default function Signup() {
@@ -83,10 +83,10 @@ export default function Signup() {
     }
 
     try {
-      const createdUser = await signIn(userData);
+      const createdUser = await registerUser(userData);
 
-      if (!createdUser.ok) {
-        throw new Error(createdUser.statusText);
+      if (!createdUser) {
+        throw new Error("Cannot create user");
       }
       
       console.log(createdUser);
