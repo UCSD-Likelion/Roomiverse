@@ -7,6 +7,7 @@ import Home from "./pages/home";
 import Signup from "./pages/signup";
 import Dashboard from "./pages/dashboard";
 import PrivateRoute from "./utils/private-route";
+import MatchingForm from "./pages/matchingForm";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/" element={<PrivateRoute />}>
             <Route path="/dashboard" element={<Dashboard />} />
           </Route>
+          <Route path="/matching-form" element={<MatchingForm />} />
         </Routes>
       </main>
     </BrowserRouter>
