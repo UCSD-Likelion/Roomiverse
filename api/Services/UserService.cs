@@ -63,5 +63,9 @@ namespace api.Services
         public async Task<User?> GetByEmailAsync(string email) {
             return await _userCollection.Find(u => u.Email == email).FirstOrDefaultAsync();
         }
+
+        public async Task<User?> GetByRefreshToken(string refreshToken) {
+            return await _userCollection.Find(u => u.RefreshToken == refreshToken).FirstOrDefaultAsync();
+        }
     }
 }

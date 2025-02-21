@@ -8,6 +8,7 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Cryptography;
 
 namespace api.Controllers
 {
@@ -87,8 +88,30 @@ namespace api.Controllers
             if (existing == null || !BCrypt.Net.BCrypt.Verify(user.Password, existing.Password))
                 return Unauthorized("Invalid email or password");
         
-            var token = GenerateJwtToken(existing);
-            return Ok(new { token });
+            // Generate Tokens
+            var accessToken = GenerateJwtToken(existing);
+            var refreshToken = GenerateRefreshToken();
+
+            // Save refresh token
+            existing.RefreshToken = refreshToken;
+            existing.RefreshTokenExpiryTime = DateTime.Now.AddDays(7);
+            await _service.UpdateAsync(existing.Id, existing);
+
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Expires = DateTime.Now.AddDays(7),
+                Secure = true,
+                SameSite = SameSiteMode.Strict
+            };
+
+            Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
+
+            return Ok(new { accessToken, refreshToken });
+        }
+
+        private string GenerateRefreshToken() {
+            return Convert.ToBase64String(RandomNumberGenerator.GetBytes(32));
         }
 
         // Generate JWT token
@@ -115,6 +138,58 @@ namespace api.Controllers
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        [HttpPost("refresh")]
+        public async Task<ActionResult> Refresh([FromBody] RefreshRequest request)
+        {
+            // Check if refresh token is valid
+            var user = await _service.GetByRefreshToken(request.RefreshToken);
+
+            if (user == null || user.RefreshTokenExpiryTime <= DateTime.Now)
+                return Unauthorized("Invalid refresh token");
+
+            // Generate new tokens
+            var accessToken = GenerateJwtToken(user);
+            var refreshToken = GenerateRefreshToken();
+
+            // Save refresh token
+            user.RefreshToken = refreshToken;
+            user.RefreshTokenExpiryTime = DateTime.Now.AddDays(7);
+            await _service.UpdateAsync(user.Id, user);
+
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Expires = DateTime.Now.AddDays(7),
+                Secure = true,
+                SameSite = SameSiteMode.Strict
+            };
+
+            Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
+
+            return Ok(new { accessToken = accessToken, refreshToken = refreshToken });
+        }
+
+        [HttpPost("logout")]
+        public async Task<ActionResult> Logout()
+        {
+            var refreshToken = Request.Cookies["refreshToken"];
+
+            if (string.IsNullOrEmpty(refreshToken))
+                return BadRequest("No refresh token provided");
+
+            var user = await _service.GetByRefreshToken(refreshToken);
+            if (user == null)
+                return BadRequest("Invalid refresh token");
+            
+            user.RefreshToken = null;
+            user.RefreshTokenExpiryTime = DateTime.Now;
+            await _service.UpdateAsync(user.Id, user);
+
+            Response.Cookies.Delete("refreshToken");
+
+            return Ok("Logged out successfully");
         }
 
         // PUT: api/users/123456
