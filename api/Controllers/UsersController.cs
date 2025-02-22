@@ -178,8 +178,6 @@ namespace api.Controllers
         {
             var refreshToken = Request.Cookies["refreshToken"];
 
-            Console.WriteLine($"Refresh token: {refreshToken}");
-
             if (string.IsNullOrEmpty(refreshToken))
                 return BadRequest("No refresh token provided");
 

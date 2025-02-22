@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Box,
@@ -11,11 +11,11 @@ import {
 import { motion } from "framer-motion";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-
-import { login } from "../api";
 import { loginValidation } from "../utils/validators";
+import { AuthContext } from "../context/AuthProvider";
 
 export default function Login() {
+  const { login } = useContext(AuthContext);
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -33,25 +33,13 @@ export default function Login() {
       return;
     }
 
-    const user = {
-      email: email,
-      password: password,
-    };
-
     try {
-      const response = await login(user);
-
-      console.log(response);
-
-      const token = response.accessToken;
-      console.log(token);
-      localStorage.setItem("token", token);
-      console.log(localStorage.getItem("token"));
+      await login(email, password);
       console.log("Logged in successfully");
     } catch (error) {
       console.error(error);
     } finally {
-      navigate("/dashboard");
+      navigate("/");
     }
   };
 

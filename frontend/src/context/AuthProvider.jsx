@@ -19,6 +19,7 @@ export const AuthProvider = ({ children }) => {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
+        withCredentials: true,
       });
       setUser(response.data);
     } catch (error) {
@@ -30,14 +31,22 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = await axios.post(`${API_URL}/login`, {
-        email,
-        password,
-      });
+      const response = await axios.post(
+        `${API_URL}/login`,
+        {
+          email,
+          password,
+        },
+        {
+          withCredentials: true,
+        }
+      );
       localStorage.setItem("token", response.data.accessToken);
       setUser(response.data.user);
     } catch (error) {
       console.error("Failed to login: ", error);
+    } finally {
+      setLoading(false);
     }
   };
 
