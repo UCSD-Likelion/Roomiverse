@@ -14,7 +14,7 @@ export const registerUser = async (user) => {
 export const login = async (user) => {
   const response = await axios.post(`${API_URL}/Users/login`, user);
   return response.data;
-}
+};
 
 export const fetchProfile = async () => {
   const token = localStorage.getItem("token");
@@ -33,4 +33,4 @@ export const fetchProfile = async () => {
 
   console.log("Profile Data:", response.data);
   return response.data;
-}
+};
