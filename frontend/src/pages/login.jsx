@@ -48,9 +48,10 @@ export default function Login() {
       localStorage.setItem("token", token);
       console.log(localStorage.getItem("token"));
       console.log("Logged in successfully");
-      navigate("/dashboard");
     } catch (error) {
       console.error(error);
+    } finally {
+      navigate("/dashboard");
     }
   };
 

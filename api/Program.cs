@@ -1,5 +1,5 @@
 using DotNetEnv; // for .env
-using api.Config; 
+using api.Config;
 using api.Services; // UserService namespace
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -28,7 +28,7 @@ builder.Services.AddSingleton(jwtSettings);
 
 // Configure JWT
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options => 
+    .AddJwtBearer(options =>
     {
         options.RequireHttpsMetadata = false;
         options.SaveToken = true;
@@ -48,11 +48,12 @@ builder.Services.AddAuthorization();
 // CORS 설정
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAllOrigins", policy =>
+    options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.AllowAnyOrigin()
+        policy.WithOrigins("http://localhost:5173")
               .AllowAnyMethod()
-              .AllowAnyHeader();
+              .AllowAnyHeader()
+              .AllowCredentials();
     });
 });
 
@@ -101,7 +102,7 @@ builder.Services.AddSwaggerGen(c =>
 var app = builder.Build();
 
 // CORS
-app.UseCors("AllowAllOrigins");
+app.UseCors("AllowFrontend");
 
 app.UseRouting();
 app.UseAuthentication();

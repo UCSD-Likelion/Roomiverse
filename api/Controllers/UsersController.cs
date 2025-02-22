@@ -52,7 +52,7 @@ namespace api.Controllers
         {
             // Retrieve user ID from token
             var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-        
+
 
             if (userId == null)
                 return Unauthorized("No user ID claim present in token.");
@@ -87,7 +87,7 @@ namespace api.Controllers
 
             if (existing == null || !BCrypt.Net.BCrypt.Verify(user.Password, existing.Password))
                 return Unauthorized("Invalid email or password");
-        
+
             // Generate Tokens
             var accessToken = GenerateJwtToken(existing);
             var refreshToken = GenerateRefreshToken();
@@ -102,7 +102,7 @@ namespace api.Controllers
                 HttpOnly = true,
                 Expires = DateTime.Now.AddDays(7),
                 Secure = true,
-                SameSite = SameSiteMode.Strict
+                SameSite = SameSiteMode.None
             };
 
             Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
@@ -110,12 +110,14 @@ namespace api.Controllers
             return Ok(new { accessToken, refreshToken });
         }
 
-        private string GenerateRefreshToken() {
+        private string GenerateRefreshToken()
+        {
             return Convert.ToBase64String(RandomNumberGenerator.GetBytes(32));
         }
 
         // Generate JWT token
-        private string GenerateJwtToken(User user) {
+        private string GenerateJwtToken(User user)
+        {
 
             var claims = new List<Claim>
             {
@@ -163,7 +165,7 @@ namespace api.Controllers
                 HttpOnly = true,
                 Expires = DateTime.Now.AddDays(7),
                 Secure = true,
-                SameSite = SameSiteMode.Strict
+                SameSite = SameSiteMode.None
             };
 
             Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
@@ -176,13 +178,15 @@ namespace api.Controllers
         {
             var refreshToken = Request.Cookies["refreshToken"];
 
+            Console.WriteLine($"Refresh token: {refreshToken}");
+
             if (string.IsNullOrEmpty(refreshToken))
                 return BadRequest("No refresh token provided");
 
             var user = await _service.GetByRefreshToken(refreshToken);
             if (user == null)
                 return BadRequest("Invalid refresh token");
-            
+
             user.RefreshToken = null;
             user.RefreshTokenExpiryTime = DateTime.Now;
             await _service.UpdateAsync(user.Id, user);

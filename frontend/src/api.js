@@ -12,7 +12,9 @@ export const registerUser = async (user) => {
 };
 
 export const login = async (user) => {
-  const response = await axios.post(`${API_URL}/Users/login`, user);
+  const response = await axios.post(`${API_URL}/Users/login`, user, {
+    withCredentials: true,
+  });
   return response.data;
 };
 
