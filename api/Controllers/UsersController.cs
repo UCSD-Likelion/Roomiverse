@@ -135,7 +135,7 @@ namespace api.Controllers
                 issuer: _jwtConfig.Issuer,
                 audience: _jwtConfig.Audience,
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(10),
+                expires: DateTime.Now.AddMinutes(3),
                 signingCredentials: creds
             );
 

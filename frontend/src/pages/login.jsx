@@ -15,13 +15,17 @@ import { loginValidation } from "../utils/validators";
 import { AuthContext } from "../context/AuthProvider";
 
 export default function Login() {
-  const { login } = useContext(AuthContext);
+  const { login, user } = useContext(AuthContext);
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState({});
 
   const navigate = useNavigate();
+
+  if (user) {
+    navigate("/dashboard");
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();

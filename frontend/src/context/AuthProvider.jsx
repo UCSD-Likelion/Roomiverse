@@ -68,6 +68,7 @@ export const AuthProvider = ({ children }) => {
 
   const refreshAccessToken = async () => {
     try {
+      console.log("Refreshing token...");
       const response = await axios.post(
         "/api/users/refresh",
         {
