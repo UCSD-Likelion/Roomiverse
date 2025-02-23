@@ -44,6 +44,7 @@ namespace api.Services
 
         public async Task CreateAsync(User user)
         {
+            user.Role ??= "User";
             user.Birthdate = user.Birthdate.Date;
             user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
             await _userCollection.InsertOneAsync(user);
@@ -58,5 +59,13 @@ namespace api.Services
 
         public async Task DeleteAsync(string id) =>
             await _userCollection.DeleteOneAsync(u => u.Id == id);
+
+        public async Task<User?> GetByEmailAsync(string email) {
+            return await _userCollection.Find(u => u.Email == email).FirstOrDefaultAsync();
+        }
+
+        public async Task<User?> GetByRefreshToken(string refreshToken) {
+            return await _userCollection.Find(u => u.RefreshToken == refreshToken).FirstOrDefaultAsync();
+        }
     }
 }

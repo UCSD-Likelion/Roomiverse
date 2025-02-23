@@ -18,7 +18,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { signIn } from "../api";
+import { registerUser } from "../api";
 import { formValidation } from "../utils/validators";
 
 export default function Signup() {
@@ -79,12 +79,16 @@ export default function Signup() {
     setError(error);
 
     if (Object.keys(error).length > 0) {
-      console.error("Form validation failed: ", error);
       return;
     }
 
     try {
-      const createdUser = await signIn(userData);
+      const createdUser = await registerUser(userData);
+
+      if (!createdUser) {
+        throw new Error("Cannot create user");
+      }
+      
       console.log(createdUser);
       navigate("/login");
     } catch (error) {
@@ -102,7 +106,7 @@ export default function Signup() {
         alignContent: "center",
         alignItems: "center",
         justifyContent: "center",
-        height: "94.1vh",
+        height: "100vh",
         width: "100vw",
       }}
     >

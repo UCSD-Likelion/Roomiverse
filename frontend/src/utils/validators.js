@@ -46,3 +46,21 @@ export const formValidation = (formData) => {
 
   return errors;
 };
+
+export const loginValidation = (formData) => {
+  let errors = {};
+
+  // Checks if any field is empty
+  Object.keys(formData).forEach((key) => {
+    if (formData[key].trim() === "") {
+      errors[key] = "This field is required.";
+    }
+  });
+
+  // Checks if email is valid
+  if (!validateEmail(formData.email)) {
+    errors.email = "Your email is invalid.";
+  }
+
+  return errors;
+}

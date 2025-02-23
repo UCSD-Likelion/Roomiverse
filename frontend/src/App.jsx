@@ -5,16 +5,21 @@ import Header from "./components/header";
 import Login from "./pages/login";
 import Home from "./pages/home";
 import Signup from "./pages/signup";
+import Dashboard from "./pages/dashboard";
+import PrivateRoute from "./utils/private-route";
 
 function App() {
   return (
     <BrowserRouter>
       <Header />
-      <main style={{ paddingTop: "48px" }}>
+      <main>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
+          <Route path="/register" element={<Signup />} />
+          <Route path="/" element={<PrivateRoute />}>
+            <Route path="/dashboard" element={<Dashboard />} />
+          </Route>
         </Routes>
       </main>
     </BrowserRouter>

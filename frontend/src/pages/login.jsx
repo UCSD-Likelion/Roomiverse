@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   Typography,
@@ -10,15 +11,40 @@ import {
 import { motion } from "framer-motion";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import { loginValidation } from "../utils/validators";
+import { AuthContext } from "../context/AuthProvider";
 
 export default function Login() {
+  const { login, user } = useContext(AuthContext);
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState({});
 
-  const handleSubmit = (e) => {
+  const navigate = useNavigate();
+
+  if (user) {
+    navigate("/dashboard");
+  }
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(email, password);
+
+    const validation = loginValidation({ email, password });
+    setError(validation);
+
+    if (Object.keys(validation).length > 0) {
+      return;
+    }
+
+    try {
+      await login(email, password);
+      console.log("Logged in successfully");
+    } catch (error) {
+      console.error(error);
+    } finally {
+      navigate("/");
+    }
   };
 
   const handleEmailChange = (e) => {
@@ -39,7 +65,7 @@ export default function Login() {
         alignContent: "center",
         alignItems: "center",
         justifyContent: "center",
-        height: "94.1vh",
+        height: "100vh",
         width: "100vw",
       }}
     >
@@ -65,7 +91,6 @@ export default function Login() {
             borderRadius: "50%",
             background:
               "linear-gradient(to bottom, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0))",
-
             top: "55%",
             transform: "translateY(-50%)",
             left: "2%",
@@ -141,6 +166,8 @@ export default function Login() {
                 color="black"
                 onChange={handleEmailChange}
                 sx={{ color: "black" }}
+                error={!!error.email}
+                helperText={error.email}
               />
             </Grid>
             <Grid
@@ -157,6 +184,8 @@ export default function Login() {
                 color="black"
                 sx={{ marginBottom: 1, marginTop: 1, color: "black" }}
                 onChange={handlePasswordChange}
+                error={!!error.password}
+                helperText={error.password}
                 slotProps={{
                   input: {
                     endAdornment: showPassword ? (
@@ -218,7 +247,7 @@ export default function Login() {
                       textDecoration: "underline",
                     },
                   }}
-                  href="/signup"
+                  href="/register"
                 >
                   <Typography>Signup</Typography>
                 </Link>
