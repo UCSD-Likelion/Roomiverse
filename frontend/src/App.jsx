@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./global.css";
-import Header from "./components/Header";
+import Header from "./components/header";
 import MatchCard from "./components/MatchCard"; // ✅ Import MatchCard
 import { Container, Grid, Typography, Box, Button } from "@mui/material"; // ✅ Import MUI Components
 
