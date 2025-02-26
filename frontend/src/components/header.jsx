@@ -14,6 +14,7 @@ import {
   Tooltip,
   Menu,
   MenuItem,
+  Button //added logout button
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
@@ -40,6 +41,12 @@ function Header() {
   const handleLogoClick = () => {
     window.location.href = "/";
   };
+
+   const handleLogout = () => {
+    console.log("User logged out");
+    // Redirect or handle logout logic
+  };
+
 
   return (
     <AppBar
@@ -117,13 +124,14 @@ function Header() {
               </Typography>
             </IconButton>
           </Box>
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              flexGrow: 0,
-              position: "absolute",
-              right: "0px",
+          {/* === SHIFTED RIGHT SECTION: Open Settings & First Last === */}
+          <Box 
+            sx={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              flexGrow: 0, 
+              position: 'absolute', 
+              right: '120px'  // <-- Shifted to the left to avoid overlap with Logout button
             }}
           >
             <Tooltip title="Open settings">
@@ -131,11 +139,14 @@ function Header() {
                 <Avatar alt="User Profile" />
               </IconButton>
             </Tooltip>
-            <Typography variant="h6" sx={{ color: "white", marginLeft: 1 }}>
+
+            <Typography variant="h6" sx={{ color: 'white', marginLeft: 1, marginRight: 1 }}>
               First Last
             </Typography>
+
+            {/* Settings Menu */}
             <Menu
-              sx={{ mt: "5px" }}
+              sx={{ mt: '5px' }}
               id="menu-appbar"
               anchorEl={anchorElUser}
               open={Boolean(anchorElUser)}
@@ -148,6 +159,29 @@ function Header() {
               ))}
             </Menu>
           </Box>
+          {/* === END OF SHIFTED SECTION === */}
+
+          {/* === NEW LOGOUT BUTTON (Most Upper-Right) === */}
+          <Button
+            variant="contained"
+            sx={{
+              backgroundColor: "white",
+              color: "#FF6F61",
+              fontWeight: "bold",
+              borderRadius: "30px", // Fully rounded button
+              padding: "8px 25px", // Same size as "Alcohol" button
+              textTransform: "none",
+              position: "absolute",
+              right: 16, // Ensure it’s fully aligned to the right
+              top: 10, // Position at the top
+              "&:hover": { backgroundColor: "#ffdddd" },
+            }}
+            onClick={handleLogout}
+          >
+            Logout
+          </Button>
+          {/* === END OF NEW LOGOUT BUTTON === */}
+
         </Toolbar>
       </Container>
     </AppBar>
