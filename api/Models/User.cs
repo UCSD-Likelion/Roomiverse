@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
@@ -33,10 +34,8 @@ namespace api.Models
         // (4) 페이스북 - 선택 사항 (nullable)
         [BsonElement("facebook")]
         public string? Facebook { get; set; }
+        public string Role { get; set; } = "User";
+        public string? RefreshToken { get; set; }
+        public DateTime RefreshTokenExpiryTime { get; set; }
     }
-
-
-
-
-
 }

@@ -1,9 +1,7 @@
 using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
 using api.Models;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System;
+
 
 namespace api.Services
 {
@@ -27,7 +25,11 @@ namespace api.Services
             }
 
             // 3) Determine database name
+<<<<<<< HEAD
             var databaseName = configuration["MongoDB:Database"] ?? "test";
+=======
+        var databaseName = configuration["MongoDB:Database"] ?? "test";
+>>>>>>> 3fca4a0d38e8e20f5a5ef73dbef12112cc64c0a0
 
             // 4) Initialize MongoClient
             var client = new MongoClient(connectionString);
