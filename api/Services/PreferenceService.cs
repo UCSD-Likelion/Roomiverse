@@ -14,12 +14,12 @@ namespace api.Services
         public PreferencesService(IConfiguration configuration)
         {
             // 1) Read connection string from appsettings.json => MatchDB:ConnectionString
-            var connectionString = configuration["MatchDB:ConnectionString"];
+            var connectionString = configuration["MongoDB:ConnectionString"];
 
             // 2) If empty, read from .env => MATCH_MONGO_URI
             if (string.IsNullOrWhiteSpace(connectionString))
             {
-                var envUri = Environment.GetEnvironmentVariable("MATCH_MONGO_URI");
+                var envUri = Environment.GetEnvironmentVariable("MONGO_URI");
                 if (!string.IsNullOrWhiteSpace(envUri))
                 {
                     connectionString = envUri;
@@ -27,7 +27,7 @@ namespace api.Services
             }
 
             // 3) Determine database name
-            var databaseName = configuration["MatchDB:Database"] ?? "MatchDB";
+            var databaseName = configuration["MongoDB:Database"] ?? "test";
 
             // 4) Initialize MongoClient
             var client = new MongoClient(connectionString);
