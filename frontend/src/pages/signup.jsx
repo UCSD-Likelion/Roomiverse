@@ -88,7 +88,7 @@ export default function Signup() {
       if (!createdUser) {
         throw new Error("Cannot create user");
       }
-      
+
       console.log(createdUser);
       navigate("/login");
     } catch (error) {

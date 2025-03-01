@@ -25,7 +25,7 @@ namespace api.Services
             }
 
             // 3) Determine database name
-        var databaseName = configuration["MongoDB:Database"] ?? "test";
+            var databaseName = configuration["MongoDB:Database"] ?? "test";
 
             // 4) Initialize MongoClient
             var client = new MongoClient(connectionString);
