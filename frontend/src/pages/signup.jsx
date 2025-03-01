@@ -5,20 +5,13 @@ import {
   Typography,
   Button,
   TextField,
-  Avatar,
-  Input,
-  Grid,
+  Link,
+  Grid2 as Grid,
+  Select,
+  MenuItem,
+  InputLabel,
+  FormControl,
 } from "@mui/material";
-<<<<<<< HEAD
-
-export default function EditProfile() {
-  const [profilePhoto, setProfilePhoto] = useState(null);
-  const [firstName, setFirstName] = useState("First");
-  const [lastName, setLastName] = useState("Last");
-  const [age, setAge] = useState(21);
-  const [instagram, setInstagram] = useState("");
-  const [aboutMe, setAboutMe] = useState("");
-=======
 import { motion } from "framer-motion";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -41,21 +34,11 @@ export default function Signup() {
   const [error, setError] = useState({});
 
   const navigate = useNavigate();
->>>>>>> 3fca4a0d38e8e20f5a5ef73dbef12112cc64c0a0
 
-  const handlePhotoChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => setProfilePhoto(reader.result);
-      reader.readAsDataURL(file);
-    }
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
   };
 
-<<<<<<< HEAD
-  const handleDoneEditing = () => {
-    console.log("Profile updated:", { firstName, lastName, age, instagram, aboutMe });
-=======
   const handleFirstNameChange = (e) => {
     setFirstName(e.target.value);
   };
@@ -105,145 +88,42 @@ export default function Signup() {
       if (!createdUser) {
         throw new Error("Cannot create user");
       }
-      
+
       console.log(createdUser);
       navigate("/login");
     } catch (error) {
       console.error("Faild to upload user: ", error);
     }
->>>>>>> 3fca4a0d38e8e20f5a5ef73dbef12112cc64c0a0
   };
 
   return (
     <Box
+      component="section"
       sx={{
         display: "flex",
-        flexDirection: "column",
+        flexDirection: "row",
+        gap: 2,
+        alignContent: "center",
         alignItems: "center",
-<<<<<<< HEAD
-        gap: 3,
-        backgroundColor: "#FF6F61",
-        padding: "2rem",
-        borderRadius: "1rem",
-        width: "80%",
-        margin: "auto",
-=======
         justifyContent: "center",
         height: "100vh",
         width: "100vw",
->>>>>>> 3fca4a0d38e8e20f5a5ef73dbef12112cc64c0a0
       }}
     >
-      {/* Profile Image Upload */}
-      <Box sx={{ position: "relative", display: "flex", flexDirection: "column", alignItems: "center" }}>
-        <Avatar
-          src={profilePhoto}
-          sx={{ width: 120, height: 120, marginBottom: 1, backgroundColor: "#fff" }}
-        />
-        <Input
-          type="file"
-          accept="image/*"
-          onChange={handlePhotoChange}
-          sx={{ display: "none" }}
-          id="profile-photo-input"
-        />
-        <label htmlFor="profile-photo-input">
-          <Button component="span" variant="contained" sx={{ backgroundColor: "#ff7c70" }}>
-            Change Photo
-          </Button>
-        </label>
-      </Box>
-
-      {/* Centered Name and Age Fields */}
-      <Box sx={{ width: "100%", display: "flex", justifyContent: "center" }}>
-        <Grid container spacing={2} justifyContent="center" alignItems="center" sx={{ width: "60%" }}>
-          <Grid item xs={5}>
-            <TextField
-              fullWidth
-              label="First Name"
-              variant="outlined"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              sx={{ backgroundColor: "white", borderRadius: "8px" }}
-            />
-          </Grid>
-          <Grid item xs={5}>
-            <TextField
-              fullWidth
-              label="Last Name"
-              variant="outlined"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-              sx={{ backgroundColor: "white", borderRadius: "8px" }}
-            />
-          </Grid>
-          <Grid item xs={2}>
-            <TextField
-              fullWidth
-              label="Age"
-              type="number"
-              variant="outlined"
-              value={age}
-              onChange={(e) => setAge(e.target.value)}
-              sx={{ backgroundColor: "white", borderRadius: "8px" }}
-            />
-          </Grid>
-        </Grid>
-      </Box>
-
-      {/* "Done Editing" Button */}
-      <Button
-        onClick={handleDoneEditing}
-        sx={{
-          backgroundColor: "#D94F42",
-          color: "white",
-          fontWeight: "bold",
-          "&:hover": { backgroundColor: "#C73F33" },
-        }}
-      >
-<<<<<<< HEAD
-        Done Editing
-      </Button>
-
-      {/* Social Media Links */}
-      <TextField
-        fullWidth
-        label="Instagram ID"
-        variant="outlined"
-        color="primary"
-        value={instagram}
-        onChange={(e) => setInstagram(e.target.value)}
-        sx={{ backgroundColor: "white", borderRadius: "8px" }}
-      />
-
-      {/* About Me Section */}
       <Box
+        component="section"
         sx={{
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+          height: "100%",
+          backgroundColor: "#FF6F61",
           width: "100%",
-          padding: "1rem",
-          border: "2px solid white",
-          borderRadius: "8px",
-          backgroundColor: "rgba(255, 255, 255, 0.2)",
+          alignContent: "center",
+          justifyContent: "center",
+          px: "8rem",
         }}
       >
-        <Typography variant="h6" sx={{ color: "white" }}>
-          About Me
-        </Typography>
-        <TextField
-          fullWidth
-          multiline
-          minRows={4}
-          variant="outlined"
-          color="primary"
-          value={aboutMe}
-          onChange={(e) => setAboutMe(e.target.value)}
-          sx={{
-            backgroundColor: "white",
-            borderRadius: "8px",
-            marginTop: "0.5rem",
-          }}
-        />
-=======
         <Box
           sx={{
             position: "absolute",
@@ -500,7 +380,6 @@ export default function Signup() {
             </Grid>
           </Grid>
         </Box>
->>>>>>> 3fca4a0d38e8e20f5a5ef73dbef12112cc64c0a0
       </Box>
     </Box>
   );
