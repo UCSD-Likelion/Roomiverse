@@ -1,4 +1,13 @@
-import { Box, Typography, Avatar, Button, TextField, Card, CardContent, Chip } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Avatar,
+  Button,
+  TextField,
+  Card,
+  CardContent,
+  Chip,
+} from "@mui/material";
 import { deepOrange } from "@mui/material/colors";
 import { motion } from "framer-motion";
 import { Facebook, Instagram } from "@mui/icons-material";
@@ -28,6 +37,7 @@ export default function ProfileCard() {
         height: "100vh",
         width: "100vw",
         px: "4rem",
+        boxSizing: "border-box",
         backgroundColor: "#FF6F61", // Unified background color
         overflow: "hidden", // Prevent scrolling
       }}
@@ -43,7 +53,7 @@ export default function ProfileCard() {
           position: "relative",
           justifyContent: "center",
           alignItems: "center",
-          overflow: "hidden", // Ensures no white gaps
+          overflow: "hidden", // Ensures no white gap
         }}
       >
         {/* Background Shape - Narrowed Half Circle + Rectangle */}
@@ -55,7 +65,8 @@ export default function ProfileCard() {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            background: "linear-gradient(to bottom, rgba(255,255,255,0.6), rgba(255,255,255,0))",
+            background:
+              "linear-gradient(to bottom, rgba(255,255,255,0.6), rgba(255,255,255,0))",
             borderTopLeftRadius: "50%",
             borderTopRightRadius: "50%",
             borderBottomLeftRadius: "20px",
@@ -82,15 +93,25 @@ export default function ProfileCard() {
           {/* Enlarged Profile Image using Material UI Avatar */}
           <Avatar
             sx={{
-              width: 200, // Increased size
-              height: 200, // Increased size
+              width: 180, // Increased size
+              height: 180, // Increased size
               mb: 2,
             }}
             alt="Profile Image"
             src="/broken-image.jpg" // Replace with actual image path or state variable
           />
-          <Box sx={{ display: "flex", alignItems: "center", gap: 1, paddingTop: "0.2rem" }}>
-            <Typography variant="h3" sx={{ fontWeight: 700, color: "white", whiteSpace:"nowrap" }}>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 1,
+              paddingTop: "0.2rem",
+            }}
+          >
+            <Typography
+              variant="h3"
+              sx={{ fontWeight: 700, color: "white", whiteSpace: "nowrap" }}
+            >
               Profile Name
             </Typography>
             <Typography variant="h3" sx={{ fontWeight: 700, color: "white" }}>
@@ -131,7 +152,15 @@ export default function ProfileCard() {
           </Box>
 
           {/* Social Links */}
-          <Box sx={{ mt: 2, display: "flex", flexDirection: "column", gap: 2, paddingTop: "1rem" }}>
+          <Box
+            sx={{
+              mt: 2,
+              display: "flex",
+              flexDirection: "column",
+              gap: 2,
+              paddingTop: "1rem",
+            }}
+          >
             <Box
               sx={{
                 display: "flex",
@@ -233,23 +262,27 @@ export default function ProfileCard() {
                 maxWidth: "100%",
               }}
             >
-              {["Off-Campus", "Non-Smoker", "Sleep time: 11:00-12:00", "Wakeup time: 8:00-9:00", "No Pets Allowed"].map(
-                (preference) => (
-                  <Chip
-                    key={preference}
-                    label={preference}
-                    sx={{
-                      backgroundColor: "white",
-                      color: "#FF6F61",
-                      fontWeight: "bold",
-                      fontSize: "1rem",
-                      padding: "10px",
-                      height: "50px",
-                      borderRadius: "30px",
-                    }}
-                  />
-                )
-              )}
+              {[
+                "Off-Campus",
+                "Non-Smoker",
+                "Sleep time: 11:00-12:00",
+                "Wakeup time: 8:00-9:00",
+                "No Pets Allowed",
+              ].map((preference) => (
+                <Chip
+                  key={preference}
+                  label={preference}
+                  sx={{
+                    backgroundColor: "white",
+                    color: "#FF6F61",
+                    fontWeight: "bold",
+                    fontSize: "1rem",
+                    padding: "10px",
+                    height: "50px",
+                    borderRadius: "30px",
+                  }}
+                />
+              ))}
             </Box>
           </Box>
         </Box>
