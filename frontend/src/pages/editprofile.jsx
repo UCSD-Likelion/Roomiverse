@@ -197,10 +197,7 @@ export default function EditProfile() {
               borderRadius: "8px",
             }}
           >
-            <Typography
-              variant="h6"
-              sx={{ color: "white", mb: 1 }}
-            >
+            <Typography variant="h6" sx={{ color: "white", mb: 1 }}>
               About Me
             </Typography>
             <TextField
@@ -257,7 +254,6 @@ export default function EditProfile() {
             >
               OnCampus
             </Box>
-            {/* Extra Empty Boxes for Adding More Info */}
             {Array(6)
               .fill("+")
               .map((plus, index) => (
@@ -288,7 +284,11 @@ export default function EditProfile() {
         onClose={handleCloseSnackbar}
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       >
-        <Alert onClose={handleCloseSnackbar} severity="success" sx={{ width: "100%" }}>
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
           Your profile is successfully edited!
         </Alert>
       </Snackbar>
