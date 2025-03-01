@@ -29,6 +29,7 @@ export default function ProfileCard() {
         width: "100vw",
         px: "4rem",
         backgroundColor: "#FF6F61", // Unified background color
+        overflow: "hidden", // Prevent scrolling
       }}
     >
       {/* Left Section - Profile Card */}
