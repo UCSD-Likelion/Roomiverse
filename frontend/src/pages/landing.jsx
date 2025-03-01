@@ -115,7 +115,7 @@ const LandingPage = () => {
               >
 
                 <Typography
-                  variant="h5"
+                  variant="h4"
                   sx={{
                     fontWeight: "bold",
                     mb: 2,
@@ -146,7 +146,16 @@ const LandingPage = () => {
                       outline: "none",
                     }}
                   >
-                    <Typography variant="body1">{feature.description}</Typography>
+                    <Typography
+                      variant="body1"
+                      sx={{
+                        fontSize: { xs: "16px", md: "20px" }, // 반응형 폰트 크기 적용
+                        lineHeight: 1.6, // 가독성을 위해 줄 간격 추가
+                        color: "white",
+                      }}
+                    >
+                      {feature.description}
+                    </Typography>
                   </Box>
                 </motion.div>
               </Box>

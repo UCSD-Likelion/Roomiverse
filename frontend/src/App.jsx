@@ -4,19 +4,11 @@ import Header from "./components/header";
 import LandingPage from "./pages/landing";
 import Login from "./pages/login";
 import Signup from "./pages/signup";
-import Dashboard from "./pages/dashboard";
-import PrivateRoute from "./utils/private-route";
-import MatchingForm from "./pages/matchingForm";
 
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route
-          path="*"
-          element={
-            <>
-              <Header />
+      <Header />
               <main style={{ paddingTop: "48px" }}>
                 <Routes>
                   <Route path="/" element={<LandingPage />} />
@@ -24,10 +16,6 @@ function App() {
                   <Route path="/signup" element={<Signup />} />
                 </Routes>
               </main>
-            </>
-          }
-        />
-      </Routes>
     </BrowserRouter>
   );
 }
