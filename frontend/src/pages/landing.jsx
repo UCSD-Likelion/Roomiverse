@@ -1,169 +1,143 @@
 import { Box, Typography, Container, GlobalStyles } from "@mui/material";
 import { motion } from "framer-motion";
-
-const GlobalCSS = () => (
-  <GlobalStyles
-    styles={{
-      html: {
-        overflow: "hidden",
-        height: "100%",
-      },
-      body: {
-        overflow: "hidden",
-        height: "100%",
-        margin: 0,
-        padding: 0,
-      },
-      "#root": {
-        height: "100%",
-      },
-    }}
-  />
-);
-
 const LandingPage = () => {
   return (
-    <>
-      <GlobalCSS /> 
-
+    <Box
+      sx={{
+        height: "100vh",
+        overflowY: "auto",
+        overflowX: "hidden",
+        backgroundColor: "#FF6F61",
+      }}
+    >
       <Box
         sx={{
-          height: "100vh",
-          overflowY: "auto",
-          overflowX: "hidden",
-          backgroundColor: "#FF6F61",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          minHeight: "100vh",
+          position: "relative",
         }}
       >
+        <motion.div
+          initial={{ opacity: 0, y: -100, scale: 0.8 }}
+          animate={{ opacity: 1, y: 10, scale: 1 }}
+          transition={{
+            duration: 1.5,
+            ease: [0.22, 1, 0.36, 1],
+          }}
+        >
+          <Box
+            sx={{
+              position: "absolute",
+              width: 550,
+              height: 550,
+              background:
+                "linear-gradient(to top, white, rgba(255,111,81,0.4))",
+              borderRadius: "50%",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              zIndex: 2,
+            }}
+          />
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{
+            duration: 1.2,
+            ease: "easeOut",
+          }}
+        >
+          <Typography
+            variant="h1"
+            sx={{
+              color: "white",
+              fontWeight: "bold",
+              fontSize: { xs: "48px", md: "120px" },
+              zIndex: 3,
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+            }}
+          >
+            Roomiverse
+          </Typography>
+        </motion.div>
+      </Box>
+
+      <Container sx={{ py: 10 }}>
         <Box
           sx={{
             display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
+            flexDirection: { xs: "column", md: "row" },
             justifyContent: "center",
-            minHeight: "100vh",
-            position: "relative",
+            alignItems: "flex-start",
+            gap: 4,
           }}
         >
-          <motion.div
-            initial={{ opacity: 0, y: -100, scale: 0.8 }}
-            animate={{ opacity: 1, y: 10, scale: 1 }}
-            transition={{
-              duration: 1.5,
-              ease: [0.22, 1, 0.36, 1], 
-            }}
-          >
+          {features.map((feature, index) => (
             <Box
+              key={index}
               sx={{
-                position: "absolute",
-                width: 500,
-                height: 500,
-                background: "linear-gradient(to top, white, rgba(255,111,81,0.4))",
-                borderRadius: "50%",
-                top: "50%",
-                left: "50%",
-                transform: "translate(-50%, -50%)",
-                zIndex: 2,
-              }}
-            />
-          </motion.div>
-
-
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{
-              duration: 1.2,
-              ease: "easeOut",
-            }}
-          >
-            <Typography
-              variant="h1"
-              sx={{
-                color: "white",
-                fontWeight: "bold",
-                fontSize: { xs: "48px", md: "100px" },
-                zIndex: 3,
-                position: "absolute", 
-                top: "50%", 
-                left: "50%",
-                transform: "translate(-50%, -50%)", 
+                textAlign: "center",
+                width: "100%",
               }}
             >
-              Roomiverse
-            </Typography>
-          </motion.div>
-
-        </Box>
-
-        <Container sx={{ py: 10 }}>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: { xs: "column", md: "row" },
-              justifyContent: "center",
-              alignItems: "flex-start",
-              gap: 4,
-            }}
-          >
-            {features.map((feature, index) => (
-              <Box
-                key={index}
+              <Typography
+                variant="h4"
                 sx={{
-                  textAlign: "center",
-                  width: "100%",
+                  fontWeight: "bold",
+                  mb: 2,
+                  color: "white",
                 }}
               >
+                {feature.title}
+              </Typography>
 
-                <Typography
-                  variant="h4"
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: 0.7,
+                  delay: index * 0.2,
+                  ease: "easeOut",
+                }}
+              >
+                <Box
                   sx={{
-                    fontWeight: "bold",
-                    mb: 2,
+                    background:
+                      "linear-gradient(to bottom, rgba(255,255,255,0.4), transparent)",
+                    borderRadius: 3,
+                    padding: 4,
                     color: "white",
+                    height: "100%",
+                    boxShadow: "none",
+                    border: "none",
+                    outline: "none",
                   }}
                 >
-                  {feature.title}
-                </Typography>
-
-                <motion.div
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{
-                    duration: 0.7,
-                    delay: index * 0.2,
-                    ease: "easeOut",
-                  }}
-                >
-                  <Box
+                  <Typography
+                    variant="body1"
                     sx={{
-                      background: "linear-gradient(to bottom, rgba(255,255,255,0.4), transparent)",
-                      borderRadius: 3,
-                      padding: 4,
+                      fontSize: { xs: "16px", md: "20px" }, // 반응형 폰트 크기 적용
+                      lineHeight: 1.6, // 가독성을 위해 줄 간격 추가
                       color: "white",
-                      height: "100%",
-                      boxShadow: "none",
-                      border: "none",
-                      outline: "none",
                     }}
                   >
-                    <Typography
-                      variant="body1"
-                      sx={{
-                        fontSize: { xs: "16px", md: "20px" }, // 반응형 폰트 크기 적용
-                        lineHeight: 1.6, // 가독성을 위해 줄 간격 추가
-                        color: "white",
-                      }}
-                    >
-                      {feature.description}
-                    </Typography>
-                  </Box>
-                </motion.div>
-              </Box>
-            ))}
-          </Box>
-        </Container>
-      </Box>
-    </>
+                    {feature.description}
+                  </Typography>
+                </Box>
+              </motion.div>
+            </Box>
+          ))}
+        </Box>
+      </Container>
+    </Box>
   );
 };
 
