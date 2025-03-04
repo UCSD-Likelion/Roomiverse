@@ -8,12 +8,14 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [loginLoading, setLoginLoading] = useState(false);
 
   useEffect(() => {
     checkAuthStatus();
   }, []);
 
   const checkAuthStatus = async () => {
+    setLoading(true);
     try {
       const response = await axios.get(`${API_URL}/getuser`, {
         headers: {
@@ -30,6 +32,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const login = async (email, password) => {
+    setLoginLoading(true);
     try {
       const response = await axios.post(
         `${API_URL}/login`,

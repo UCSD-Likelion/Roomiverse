@@ -1,6 +1,7 @@
-import * as React from "react";
+import { useState, useContext } from "react";
 import {
   AppBar,
+  Button,
   Drawer,
   List,
   ListItem,
@@ -18,19 +19,29 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import logo from "/src/assets/images/logo.png";
+import { AuthContext } from "../context/AuthProvider";
 
 const navItems = ["Home", "About", "Contact"];
 const settings = ["Profile", "Logout"];
 
 function Header() {
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const [drawerOpen, setDrawerOpen] = React.useState(false);
+  const [anchorElUser, setAnchorElUser] = useState(null);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const { logout, user, loading } = useContext(AuthContext);
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
+
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const handleMenuClick = (setting) => {
+    if (setting === "Logout") {
+      logout();
+    }
+    handleCloseUserMenu();
   };
 
   const handleToggleDrawer = (open) => () => {
@@ -126,27 +137,66 @@ function Header() {
               right: "0px",
             }}
           >
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="User Profile" />
-              </IconButton>
-            </Tooltip>
-            <Typography variant="h6" sx={{ color: "white", marginLeft: 1 }}>
-              First Last
-            </Typography>
-            <Menu
-              sx={{ mt: "5px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
+            {user ? (
+              <>
+                <Tooltip title="Open settings">
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <Avatar alt="User Profile" />
+                  </IconButton>
+                </Tooltip>
+                <Typography variant="h6" sx={{ color: "white", marginLeft: 1 }}>
+                  {user.name}
+                </Typography>
+                <Menu
+                  sx={{ mt: "5px" }}
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
+                >
+                  {settings.map((setting) => (
+                    <MenuItem
+                      key={setting}
+                      onClick={() => handleMenuClick(setting)}
+                    >
+                      <Typography textAlign="center">{setting}</Typography>
+                    </MenuItem>
+                  ))}
+                </Menu>
+              </>
+            ) : (
+              <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                <Button
+                  variant="contained"
+                  href="/login"
+                  sx={{
+                    color: "#ff6f61",
+                    borderRadius: "2rem",
+                    backgroundColor: "white",
+                    px: 4,
+                    fontWeight: "bold",
+                    fontSize: "1rem",
+                    "&:hover": { backgroundColor: "#ff6f61", color: "white" },
+                  }}
+                >
+                  Login
+                </Button>
+                <Button
+                  variant="contained"
+                  href="register"
+                  sx={{
+                    color: "#ff6f61",
+                    borderRadius: "2rem",
+                    backgroundColor: "white",
+                    px: 3,
+                    fontWeight: "bold",
+                    fontSize: "1rem",
+                  }}
+                >
+                  Sign Up
+                </Button>
+              </Box>
+            )}
           </Box>
         </Toolbar>
       </Container>
