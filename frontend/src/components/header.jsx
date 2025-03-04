@@ -18,7 +18,7 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
-import logo from "/src/assets/images/logo.png";
+import logo from "../assets/images/logo.png";
 import { AuthContext } from "../context/AuthProvider";
 
 const navItems = ["Home", "About", "Contact"];
