@@ -12,6 +12,7 @@ import {
   Typography,
   Container,
   Avatar,
+  Skeleton,
   Tooltip,
   Menu,
   MenuItem,
@@ -137,7 +138,16 @@ function Header() {
               right: "0px",
             }}
           >
-            {user ? (
+            {loading ? (
+              <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                <Skeleton
+                  width={50}
+                  height={70}
+                  sx={{ borderRadius: "100%" }}
+                />
+                <Skeleton width={150} height={40} />
+              </Box>
+            ) : user ? (
               <>
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
