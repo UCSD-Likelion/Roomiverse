@@ -40,6 +40,9 @@ export default function Login() {
     try {
       await login(email, password);
       console.log("Logged in successfully");
+      setTimeout(() => {
+        window.location.reload();
+      }, 100);
     } catch (error) {
       console.error(error);
     } finally {
