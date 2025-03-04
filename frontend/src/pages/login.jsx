@@ -1,16 +1,19 @@
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import {
+  Alert,
   Box,
   Typography,
   Button,
   TextField,
   Link,
+  Snackbar,
   Grid2 as Grid,
 } from "@mui/material";
 import { motion } from "framer-motion";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+
 import { loginValidation } from "../utils/validators";
 import { AuthContext } from "../context/AuthProvider";
 
@@ -20,6 +23,11 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState({});
+  const [snack, setSnack] = useState({
+    open: false,
+    message: "",
+    severity: "info",
+  });
 
   const navigate = useNavigate();
 
@@ -34,17 +42,33 @@ export default function Login() {
     setError(validation);
 
     if (Object.keys(validation).length > 0) {
+      setSnack({
+        open: true,
+        message: "Please Enter Valid Response.",
+        severity: "error",
+      });
       return;
     }
 
     try {
       await login(email, password);
+      setSnack({
+        open: true,
+        message: "Logged in successfully!",
+        severity: "success",
+      });
+
       console.log("Logged in successfully");
       setTimeout(() => {
         window.location.reload();
       }, 100);
     } catch (error) {
       console.error(error);
+      setSnack({
+        open: true,
+        message: "Login failed. Check your credentials.",
+        severity: "error",
+      });
     } finally {
       navigate("/");
     }
@@ -259,6 +283,20 @@ export default function Login() {
           </Grid>
         </Box>
       </Box>
+      <Snackbar
+        open={snack.open}
+        autoHideDuration={4000}
+        onClose={() => setSnack({ ...snack, open: false })}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert
+          onClose={() => setSnack({ ...snack, open: false })}
+          severity={snack.severity}
+          sx={{ width: "100%" }}
+        >
+          {snack.message}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 }
