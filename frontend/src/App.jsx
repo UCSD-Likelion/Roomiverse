@@ -1,8 +1,9 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./global.css";
 import Header from "./components/header";
-import UserProfile from "./pages/userprofile"
+
 import Login from "./pages/login";
+import Home from "./pages/home";
 import Signup from "./pages/signup";
 import ProfileCard from "./pages/profile";
 import Dashboard from "./pages/dashboard";
@@ -15,7 +16,7 @@ function App() {
       <Header />
       <main>
         <Routes>
-          <Route path="/userprofile" element={<UserProfile />} />
+          <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Signup />} />
           <Route path="/" element={<PrivateRoute />}>
