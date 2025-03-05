@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Alert,
@@ -31,6 +31,12 @@ export default function Login() {
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (user) {
+      navigate("/dashboard"); // Redirect when user is authenticated
+    }
+  }, [user, navigate]); // Runs when `user` changes
+
   if (user) {
     navigate("/dashboard");
   }
@@ -59,9 +65,6 @@ export default function Login() {
       });
 
       console.log("Logged in successfully");
-      setTimeout(() => {
-        window.location.reload();
-      }, 100);
     } catch (error) {
       console.error(error);
       setSnack({
@@ -69,8 +72,6 @@ export default function Login() {
         message: "Login failed. Check your credentials.",
         severity: "error",
       });
-    } finally {
-      navigate("/");
     }
   };
 
@@ -287,7 +288,7 @@ export default function Login() {
         open={snack.open}
         autoHideDuration={4000}
         onClose={() => setSnack({ ...snack, open: false })}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
       >
         <Alert
           onClose={() => setSnack({ ...snack, open: false })}
