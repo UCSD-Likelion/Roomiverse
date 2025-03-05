@@ -25,6 +25,7 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
           </Route>
           <Route path="/matching-form" element={<MatchingForm />} />
+          <Route path="/editprofile" element={<EditProfile />} />
         </Routes>
       </main>
     </BrowserRouter>
