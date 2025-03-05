@@ -1,11 +1,11 @@
 // src/pages/MatchCardList.jsx
-import React from "react";
+import React, { useState } from "react";
 import { Container, Grid, Typography, Box, Button } from "@mui/material";
 import Header from "@/components/header"; // Adjust path as needed
 import MatchCard from "@/components/MatchCard"; // Adjust path as needed
 
-// Dummy match data
-const matches = [
+// Initial dummy match data
+const initialMatches = [
   {
     rank: 1,
     name: "Emily Johnson",
@@ -36,9 +36,15 @@ const matches = [
     livingPreference: "Undecided",
     matchScore: 80,
   },
+  // {
+  //   rank: 5,
+  //   name: "Test Profile",
+  //   age: 20,
+  //   livingPreference: "Undecided",
+  //   matchScore: 80,
+  // },
 ];
 
-// Define filter button colors
 const filterButtons = [
   { name: "Alcohol", color: "#FF6F61", textColor: "white" },
   { name: "Gender", color: "white", textColor: "black" },
@@ -47,6 +53,21 @@ const filterButtons = [
 ];
 
 function MatchCardList() {
+  const [matches, setMatches] = useState(initialMatches);
+
+  // Function to add a new profile at the beginning (left-most)
+  const addNewProfile = () => {
+    const newProfile = {
+      rank: Date.now(), // Unique key based on timestamp
+      name: "New Profile",
+      age: 25,
+      image: "",
+      livingPreference: "Friendly",
+      matchScore: 95,
+    };
+    setMatches([newProfile, ...matches]);
+  };
+
   return (
     <Box
       sx={{
@@ -57,23 +78,41 @@ function MatchCardList() {
         p: 0,
       }}
     >
-      {/* Optional Header */}
       <Header />
 
       <Container maxWidth="lg" disableGutters sx={{ pt: 10, textAlign: "center" }}>
-        {/* Title */}
         <Typography variant="h4" fontWeight="bold" color="white" gutterBottom>
           Find your Perfect Match!
         </Typography>
 
-        {/* Filter Buttons Section */}
+        {/*
+        // Uncomment the block below to display the "Add New Profile" button
+        <Box mb={4}>
+          <Button
+            variant="contained"
+            onClick={addNewProfile}
+            sx={{
+              backgroundColor: "green",
+              color: "white",
+              fontWeight: "bold",
+              borderRadius: "30px",
+              px: 4,
+              py: 1.5,
+              ":hover": { backgroundColor: "darkgreen" },
+            }}
+          >
+            Add New Profile
+          </Button>
+        </Box>
+        */}
+
         <Box
           sx={{
             backgroundColor: "white",
             borderRadius: "40px",
             p: 2,
-            mb: 6, // Increased gap after filter buttons
-            mx: { xs: 2, sm: 4 },
+            mb: 6,
+            mx: { xs: 2, sm: 14 },
             boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
             background: "#FBB6B6",
             display: "flex",
@@ -90,6 +129,7 @@ function MatchCardList() {
                 backgroundColor: filter.color,
                 color: filter.textColor,
                 fontWeight: "bold",
+                fontSize: "1.2rem", // Increased font size for filter button texts
                 borderRadius: "30px",
                 px: 5,
                 py: 1.5,
@@ -104,18 +144,17 @@ function MatchCardList() {
           ))}
         </Box>
 
-        {/* Match Cards Grid */}
         <Box
           sx={{
             backgroundColor: "white",
             p: 5, // Increased padding between cards and container edge
             borderRadius: "20px",
-            mx: { xs: 2, sm: 4 },
+            mx: { xs: 3, sm: 4 },
             boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
-            mb: 6, // Extra bottom margin if needed
+            mb: 6,
           }}
         >
-          <Grid container spacing={4} justifyContent="center">
+          <Grid container spacing={4} justifyContent="flex-start">
             {matches.map((match) => (
               <Grid item xs={12} sm={6} md={3} key={match.rank}>
                 <Box
@@ -132,7 +171,6 @@ function MatchCardList() {
           </Grid>
         </Box>
 
-        {/* "View More Roomies" Button */}
         <Box mt={4}>
           <Button
             variant="contained"
@@ -143,9 +181,7 @@ function MatchCardList() {
               fontWeight: "bold",
               px: 4,
               py: 1.5,
-              ":hover": {
-                backgroundColor: "#333",
-              },
+              ":hover": { backgroundColor: "#333" },
             }}
           >
             View More Roomies
