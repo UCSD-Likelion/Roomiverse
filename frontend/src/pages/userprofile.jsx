@@ -22,8 +22,8 @@ const UserProfile = () => {
         position: "relative",
         overflowY: "auto", 
         overflowX: "hidden", 
-        paddingBottom: "5vh", 
-        paddingTop: "10vh", 
+        paddingBottom: "8vh",  
+        paddingTop: "15vh", 
       }}
     >
       <Card
@@ -39,7 +39,7 @@ const UserProfile = () => {
           flexDirection: "column",
           alignItems: "center",
           minHeight: "70vh",
-          marginTop: "5vh", 
+          marginTop: "10vh", 
         }}
       >
         <Avatar
@@ -48,7 +48,7 @@ const UserProfile = () => {
             height: 160,
             backgroundColor: "#d9d9d9",
             position: "absolute",
-            top: "-80px", 
+            top: "-40px",
             left: "50%",
             transform: "translateX(-50%)",
             zIndex: 2,
@@ -57,14 +57,13 @@ const UserProfile = () => {
           <PersonIcon sx={{ fontSize: 90, color: "#757575" }} />
         </Avatar>
 
-        <CardContent sx={{ paddingTop: 10, maxWidth: 750 }}>
+        <CardContent sx={{ paddingTop: 12, maxWidth: 750 }}> 
           <Typography
             variant="h4"
             fontWeight="bold"
-            mt={-1}
-            mb={3}
+            mt={2}
+            mb={4}
             color="#FF6F61"
-            sx={{ marginTop: "20px" }} 
           >
             First Last (21)
           </Typography>
@@ -74,10 +73,10 @@ const UserProfile = () => {
             sx={{
               backgroundColor: "#FF6F61",
               color: "white",
-              mb: 3,
+              mb: 4, 
               borderRadius: 5,
               fontWeight: "bold",
-              marginTop: "-10px",
+              marginTop: "0px",
               "&:hover": { backgroundColor: "#e65a50" },
             }}
           >
@@ -88,14 +87,14 @@ const UserProfile = () => {
             variant="body1"
             fontWeight="bold"
             maxWidth={750}
-            sx={{ marginBottom: 2, fontSize: "1.1rem" }}
+            sx={{ marginBottom: 3, fontSize: "1.1rem" }} 
           >
             Add a little bit of body text. Add a little bit of body text. Add a little bit of body text.
             This is an extended description about the user. It could contain hobbies, interests, or anything
             else that gives more insight about them.
           </Typography>
 
-          <Box sx={{ marginTop: 2, maxWidth: 750, display: "flex", justifyContent: "center" }}>
+          <Box sx={{ marginTop: 3, maxWidth: 750, display: "flex", justifyContent: "center" }}> 
             <Card
               sx={{
                 maxWidth: 750,
@@ -123,9 +122,8 @@ const UserProfile = () => {
                   variant="h6"
                   fontWeight="bold"
                   color="white"
-                  mb={4}
-                  textAlign="center" 
-                  sx={{ marginTop: "-10px" }}
+                  mb={5} 
+                  textAlign="center"
                 >
                   My Preferences
                 </Typography>
