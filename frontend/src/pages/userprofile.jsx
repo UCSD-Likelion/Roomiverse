@@ -12,9 +12,9 @@ import { useEffect } from "react";
 
 const UserProfile = () => {
   useEffect(() => {
-    document.body.style.overflow = "hidden";
+    document.body.style.overflowX = "hidden";
     return () => {
-      document.body.style.overflow = "auto";
+      document.body.style.overflowX = "auto";
     };
   }, []);
 
@@ -23,28 +23,31 @@ const UserProfile = () => {
       sx={{
         backgroundColor: "#FF6F61",
         width: "100vw",
-        height: "100vh",
+        minHeight: "100vh",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         position: "relative",
-        overflow: "hidden",
+        overflowY: "auto",
+        overflowX: "hidden",
+        paddingBottom: "5vh",
+        paddingTop: "10vh",
       }}
     >
       <Card
         sx={{
           maxWidth: "80vw",
           width: "100%",
-          borderRadius: "24px 24px 0 0",
+          borderRadius: "24px",
           textAlign: "center",
           padding: 3,
-          position: "absolute",
-          bottom: "5%",
+          position: "relative",
           overflow: "visible",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
           minHeight: "70vh",
+          marginTop: "5vh",
         }}
       >
         <Avatar
@@ -53,7 +56,7 @@ const UserProfile = () => {
             height: 160,
             backgroundColor: "#d9d9d9",
             position: "absolute",
-            top: -100,
+            top: "-80px",
             left: "50%",
             transform: "translateX(-50%)",
             zIndex: 2,
@@ -64,12 +67,12 @@ const UserProfile = () => {
 
         <CardContent sx={{ paddingTop: 10, maxWidth: 750 }}>
           <Typography
-            variant="h5"
+            variant="h4"
             fontWeight="bold"
             mt={-1}
             mb={3}
             color="#FF6F61"
-            sx={{ marginTop: "-20px" }}
+            sx={{ marginTop: "20px" }}
           >
             First Last (21)
           </Typography>
@@ -92,7 +95,6 @@ const UserProfile = () => {
           <Typography
             variant="body1"
             fontWeight="bold"
-            mt={1}
             maxWidth={750}
             sx={{ marginTop: "-10px", marginBottom: 2 }}
           >
@@ -102,7 +104,14 @@ const UserProfile = () => {
             gives more insight about them.
           </Typography>
 
-          <Box sx={{ marginTop: 2, maxWidth: 750 }}>
+          <Box
+            sx={{
+              marginTop: 2,
+              maxWidth: 750,
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
             <Card
               sx={{
                 maxWidth: 750,
@@ -112,6 +121,9 @@ const UserProfile = () => {
                 margin: "0 auto",
                 padding: 4,
                 minHeight: "200px",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
               }}
             >
               <CardContent
@@ -119,7 +131,8 @@ const UserProfile = () => {
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "space-between",
-                  height: "100%",
+                  alignItems: "center",
+                  width: "100%",
                 }}
               >
                 <Typography
@@ -127,7 +140,7 @@ const UserProfile = () => {
                   fontWeight="bold"
                   color="white"
                   mb={4}
-                  textAlign="left"
+                  textAlign="center"
                   sx={{ marginTop: "-10px" }}
                 >
                   My Preferences
@@ -138,8 +151,8 @@ const UserProfile = () => {
                     display: "flex",
                     flexWrap: "wrap",
                     gap: 1,
-                    justifyContent: "flex-start",
-                    maxWidth: "100%",
+                    justifyContent: "center",
+                    width: "100%",
                   }}
                 >
                   {[
