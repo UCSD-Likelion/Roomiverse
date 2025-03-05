@@ -65,12 +65,12 @@ const UserProfile = () => {
           <PersonIcon sx={{ fontSize: 90, color: "#757575" }} />
         </Avatar>
 
-        <CardContent sx={{ paddingTop: 10, maxWidth: 750 }}>
+        <CardContent sx={{ paddingTop: 12, maxWidth: 750 }}>
           <Typography
             variant="h4"
             fontWeight="bold"
-            mt={-1}
-            mb={3}
+            mt={2}
+            mb={4}
             color="#FF6F61"
             sx={{ marginTop: "20px" }}
           >
@@ -82,10 +82,10 @@ const UserProfile = () => {
             sx={{
               backgroundColor: "#FF6F61",
               color: "white",
-              mb: 3,
+              mb: 4,
               borderRadius: 5,
               fontWeight: "bold",
-              marginTop: "-10px",
+              marginTop: "0px",
               "&:hover": { backgroundColor: "#e65a50" },
             }}
           >
@@ -139,9 +139,8 @@ const UserProfile = () => {
                   variant="h6"
                   fontWeight="bold"
                   color="white"
-                  mb={4}
+                  mb={5}
                   textAlign="center"
-                  sx={{ marginTop: "-10px" }}
                 >
                   My Preferences
                 </Typography>
