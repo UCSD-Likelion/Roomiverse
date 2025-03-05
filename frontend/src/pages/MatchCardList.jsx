@@ -81,7 +81,7 @@ function MatchCardList() {
       <Header />
 
       <Container maxWidth="lg" disableGutters sx={{ pt: 10, textAlign: "center" }}>
-        <Typography variant="h4" fontWeight="bold" color="white" gutterBottom>
+        <Typography variant="h4" fontWeight="bold" color="white" gutterBottom sx={{ fontSize: "3.0rem" }}>
           Find your Perfect Match!
         </Typography>
 
@@ -171,7 +171,7 @@ function MatchCardList() {
           </Grid>
         </Box>
 
-        <Box mt={4}>
+        <Box mt={-2}>
           <Button
             variant="contained"
             sx={{
