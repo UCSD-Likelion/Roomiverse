@@ -9,6 +9,7 @@ import ProfileCard from "./pages/profile";
 import Dashboard from "./pages/dashboard";
 import PrivateRoute from "./utils/private-route";
 import MatchingForm from "./pages/matchingForm";
+import UserProfile from "./pages/userprofile";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           </Route>
           <Route path="/matching-form" element={<MatchingForm />} />
           <Route path="/profile" element={<ProfileCard />} />
+          <Route path="/userprofile" element={<UserProfile />} />
         </Routes>
       </main>
     </BrowserRouter>
