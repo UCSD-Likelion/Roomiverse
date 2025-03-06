@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   AppBar,
@@ -31,12 +31,6 @@ function Header() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const { logout, user, loading } = useContext(AuthContext);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (user) {
-      console.log("User Logged In");
-    }
-  }, [user]);
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
