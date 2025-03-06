@@ -63,9 +63,10 @@ export default function Login() {
 
       console.log("Logged in successfully");
 
-      navigate("/", {
-        state: { successMessage: "Login Successful!" },
-      });
+      setTimeout(() => {
+        navigate("/", { state: { successMessage: "Login Successful!" } });
+        window.location.reload(); // Force refresh to reflect the new user state
+      }, 100);
     } catch (error) {
       console.error(error);
       setSnack({
