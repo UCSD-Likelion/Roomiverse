@@ -60,17 +60,12 @@ export default function Login() {
 
     try {
       await login(email, password);
-      setSnack({
-        open: true,
-        message: "Logged in successfully!",
-        severity: "success",
-      });
-
-      console.log(snack.message);
 
       console.log("Logged in successfully");
 
-      navigate("/", { state: { successMessage: snack.message } });
+      navigate("/", {
+        state: { successMessage: "Login Successful!" },
+      });
     } catch (error) {
       console.error(error);
       setSnack({

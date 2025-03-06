@@ -1,6 +1,27 @@
-import { Box, Typography, Container, GlobalStyles } from "@mui/material";
+import { useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Alert, Box, Typography, Container, Snackbar } from "@mui/material";
 import { motion } from "framer-motion";
 const LandingPage = () => {
+  const location = useLocation();
+  const successMessage = location.state?.successMessage || "";
+  const [snack, setSnack] = useState({
+    open: false,
+    message: "",
+    severity: "info",
+  });
+
+  useEffect(() => {
+    console.log(successMessage);
+    if (successMessage) {
+      setSnack({
+        open: true,
+        message: successMessage,
+        severity: "success",
+      });
+    }
+  }, [successMessage]);
+
   return (
     <Box
       sx={{
@@ -137,6 +158,20 @@ const LandingPage = () => {
           ))}
         </Box>
       </Container>
+      <Snackbar
+        open={snack.open}
+        autoHideDuration={4000}
+        onClose={() => setSnack({ ...snack, open: false })}
+        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+      >
+        <Alert
+          onClose={() => setSnack({ ...snack, open: false })}
+          severity={snack.severity}
+          sx={{ width: "100%" }}
+        >
+          {snack.message}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };
