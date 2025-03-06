@@ -64,6 +64,8 @@ export default function Login() {
         severity: "success",
       });
 
+      console.log(snack.message);
+
       console.log("Logged in successfully");
     } catch (error) {
       console.error(error);
