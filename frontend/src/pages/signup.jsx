@@ -44,6 +44,9 @@ export default function Signup() {
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
+    if (error.email) {
+      setError({ ...error, email: "" });
+    }
   };
 
   const handleFirstNameChange = (e) => {
@@ -56,10 +59,16 @@ export default function Signup() {
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
+    if (error.password) {
+      setError({ ...error, password: "" });
+    }
   };
 
   const handleConfirmPasswordChange = (e) => {
     setConfirmPassword(e.target.value);
+    if (error.password) {
+      setError({ ...error, password: "" });
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -107,7 +116,12 @@ export default function Signup() {
       }
 
       console.log(createdUser);
-      navigate("/login");
+      navigate("/login", {
+        state: {
+          successMessage:
+            "You're all set! Login to your new account and explore your potential match!",
+        },
+      });
     } catch (error) {
       console.error("Faild to upload user: ", error);
     }
@@ -326,7 +340,12 @@ export default function Signup() {
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
                   label="Date of Birth"
-                  onChange={(newValue) => setDob(newValue)}
+                  onChange={(newValue) => {
+                    setDob(newValue);
+                    if (error.birthdate) {
+                      setError({ ...error, birthdate: "" });
+                    }
+                  }}
                   slotProps={{
                     textField: {
                       fullWidth: true,

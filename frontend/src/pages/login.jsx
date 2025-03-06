@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   Alert,
   Box,
@@ -18,6 +18,7 @@ import { loginValidation } from "../utils/validators";
 import { AuthContext } from "../context/AuthProvider";
 
 export default function Login() {
+  const location = useLocation();
   const { login, user } = useContext(AuthContext);
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
@@ -28,14 +29,20 @@ export default function Login() {
     message: "",
     severity: "info",
   });
+  const successMessage = location.state?.successMessage || "";
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user) {
-      navigate("/dashboard"); // Redirect when user is authenticated
+    console.log("successMessage", successMessage);
+    if (successMessage) {
+      setSnack({
+        open: true,
+        message: successMessage,
+        severity: "success",
+      });
     }
-  }, [user, navigate]); // Runs when `user` changes
+  }, [successMessage]);
 
   if (user) {
     navigate("/dashboard");
@@ -79,10 +86,16 @@ export default function Login() {
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
+    if (error.email) {
+      setError({ ...error, email: "" });
+    }
   };
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
+    if (error.password) {
+      setError({ ...error, password: "" });
+    }
   };
 
   return (
