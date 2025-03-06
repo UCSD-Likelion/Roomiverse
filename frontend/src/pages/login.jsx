@@ -43,10 +43,6 @@ export default function Login() {
     }
   }, [successMessage]);
 
-  if (user) {
-    navigate("/dashboard");
-  }
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -73,6 +69,8 @@ export default function Login() {
       console.log(snack.message);
 
       console.log("Logged in successfully");
+
+      navigate("/", { state: { successMessage: snack.message } });
     } catch (error) {
       console.error(error);
       setSnack({

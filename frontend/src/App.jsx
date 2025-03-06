@@ -4,6 +4,7 @@ import Header from "./components/header";
 
 import Login from "./pages/login";
 import Home from "./pages/home";
+import LandingPage from "./pages/landing";
 import Signup from "./pages/signup";
 import ProfileCard from "./pages/profile";
 import Dashboard from "./pages/dashboard";
@@ -16,7 +17,7 @@ function App() {
       <Header />
       <main>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Signup />} />
           <Route path="/" element={<PrivateRoute />}>
