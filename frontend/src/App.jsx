@@ -3,7 +3,6 @@ import "./global.css";
 import Header from "./components/header";
 
 import Login from "./pages/login";
-import Home from "./pages/home";
 import LandingPage from "./pages/landing";
 import Signup from "./pages/signup";
 import ProfileCard from "./pages/profile";
