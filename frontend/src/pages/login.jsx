@@ -34,7 +34,6 @@ export default function Login() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("successMessage", successMessage);
     if (successMessage) {
       setSnack({
         open: true,
