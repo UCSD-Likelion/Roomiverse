@@ -48,6 +48,7 @@ export const AuthProvider = ({ children }) => {
       setUser(response.data.user);
     } catch (error) {
       console.error("Failed to login: ", error);
+      throw error;
     } finally {
       setLoading(false);
     }
@@ -72,6 +73,16 @@ export const AuthProvider = ({ children }) => {
   const refreshAccessToken = async () => {
     try {
       console.log("Refreshing token...");
+      const refreshToken = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("refreshToken="))
+        ?.split("=")[1];
+
+      if (!refreshToken) {
+        console.error("No refresh token found");
+        return;
+      }
+
       const response = await axios.post(
         "/api/users/refresh",
         {

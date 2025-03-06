@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
+  Alert,
   Box,
   Typography,
   Button,
@@ -11,6 +12,7 @@ import {
   MenuItem,
   InputLabel,
   FormControl,
+  Snackbar,
 } from "@mui/material";
 import { motion } from "framer-motion";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -32,11 +34,19 @@ export default function Signup() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [gender, setGender] = useState("");
   const [error, setError] = useState({});
+  const [snack, setSnack] = useState({
+    open: false,
+    message: "",
+    severity: "info",
+  });
 
   const navigate = useNavigate();
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
+    if (error.email) {
+      setError({ ...error, email: "" });
+    }
   };
 
   const handleFirstNameChange = (e) => {
@@ -49,10 +59,16 @@ export default function Signup() {
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
+    if (error.password) {
+      setError({ ...error, password: "" });
+    }
   };
 
   const handleConfirmPasswordChange = (e) => {
     setConfirmPassword(e.target.value);
+    if (error.password) {
+      setError({ ...error, password: "" });
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -79,6 +95,11 @@ export default function Signup() {
     setError(error);
 
     if (Object.keys(error).length > 0) {
+      setSnack({
+        open: true,
+        message: "Please Enter Valid Response.",
+        severity: "error",
+      });
       return;
     }
 
@@ -86,11 +107,21 @@ export default function Signup() {
       const createdUser = await registerUser(userData);
 
       if (!createdUser) {
+        setSnack({
+          open: true,
+          message: "Failed to register. Please try again.",
+          severity: "error",
+        });
         throw new Error("Cannot create user");
       }
-      
+
       console.log(createdUser);
-      navigate("/login");
+      navigate("/login", {
+        state: {
+          successMessage:
+            "You're all set! Login to your new account and explore your potential match!",
+        },
+      });
     } catch (error) {
       console.error("Faild to upload user: ", error);
     }
@@ -309,7 +340,12 @@ export default function Signup() {
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
                   label="Date of Birth"
-                  onChange={(newValue) => setDob(newValue)}
+                  onChange={(newValue) => {
+                    setDob(newValue);
+                    if (error.birthdate) {
+                      setError({ ...error, birthdate: "" });
+                    }
+                  }}
                   slotProps={{
                     textField: {
                       fullWidth: true,
@@ -381,6 +417,20 @@ export default function Signup() {
           </Grid>
         </Box>
       </Box>
+      <Snackbar
+        open={snack.open}
+        autoHideDuration={4000}
+        onClose={() => setSnack({ ...snack, open: false })}
+        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+      >
+        <Alert
+          onClose={() => setSnack({ ...snack, open: false })}
+          severity={snack.severity}
+          sx={{ width: "100%" }}
+        >
+          {snack.message}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 }

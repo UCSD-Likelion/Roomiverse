@@ -1,4 +1,5 @@
 import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   AppBar,
   Button,
@@ -29,6 +30,7 @@ function Header() {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const { logout, user, loading } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -41,6 +43,7 @@ function Header() {
   const handleMenuClick = (setting) => {
     if (setting === "Logout") {
       logout();
+      navigate("/login");
     }
     handleCloseUserMenu();
   };

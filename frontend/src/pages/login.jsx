@@ -1,31 +1,47 @@
-import { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useContext, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
+  Alert,
   Box,
   Typography,
   Button,
   TextField,
   Link,
+  Snackbar,
   Grid2 as Grid,
 } from "@mui/material";
 import { motion } from "framer-motion";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+
 import { loginValidation } from "../utils/validators";
 import { AuthContext } from "../context/AuthProvider";
 
 export default function Login() {
+  const location = useLocation();
   const { login, user } = useContext(AuthContext);
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState({});
+  const [snack, setSnack] = useState({
+    open: false,
+    message: "",
+    severity: "info",
+  });
+  const successMessage = location.state?.successMessage || "";
 
   const navigate = useNavigate();
 
-  if (user) {
-    navigate("/dashboard");
-  }
+  useEffect(() => {
+    if (successMessage) {
+      setSnack({
+        open: true,
+        message: successMessage,
+        severity: "success",
+      });
+    }
+  }, [successMessage]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,28 +50,49 @@ export default function Login() {
     setError(validation);
 
     if (Object.keys(validation).length > 0) {
+      setSnack({
+        open: true,
+        message: "Please Enter Valid Response.",
+        severity: "error",
+      });
       return;
     }
 
     try {
       await login(email, password);
+
       console.log("Logged in successfully");
+
       setTimeout(() => {
-        window.location.reload();
+        navigate("/", {
+          state: {
+            successMessage: "Welcome back! You have successfully logged in.",
+          },
+        });
+        window.location.reload(); // Force refresh to reflect the new user state
       }, 100);
     } catch (error) {
       console.error(error);
-    } finally {
-      navigate("/");
+      setSnack({
+        open: true,
+        message: "Login failed. Check your credentials.",
+        severity: "error",
+      });
     }
   };
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
+    if (error.email) {
+      setError({ ...error, email: "" });
+    }
   };
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
+    if (error.password) {
+      setError({ ...error, password: "" });
+    }
   };
 
   return (
@@ -259,6 +296,20 @@ export default function Login() {
           </Grid>
         </Box>
       </Box>
+      <Snackbar
+        open={snack.open}
+        autoHideDuration={4000}
+        onClose={() => setSnack({ ...snack, open: false })}
+        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+      >
+        <Alert
+          onClose={() => setSnack({ ...snack, open: false })}
+          severity={snack.severity}
+          sx={{ width: "100%" }}
+        >
+          {snack.message}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 }
