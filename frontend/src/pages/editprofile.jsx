@@ -68,7 +68,7 @@ export default function EditProfile() {
           maxWidth: "1200px",
         }}
       >
-        {/* LEFT COLUMN:*/}
+        {/* LEFT COLUMN */}
         <Box
           sx={{
             width: "33.33%",
@@ -81,6 +81,8 @@ export default function EditProfile() {
             flexDirection: "column",
             alignItems: "center",
             gap: 4,
+            fontSize: "1.43rem", // Increase base font size
+            "& *": { fontSize: "inherit" }, // Force children to inherit font size
           }}
         >
           <Avatar
@@ -187,6 +189,8 @@ export default function EditProfile() {
             display: "flex",
             flexDirection: "column",
             gap: 2,
+            fontSize: "1.43rem", // Increase base font size
+            "& *": { fontSize: "inherit" }, // Force children to inherit font size
           }}
         >
           {/* About Me */}
