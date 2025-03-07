@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./global.css";
 import Header from "./components/header";
-
+import UserProfile from "./pages/user-profile";
 import Login from "./pages/login";
 import LandingPage from "./pages/landing";
 import Signup from "./pages/signup";
@@ -17,6 +17,7 @@ function App() {
       <main>
         <Routes>
           <Route path="/" element={<LandingPage />} />
+          <Route path="/userprofile" element={<UserProfile />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Signup />} />
           <Route path="/" element={<PrivateRoute />}>
@@ -24,6 +25,7 @@ function App() {
           </Route>
           <Route path="/matching-form" element={<MatchingForm />} />
           <Route path="/profile" element={<ProfileCard />} />
+          <Route path="/userprofile" element={<UserProfile />} />
         </Routes>
       </main>
     </BrowserRouter>
