@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./global.css";
 import Header from "./components/header";
-import UserProfile from "./pages/userprofile";
+import UserProfile from "./pages/user-profile";
 import Login from "./pages/login";
 import LandingPage from "./pages/landing";
 import Signup from "./pages/signup";

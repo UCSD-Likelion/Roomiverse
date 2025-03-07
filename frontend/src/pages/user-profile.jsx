@@ -1,12 +1,4 @@
-import {
-  Card,
-  CardContent,
-  Typography,
-  Button,
-  Avatar,
-  Chip,
-  Box,
-} from "@mui/material";
+import { Button, Box } from "@mui/material";
 import { useState } from "react";
 import UserProfileModal from "../components/user-profile-model";
 
