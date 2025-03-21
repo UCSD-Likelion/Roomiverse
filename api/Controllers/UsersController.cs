@@ -73,6 +73,11 @@ namespace api.Controllers
         public async Task<ActionResult> Create([FromBody] User newUser)
         {
             newUser.Role ??= "User";
+            // Check if email already exists
+            var existingUser = await _service.GetByEmailAsync(newUser.Email);
+            if (existingUser != null)
+                return BadRequest("Email already exists");
+
             // Create user with hashed password
             await _service.CreateAsync(newUser);
 
