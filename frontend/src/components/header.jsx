@@ -204,6 +204,7 @@ function Header() {
                     px: 3,
                     fontWeight: "bold",
                     fontSize: "1rem",
+                    "&:hover": { backgroundColor: "#ff6f61", color: "white" },
                   }}
                 >
                   Sign Up
