@@ -9,6 +9,10 @@ import {
   Link,
   Snackbar,
   Grid2 as Grid,
+  Card,
+  CardContent,
+  IconButton,
+  InputAdornment,
 } from "@mui/material";
 import { motion } from "framer-motion";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -69,7 +73,7 @@ export default function Login() {
             successMessage: "Welcome back! You have successfully logged in.",
           },
         });
-        window.location.reload(); // Force refresh to reflect the new user state
+        window.location.reload();
       }, 100);
     } catch (error) {
       console.error(error);
@@ -107,195 +111,155 @@ export default function Login() {
         justifyContent: "center",
         height: "100vh",
         width: "100vw",
+        backgroundColor: "#95AAFF",
       }}
     >
-      <Box
-        component="section"
+      <Card
         sx={{
-          flex: 1,
-          display: "flex",
-          flexDirection: "column",
-          height: "100%",
-          backgroundColor: "#FF6F61",
+          maxWidth: 400,
           width: "100%",
-          alignContent: "center",
-          justifyContent: "center",
-          px: "8rem",
+          borderRadius: "20px",
+          py: 10,
+          px: 2,
+          boxShadow: 4,
+          border: "1px solid #4A4C54",
         }}
       >
-        <Box
-          sx={{
-            position: "absolute",
-            width: 650,
-            height: 650,
-            borderRadius: "50%",
-            background:
-              "linear-gradient(to bottom, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0))",
-            top: "55%",
-            transform: "translateY(-50%)",
-            left: "2%",
-            zIndex: 1,
-          }}
-        />
+        <CardContent sx={{ display: "flex", flexDirection: "column", px: 5 }}>
+          <Typography
+            variant="h3"
+            component="h1"
+            fontWeight="bold"
+            gutterBottom
+          >
+            Login
+          </Typography>
 
-        <motion.div
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8 }}
-        >
-          <Typography variant="h2" sx={{ color: "white", fontWeight: 700 }}>
-            Roomiverse
-          </Typography>
-        </motion.div>
-        <motion.div
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
-        >
-          <Typography
-            variant="h4"
-            sx={{ marginTop: 1, fontWeight: 300, color: "white" }}
-          >
-            Find your vibe,
-          </Typography>
-        </motion.div>
-        <motion.div
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
-        >
-          <Typography
-            variant="h4"
-            sx={{ margin: 0, fontWeight: 300, color: "white" }}
-          >
-            share your space.
-          </Typography>
-        </motion.div>
-      </Box>
-      <Box
-        component="section"
-        sx={{
-          flex: 1.5,
-          display: "flex",
-          flexDirection: "column",
-          gap: 2,
-          width: "100%",
-          height: "100%",
-          justifyContent: "center",
-          px: "6rem",
-        }}
-      >
-        <Typography variant="h3" sx={{ fontWeight: 700, color: "#283b42" }}>
-          Login
-        </Typography>
-        <Box
-          variant="form"
-          sx={{ display: "flex", flexDirection: "column", gap: 2 }}
-        >
           <Grid
             container
             spacing={2}
-            sx={{ width: "100%", display: "flex", flexDirection: "column" }}
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+            }}
           >
-            <Grid item xs={12}>
+            <Grid item xs={6}>
               <TextField
                 fullWidth
-                required
                 label="Email"
-                variant="outlined"
-                color="black"
+                variant="filled"
+                size="small"
                 onChange={handleEmailChange}
-                sx={{ color: "black" }}
                 error={!!error.email}
                 helperText={error.email}
+                value={email}
+                slotProps={{
+                  input: {
+                    sx: {
+                      bgcolor: "#E6E9FF",
+                      borderRadius: 2,
+                      pl: 1,
+                      fontSize: "16px",
+                    },
+                    disableUnderline: true,
+                  },
+                  inputLabel: {
+                    shrink: true,
+                    sx: {
+                      fontWeight: 600,
+                      fontSize: "14px",
+                      color: "text.primary",
+                      mb: 0.5,
+                    },
+                  },
+                }}
+                sx={{
+                  mt: 1,
+                }}
               />
             </Grid>
-            <Grid
-              item
-              xs={12}
-              sx={{ display: "flex", flexDirection: "column" }}
-            >
+            <Grid item xs={6}>
               <TextField
                 fullWidth
-                required
-                type={showPassword ? "text" : "password"}
                 label="Password"
-                variant="outlined"
-                color="black"
-                sx={{ marginBottom: 1, marginTop: 1, color: "black" }}
+                variant="filled"
                 onChange={handlePasswordChange}
                 error={!!error.password}
                 helperText={error.password}
+                value={password}
+                size="small"
+                type={showPassword ? "text" : "password"}
                 slotProps={{
                   input: {
-                    endAdornment: showPassword ? (
-                      <VisibilityIcon
-                        onClick={() => setShowPassword(!showPassword)}
-                        sx={{ "&:hover": { cursor: "pointer" } }}
-                      />
-                    ) : (
-                      <VisibilityOffIcon
-                        onClick={() => setShowPassword(!showPassword)}
-                        sx={{ "&:hover": { cursor: "pointer" } }}
-                      />
+                    sx: {
+                      bgcolor: "#E6E9FF",
+                      borderRadius: 2,
+                      pl: 1,
+                      fontSize: "16px",
+                    },
+                    disableUnderline: true,
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={() => setShowPassword(!showPassword)}
+                          edge="end"
+                          size="small"
+                        >
+                          {showPassword ? (
+                            <VisibilityIcon />
+                          ) : (
+                            <VisibilityOffIcon />
+                          )}
+                        </IconButton>
+                      </InputAdornment>
                     ),
                   },
-                }}
-              />
-              <Link
-                href="/forgot-password"
-                underline="hover"
-                sx={{
-                  display: "display",
-                  marginTop: 1,
-                  fontSize: "0.9rem",
-                  alignSelf: "flex-end",
-                  color: "#1d6a96",
-                  "&:hover": {
-                    cursor: "pointer",
-                    textDecoration: "underline",
+                  inputLabel: {
+                    shrink: true,
+                    sx: {
+                      fontWeight: 600,
+                      fontSize: "14px",
+                      color: "text.primary",
+                      mb: 0.5,
+                    },
                   },
                 }}
-              >
-                <Typography>Forgot password</Typography>
-              </Link>
-            </Grid>
-            <Grid item xs={12}>
-              <Button
-                fullWidth
-                type="submit"
-                variant="contained"
-                onClick={handleSubmit}
                 sx={{
-                  backgroundColor: "#FF6F61",
-                  color: "white",
-                  "&:hover": { backgroundColor: "#ff7c70" },
-                  borderRadius: "0.5rem",
-                  py: "0.75rem",
+                  mt: 1,
                 }}
-                disabled={!email || !password}
-              >
-                <Typography sx={{ fontSize: 24 }}>Sign In</Typography>
-              </Button>
-              <Box sx={{ display: "flex", marginTop: 1, gap: 1 }}>
-                <Typography>Don&apos;t have an account?</Typography>
-                <Link
-                  sx={{
-                    textDecoration: "none",
-                    "&:hover": {
-                      cursor: "pointer",
-                      textDecoration: "underline",
-                    },
-                  }}
-                  href="/register"
-                >
-                  <Typography>Signup</Typography>
-                </Link>
-              </Box>
+              />
             </Grid>
           </Grid>
-        </Box>
-      </Box>
+
+          <Box mt={3} textAlign="center">
+            <Button
+              variant="contained"
+              size="large"
+              sx={{
+                borderRadius: "30px",
+                px: 3,
+                width: "50%",
+                backgroundColor: "#A9B8FF",
+                color: "#fff",
+                ":hover": {
+                  backgroundColor: "#91A3E0",
+                },
+              }}
+            >
+              Login
+            </Button>
+          </Box>
+
+          <Box mt={2} textAlign="center">
+            <Typography variant="body2">
+              Don't have an account{" "}
+              <Link href="/signup" underline="hover">
+                Sign up
+              </Link>
+            </Typography>
+          </Box>
+        </CardContent>
+      </Card>
       <Snackbar
         open={snack.open}
         autoHideDuration={4000}
