@@ -42,7 +42,16 @@ export default function MatchingPage() {
       }}
     >
       {/* Header: Title + Filters */}
-      <Box sx={{ textAlign: "center", mb: 5, width: "100%" }}>
+      <Box
+        sx={{
+          textAlign: "center",
+          mb: 5,
+          width: "100%",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
         <Typography
           component="h1"
           sx={{
@@ -63,21 +72,13 @@ export default function MatchingPage() {
             gap: 1.5,
             flexWrap: "wrap",
             justifyContent: "center",
-            width: "100%",
+            width: "75%",
+            backgroundColor: "#fff",
+            borderRadius: 10,
+            padding: 2,
           }}
         >
-          {FILTERS.map((filter) => (
-            <IconButton
-              key={filter.id}
-              title={filter.label}
-              sx={{
-                backgroundColor: "#e0e7ff",
-                "&:hover": { backgroundColor: "#c7d2fe" },
-              }}
-            >
-              {filter.icon}
-            </IconButton>
-          ))}
+          <Typography>This is for icons</Typography>
         </Box>
       </Box>
 
