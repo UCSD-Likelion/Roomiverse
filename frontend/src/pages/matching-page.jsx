@@ -1,31 +1,9 @@
-import React from "react";
-import {
-  FaCoffee,
-  FaMugHot,
-  FaMale,
-  FaFemale,
-  FaDog,
-  FaPaw,
-  FaSmoking,
-  FaBan,
-} from "react-icons/fa";
 import StarIcon from "@mui/icons-material/Star";
 import { Card, CardMedia, Typography, Box, IconButton } from "@mui/material";
 
 import Portrait from "../assets/images/portrait.png";
 const AVATAR_URL = Portrait;
 const NUM_MATCHES = 16;
-
-const FILTERS = [
-  { id: "coffee", icon: <FaCoffee />, label: "Coffee Lover" },
-  { id: "tea", icon: <FaMugHot />, label: "Tea Drinker" },
-  { id: "male", icon: <FaMale />, label: "Male" },
-  { id: "female", icon: <FaFemale />, label: "Female" },
-  { id: "pet", icon: <FaDog />, label: "Has Pets" },
-  { id: "no-pet", icon: <FaPaw />, label: "No Pets" },
-  { id: "smoke", icon: <FaSmoking />, label: "Smoker" },
-  { id: "no-smoke", icon: <FaBan />, label: "Non-Smoker" },
-];
 
 export default function MatchingPage() {
   return (
