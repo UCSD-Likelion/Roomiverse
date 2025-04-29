@@ -235,6 +235,7 @@ export default function Login() {
             <Button
               variant="contained"
               size="large"
+              onClick={handleSubmit}
               sx={{
                 borderRadius: "30px",
                 px: 3,
