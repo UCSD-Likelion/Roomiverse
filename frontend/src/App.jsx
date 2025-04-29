@@ -9,7 +9,7 @@ import ProfileCard from "./pages/profile";
 import Dashboard from "./pages/dashboard";
 import PrivateRoute from "./utils/private-route";
 import MatchingForm from "./pages/matchingForm";
-import MatchingPage from "./pages/matchingPage";
+import MatchingPage from "./pages/matching-page";
 
 function App() {
   return (
