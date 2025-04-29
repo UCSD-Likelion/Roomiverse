@@ -15,7 +15,7 @@ import {
 import { motion } from "framer-motion";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { registerUser } from "../api";
@@ -88,7 +88,7 @@ export default function Signup() {
       if (!createdUser) {
         throw new Error("Cannot create user");
       }
-      
+
       console.log(createdUser);
       navigate("/login");
     } catch (error) {
