@@ -134,6 +134,7 @@ export default function Signup() {
         throw new Error("Cannot create user");
       }
 
+
       console.log(createdUser);
       navigate("/login", {
         state: {
