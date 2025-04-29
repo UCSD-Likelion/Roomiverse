@@ -13,7 +13,6 @@ import MatchingForm from "./pages/matchingForm";
 function App() {
   return (
     <BrowserRouter>
-      <Header />
       <main>
         <Routes>
           <Route path="/" element={<LandingPage />} />
