@@ -283,20 +283,17 @@ export default function RegisterForm({
                 fontSize: "16px",
                 backgroundColor: "#E6E9FF",
                 boxShadow: "none",
-                "&:before, &:after": { display: "none" },
                 height: "40px",
               },
               "& .MuiInputLabel-root": {
+                top: "-4px",
                 fontWeight: 600,
                 fontSize: "14px",
                 color: "text.primary",
-                mb: 0.5,
               },
             }}
           >
-            <InputLabel id="gender-label" shrink>
-              Gender
-            </InputLabel>
+            <InputLabel id="gender-label">Gender</InputLabel>
 
             <Select
               labelId="gender-label"
@@ -307,9 +304,6 @@ export default function RegisterForm({
               variant="filled"
               onChange={handleGenderChange}
             >
-              <MenuItem value="" disabled>
-                Select Gender
-              </MenuItem>
               <MenuItem value={"male"}>Male</MenuItem>
               <MenuItem value={"female"}>Female</MenuItem>
             </Select>
