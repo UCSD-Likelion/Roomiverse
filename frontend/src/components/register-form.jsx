@@ -275,34 +275,53 @@ export default function RegisterForm({
             variant="filled"
             sx={{
               mt: 1,
-              bgcolor: "#E6E9FF",
-              borderRadius: 2,
-              "& .MuiFilledInput-root": {
-                borderRadius: 2,
-                pl: 1,
-                fontSize: "16px",
-                backgroundColor: "#E6E9FF",
-                boxShadow: "none",
-                height: "40px",
-              },
-              "& .MuiInputLabel-root": {
-                top: "-4px",
+            }}
+          >
+            <InputLabel
+              id="gender-label"
+              shrink={!!gender} // Only shrink when there's a value
+              sx={{
                 fontWeight: 600,
                 fontSize: "14px",
                 color: "text.primary",
-              },
-            }}
-          >
-            <InputLabel id="gender-label">Gender</InputLabel>
+              }}
+            >
+              Gender
+            </InputLabel>
 
             <Select
               labelId="gender-label"
-              label="Gender"
               value={gender}
               disableUnderline
               displayEmpty
               variant="filled"
               onChange={handleGenderChange}
+              sx={{
+                bgcolor: "#E6E9FF",
+                borderRadius: 2,
+                fontSize: "16px",
+                display: "flex",
+                alignItems: "center",
+                height: "100%",
+                "& .MuiSelect-filled": {
+                  paddingTop: "14px",
+                  paddingBottom: "2px",
+                  display: "flex",
+                  alignItems: "center",
+                },
+                "& .MuiSelect-select": {
+                  paddingTop: "14px",
+                  paddingBottom: "2px",
+                  display: "flex",
+                  alignItems: "center",
+                },
+                "& .MuiInputBase-input": {
+                  paddingTop: "14px",
+                  paddingBottom: "2px",
+                  display: "flex",
+                  alignItems: "center",
+                },
+              }}
             >
               <MenuItem value={"male"}>Male</MenuItem>
               <MenuItem value={"female"}>Female</MenuItem>
