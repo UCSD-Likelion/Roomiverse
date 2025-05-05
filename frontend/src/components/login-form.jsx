@@ -45,7 +45,6 @@ export default function LoginForm({
                 disableUnderline: true,
               },
               inputLabel: {
-                shrink: true,
                 sx: {
                   fontWeight: 600,
                   fontSize: "14px",
@@ -94,7 +93,6 @@ export default function LoginForm({
                 ),
               },
               inputLabel: {
-                shrink: true,
                 sx: {
                   fontWeight: 600,
                   fontSize: "14px",
@@ -128,8 +126,8 @@ export default function LoginForm({
 
       <Box mt={2} textAlign="center">
         <Typography variant="body2">
-          Don't have an account{" "}
-          <Link href="/signup" underline="hover">
+          Don't have an account?{" "}
+          <Link href="/register" underline="hover">
             Sign up
           </Link>
         </Typography>

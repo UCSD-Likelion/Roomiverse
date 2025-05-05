@@ -8,6 +8,7 @@ export const registerUser = async (user) => {
     return response;
   } catch (error) {
     console.error("Failed to register: ", error);
+    throw new Error("Failed to register: " + error.response.data);
   }
 };
 
