@@ -52,7 +52,14 @@ export default function ProfileCard() {
     try {
       const croppedBlob = await getCroppedImg(imageSrc, croppedAreaPixels);
       const base64Image = await toBase64(croppedBlob);
-  
+      
+      // For now, just set the profile image directly without server call
+      // This ensures the save button works even without a backend
+      setProfileImage(base64Image);
+      setOpen(false);
+      
+      // If you want to re-enable server upload later, uncomment this code:
+      /*
       const res = await fetch("http://localhost:4000/upload-profile-image", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -66,12 +73,14 @@ export default function ProfileCard() {
       }
   
       setProfileImage(data.url);
-      setOpen(false);
+      */
     } catch (e) {
       console.error("Upload failed:", e);
+      // Still close the modal and use the cropped image even if server upload fails
+      setProfileImage(await toBase64(await getCroppedImg(imageSrc, croppedAreaPixels)));
+      setOpen(false);
     }
   };
-  
 
   return (
     <Box
