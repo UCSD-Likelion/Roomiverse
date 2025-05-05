@@ -45,7 +45,6 @@ export default function LoginForm({
                 disableUnderline: true,
               },
               inputLabel: {
-                shrink: true,
                 sx: {
                   fontWeight: 600,
                   fontSize: "14px",
@@ -94,7 +93,6 @@ export default function LoginForm({
                 ),
               },
               inputLabel: {
-                shrink: true,
                 sx: {
                   fontWeight: 600,
                   fontSize: "14px",

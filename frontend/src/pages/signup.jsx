@@ -42,15 +42,15 @@ export default function Signup() {
 
   const handleFirstNameChange = (e) => {
     setFirstName(e.target.value);
-    if (error.name) {
-      setError({ ...error, name: "" });
+    if (error.firstName) {
+      setError({ ...error, firstName: "" });
     }
   };
 
   const handleLastNameChange = (e) => {
     setLastName(e.target.value);
-    if (error.name) {
-      setError({ ...error, name: "" });
+    if (error.lastName) {
+      setError({ ...error, lastName: "" });
     }
   };
 
@@ -86,6 +86,17 @@ export default function Signup() {
     if (password !== confirmPassword) {
       console.error("Passwords do not match");
       error.password = "Passwords do not match";
+      setError(error);
+    }
+
+    if (firstName === "") {
+      console.error("First name is required");
+      error.firstName = "First name is required";
+      setError(error);
+    }
+    if (lastName === "") {
+      console.error("Last name is required");
+      error.lastName = "Last name is required";
       setError(error);
     }
 
@@ -132,6 +143,11 @@ export default function Signup() {
       });
     } catch (error) {
       console.error("Faild to upload user: ", error);
+      setSnack({
+        open: true,
+        message: error.message || "Registration failed.",
+        severity: "error",
+      });
     }
   };
 

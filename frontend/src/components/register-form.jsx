@@ -54,8 +54,8 @@ export default function RegisterForm({
             size="small"
             value={firstName}
             onChange={handleFirstNameChange}
-            error={!!error.name}
-            helperText={error.name}
+            error={!!error.firstName}
+            helperText={error.firstName}
             slotProps={{
               input: {
                 sx: {
@@ -67,7 +67,6 @@ export default function RegisterForm({
                 disableUnderline: true,
               },
               inputLabel: {
-                shrink: true,
                 sx: {
                   fontWeight: 600,
                   fontSize: "14px",
@@ -85,8 +84,8 @@ export default function RegisterForm({
             size="small"
             value={lastName}
             onChange={handleLastNameChange}
-            error={!!error.name}
-            helperText={error.name}
+            error={!!error.lastName}
+            helperText={error.lastName}
             slotProps={{
               input: {
                 sx: {
@@ -98,7 +97,6 @@ export default function RegisterForm({
                 disableUnderline: true,
               },
               inputLabel: {
-                shrink: true,
                 sx: {
                   fontWeight: 600,
                   fontSize: "14px",
@@ -131,7 +129,6 @@ export default function RegisterForm({
                 disableUnderline: true,
               },
               inputLabel: {
-                shrink: true,
                 sx: {
                   fontWeight: 600,
                   fontSize: "14px",
@@ -180,7 +177,6 @@ export default function RegisterForm({
                 ),
               },
               inputLabel: {
-                shrink: true,
                 sx: {
                   fontWeight: 600,
                   fontSize: "14px",
@@ -227,7 +223,6 @@ export default function RegisterForm({
                 ),
               },
               inputLabel: {
-                shrink: true,
                 sx: {
                   fontWeight: 600,
                   fontSize: "14px",
@@ -259,7 +254,6 @@ export default function RegisterForm({
                     },
                   },
                   InputLabelProps: {
-                    shrink: true,
                     sx: {
                       fontWeight: 600,
                       fontSize: "14px",
@@ -278,6 +272,7 @@ export default function RegisterForm({
           </LocalizationProvider>
           <FormControl
             fullWidth
+            variant="filled"
             sx={{
               mt: 1,
               bgcolor: "#E6E9FF",
@@ -295,6 +290,7 @@ export default function RegisterForm({
                 fontWeight: 600,
                 fontSize: "14px",
                 color: "text.primary",
+                mb: 0.5,
               },
             }}
           >
@@ -310,9 +306,6 @@ export default function RegisterForm({
               displayEmpty
               variant="filled"
               onChange={handleGenderChange}
-              sx={{
-                pt: 0.5,
-              }}
             >
               <MenuItem value="" disabled>
                 Select Gender
