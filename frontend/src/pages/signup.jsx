@@ -4,22 +4,13 @@ import {
   Alert,
   Box,
   Typography,
-  Button,
-  TextField,
-  Link,
-  Grid2 as Grid,
-  Select,
-  MenuItem,
-  InputLabel,
-  FormControl,
+  Card,
   Snackbar,
+  CardContent,
 } from "@mui/material";
 import { motion } from "framer-motion";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+
+import RegisterForm from "../components/register-form";
 import { registerUser } from "../api";
 import { formValidation } from "../utils/validators";
 
@@ -51,10 +42,16 @@ export default function Signup() {
 
   const handleFirstNameChange = (e) => {
     setFirstName(e.target.value);
+    if (error.name) {
+      setError({ ...error, name: "" });
+    }
   };
 
   const handleLastNameChange = (e) => {
     setLastName(e.target.value);
+    if (error.name) {
+      setError({ ...error, name: "" });
+    }
   };
 
   const handlePasswordChange = (e) => {
@@ -69,6 +66,17 @@ export default function Signup() {
     if (error.password) {
       setError({ ...error, password: "" });
     }
+  };
+
+  const handleDOBChange = (newValue) => {
+    setDob(newValue);
+    if (error.dob) {
+      setError({ ...error, dob: "" });
+    }
+  };
+
+  const handleGenderChange = (e) => {
+    setGender(e.target.value);
   };
 
   const handleSubmit = async (e) => {
@@ -139,284 +147,54 @@ export default function Signup() {
         justifyContent: "center",
         height: "100vh",
         width: "100vw",
+        backgroundColor: "#95AAFF",
       }}
     >
-      <Box
-        component="section"
+      <Card
         sx={{
-          flex: 1,
-          display: "flex",
-          flexDirection: "column",
-          height: "100%",
-          backgroundColor: "#FF6F61",
+          maxWidth: 450,
           width: "100%",
-          alignContent: "center",
-          justifyContent: "center",
-          px: "8rem",
+          borderRadius: "20px",
+          py: 3,
+          px: 2,
+          boxShadow: 4,
+          border: "1px solid #4A4C54",
         }}
       >
-        <Box
-          sx={{
-            position: "absolute",
-            width: 650,
-            height: 650,
-            borderRadius: "50%",
-            background:
-              "linear-gradient(to bottom, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0))",
-            top: "55%",
-            transform: "translateY(-50%)",
-            left: "2%",
-            zIndex: 1,
-          }}
-        />
-
-        <motion.div
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8 }}
-        >
-          <Typography variant="h2" sx={{ color: "white", fontWeight: 700 }}>
-            Welcome to Roomiverse!
-          </Typography>
-        </motion.div>
-        <motion.div
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
-        >
+        <CardContent sx={{ display: "flex", flexDirection: "column", px: 5 }}>
           <Typography
-            variant="h4"
-            sx={{ marginTop: 1, fontWeight: 300, color: "white" }}
+            variant="h3"
+            component="h1"
+            fontWeight="bold"
+            gutterBottom
           >
-            Find your vibe,
+            Sign Up
           </Typography>
-        </motion.div>
-        <motion.div
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
-        >
-          <Typography
-            variant="h4"
-            sx={{ margin: 0, fontWeight: 300, color: "white" }}
-          >
-            share your space.
-          </Typography>
-        </motion.div>
-      </Box>
-      <Box
-        component="section"
-        sx={{
-          flex: 1.5,
-          display: "flex",
-          flexDirection: "column",
-          gap: 2,
-          width: "100%",
-          height: "100%",
-          justifyContent: "center",
-          px: "6rem",
-        }}
-      >
-        <Typography variant="h3" sx={{ fontWeight: 700, color: "#283b42" }}>
-          Signup
-        </Typography>
-        <Box
-          variant="form"
-          sx={{ display: "flex", flexDirection: "column", gap: 2 }}
-        >
-          <Grid
-            container
-            spacing={2}
-            sx={{ width: "100%", display: "flex", flexDirection: "column" }}
-          >
-            <Grid
-              item
-              xs={12}
-              sx={{ display: "flex", flexDirection: "row", gap: "1rem" }}
-            >
-              <TextField
-                required
-                fullWidth
-                label="First Name"
-                variant="outlined"
-                color="black"
-                onChange={handleFirstNameChange}
-                sx={{ color: "black" }}
-              />
-              <TextField
-                required
-                fullWidth
-                label="Last Name"
-                variant="outlined"
-                color="black"
-                onChange={handleLastNameChange}
-                sx={{ color: "black" }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                required
-                label="Email"
-                variant="outlined"
-                color="black"
-                onChange={handleEmailChange}
-                sx={{ color: "black" }}
-                error={!!error.email}
-                helperText={error.email}
-              />
-            </Grid>
-            <Grid
-              item
-              xs={12}
-              sx={{ display: "flex", flexDirection: "column" }}
-            >
-              <TextField
-                fullWidth
-                required
-                label="Password"
-                variant="outlined"
-                type={showPassword ? "text" : "password"}
-                color="black"
-                onChange={handlePasswordChange}
-                error={!!error.password}
-                helperText={error.password}
-                sx={{ color: "black" }}
-                slotProps={{
-                  input: {
-                    endAdornment: showPassword ? (
-                      <VisibilityIcon
-                        onClick={() => setShowPassword(!showPassword)}
-                        sx={{
-                          "&:hover": { cursor: "pointer" },
-                        }}
-                      />
-                    ) : (
-                      <VisibilityOffIcon
-                        onClick={() => setShowPassword(!showPassword)}
-                        sx={{ "&:hover": { cursor: "pointer" } }}
-                      />
-                    ),
-                  },
-                }}
-              />
-            </Grid>
-            <Grid
-              item
-              xs={12}
-              sx={{ display: "flex", flexDirection: "column" }}
-            >
-              <TextField
-                fullWidth
-                required
-                label="Confirm Password"
-                variant="outlined"
-                color="black"
-                type={showConfirmPassword ? "text" : "password"}
-                sx={{ color: "black" }}
-                onChange={handleConfirmPasswordChange}
-                slotProps={{
-                  input: {
-                    endAdornment: showConfirmPassword ? (
-                      <VisibilityIcon
-                        onClick={() =>
-                          setShowConfirmPassword(!showConfirmPassword)
-                        }
-                        sx={{ "&:hover": { cursor: "pointer" } }}
-                      />
-                    ) : (
-                      <VisibilityOffIcon
-                        onClick={() =>
-                          setShowConfirmPassword(!showConfirmPassword)
-                        }
-                        sx={{ "&:hover": { cursor: "pointer" } }}
-                      />
-                    ),
-                  },
-                }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DatePicker
-                  label="Date of Birth"
-                  onChange={(newValue) => {
-                    setDob(newValue);
-                    if (error.birthdate) {
-                      setError({ ...error, birthdate: "" });
-                    }
-                  }}
-                  slotProps={{
-                    textField: {
-                      fullWidth: true,
-                      error: !!error.birthdate,
-                      helperText: error.birthdate,
-                    },
-                  }}
-                />
-              </LocalizationProvider>
-            </Grid>
-            <Grid item sx={12}>
-              <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-standard-label">
-                  Gender
-                </InputLabel>
-
-                <Select
-                  fullWidth
-                  labelId="demo-simple-select-standard-label"
-                  label="Gender"
-                  onChange={(e) => setGender(e.target.value)}
-                >
-                  <MenuItem value={"male"}>Male</MenuItem>
-                  <MenuItem value={"female"}>Female</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12}>
-              <Button
-                fullWidth
-                type="submit"
-                variant="contained"
-                sx={{
-                  backgroundColor: "#FF6F61",
-                  color: "white",
-                  "&:hover": { backgroundColor: "#ff7c70" },
-                  borderRadius: "0.5rem",
-                  py: "0.75rem",
-                }}
-                onClick={handleSubmit}
-                disabled={
-                  !firstName ||
-                  !lastName ||
-                  !email ||
-                  !password ||
-                  !confirmPassword ||
-                  !dob ||
-                  !gender
-                }
-              >
-                <Typography sx={{ fontSize: 24 }}>Sign Up</Typography>
-              </Button>
-              <Box sx={{ display: "flex", marginTop: 1, gap: 1 }}>
-                <Typography>Already have an account?</Typography>
-                <Link
-                  sx={{
-                    textDecoration: "none",
-                    "&:hover": {
-                      cursor: "pointer",
-                      textDecoration: "underline",
-                    },
-                  }}
-                  href="/login"
-                >
-                  <Typography>Login</Typography>
-                </Link>
-              </Box>
-            </Grid>
-          </Grid>
-        </Box>
-      </Box>
+          <RegisterForm
+            firstName={firstName}
+            handleFirstNameChange={handleFirstNameChange}
+            lastName={lastName}
+            handleLastNameChange={handleLastNameChange}
+            email={email}
+            password={password}
+            showPassword={showPassword}
+            confirmPassword={confirmPassword}
+            showConfirmPassword={showConfirmPassword}
+            error={error}
+            onEmailChange={handleEmailChange}
+            onPasswordChange={handlePasswordChange}
+            onShowPasswordToggle={() => setShowPassword(!showPassword)}
+            handleDOBChange={handleDOBChange}
+            onConfirmPasswordChange={handleConfirmPasswordChange}
+            onShowConfirmPasswordToggle={() =>
+              setShowConfirmPassword(!showConfirmPassword)
+            }
+            onSubmit={handleSubmit}
+            handleGenderChange={handleGenderChange}
+            gender={gender}
+          />
+        </CardContent>
+      </Card>
       <Snackbar
         open={snack.open}
         autoHideDuration={4000}

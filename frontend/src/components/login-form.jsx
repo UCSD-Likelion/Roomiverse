@@ -128,8 +128,8 @@ export default function LoginForm({
 
       <Box mt={2} textAlign="center">
         <Typography variant="body2">
-          Don't have an account{" "}
-          <Link href="/signup" underline="hover">
+          Don't have an account?{" "}
+          <Link href="/register" underline="hover">
             Sign up
           </Link>
         </Typography>

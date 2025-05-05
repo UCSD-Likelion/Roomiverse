@@ -9,7 +9,6 @@ export default function MatchingPage() {
   return (
     <Box
       sx={{
-        mt: "63px",
         backgroundColor: "#95AAFF",
         minHeight: "100vh",
         py: 10,
