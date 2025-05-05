@@ -3,290 +3,364 @@ import {
   Typography,
   Avatar,
   Button,
-  TextField,
-  Card,
-  CardContent,
   Chip,
+  IconButton,
+  Modal,
+  Slider,
 } from "@mui/material";
-import { deepOrange } from "@mui/material/colors";
-import { motion } from "framer-motion";
-import { Facebook, Instagram } from "@mui/icons-material";
-import { useState } from "react";
+import { CameraAlt } from "@mui/icons-material";
+import Cropper from "react-easy-crop";
+import { useState, useRef, useCallback } from "react";
+import getCroppedImg from "../utils/cropImage";
 
 export default function ProfileCard() {
-  const [inputValue, setInputValue] = useState("");
+  const [profileImage, setProfileImage] = useState("");
+  const [imageSrc, setImageSrc] = useState(null);
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+  const [open, setOpen] = useState(false);
+  const fileInputRef = useRef(null);
 
-  const handleInputChange = (event) => {
-    setInputValue(event.target.value);
+  const toBase64 = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+    });
+
+  const handleCameraClick = () => {
+    if (fileInputRef.current) fileInputRef.current.click();
   };
 
-  const handleSubmit = () => {
-    console.log("입력된 값:", inputValue);
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0];
+    e.target.value = null;
+
+    if (!file) return;
+    const imageDataUrl = URL.createObjectURL(file);
+    setImageSrc(imageDataUrl);
+    setOpen(true);
+  };
+
+  const onCropComplete = useCallback((_, croppedAreaPixels) => {
+    setCroppedAreaPixels(croppedAreaPixels);
+  }, []);
+
+  const handleCropSave = async () => {
+    try {
+      const croppedBlob = await getCroppedImg(imageSrc, croppedAreaPixels);
+      const base64Image = await toBase64(croppedBlob);
+      
+      // For now, just set the profile image directly without server call
+      // This ensures the save button works even without a backend
+      setProfileImage(base64Image);
+      setOpen(false);
+      
+      // If you want to re-enable server upload later, uncomment this code:
+      /*
+      const res = await fetch("http://localhost:4000/upload-profile-image", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ image: base64Image }),
+      });
+  
+      const data = await res.json();
+  
+      if (!res.ok) {
+        throw new Error(data.error || "Upload failed");
+      }
+  
+      setProfileImage(data.url);
+      */
+    } catch (e) {
+      console.error("Upload failed:", e);
+      // Still close the modal and use the cropped image even if server upload fails
+      setProfileImage(await toBase64(await getCroppedImg(imageSrc, croppedAreaPixels)));
+      setOpen(false);
+    }
   };
 
   return (
     <Box
-      component="section"
       sx={{
+        backgroundColor: "#95AAFF",
+        minHeight: "100vh",
         display: "flex",
-        flexDirection: "row",
-        gap: 2,
-        alignContent: "center",
+        justifyContent: "center",
         alignItems: "center",
-        justifyContent: "flex-start",
-        height: "100vh",
-        width: "100vw",
-        px: "4rem",
-        boxSizing: "border-box",
-        backgroundColor: "#FF6F61", // Unified background color
-        overflow: "hidden", // Prevent scrolling
+        p: 4,
       }}
     >
-      {/* Left Section - Profile Card */}
       <Box
-        component="section"
         sx={{
-          flex: 1,
-          display: "flex",
-          flexDirection: "column",
-          height: "100%",
-          position: "relative",
-          justifyContent: "center",
-          alignItems: "center",
-          overflow: "hidden", // Ensures no white gap
+          backgroundColor: "white",
+          borderRadius: 6,
+          width: "60%",
+          maxWidth: 800,
+          p: { xs: 3, md: 5 },
+          boxShadow: 3,
+          height: "auto",
         }}
       >
-        {/* Background Shape - Narrowed Half Circle + Rectangle */}
+        <Typography
+          variant="h3"
+          fontWeight={700}
+          color="#4B4B4B"
+          textAlign="left"
+          mb={6}
+        >
+          My Profile
+        </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: { xs: "column", md: "row" },
+            justifyContent: "space-between",
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              width: { xs: "100%", md: "40%" },
+              mb: { xs: 4, md: 0 },
+            }}
+          >
+            <Box sx={{ position: "relative", mb: 2 }}>
+              <Avatar
+                src={profileImage}
+                alt="Profile"
+                sx={{ width: 180, height: 180, bgcolor: "#d6dfe7" }}
+              />
+              <input
+                type="file"
+                accept="image/*"
+                ref={fileInputRef}
+                style={{ display: "none" }}
+                onChange={handleFileChange}
+              />
+              <IconButton
+                onClick={handleCameraClick}
+                sx={{
+                  position: "absolute",
+                  bottom: 10,
+                  right: 10,
+                  backgroundColor: "#95AAFF",
+                  width: 40,
+                  height: 40,
+                  "&:hover": { backgroundColor: "#7B93FF" },
+                  boxShadow: 2,
+                }}
+              >
+                <CameraAlt sx={{ color: "white", fontSize: 20 }} />
+              </IconButton>
+            </Box>
+            <Typography variant="h4" fontWeight={700} color="#4B4B4B" mb={2}>
+              First Last
+            </Typography>
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: "#95AAFF",
+                textTransform: "none",
+                fontWeight: 600,
+                borderRadius: 28,
+                px: 4,
+                py: 1,
+                fontSize: "1rem",
+                color: "white",
+                "&:hover": { backgroundColor: "#7B93FF" },
+              }}
+            >
+              Edit Profile
+            </Button>
+          </Box>
+          <Box
+            sx={{
+              width: { xs: "100%", md: "55%" },
+              mt: { xs: 0, md: -4 },
+            }}
+          >
+            <Box sx={{ mb: 4 }}>
+              <Typography
+                variant="h5"
+                fontWeight={700}
+                color="#4B4B4B"
+                mb={2}
+              >
+                About Me
+              </Typography>
+              <Typography variant="body1" color="#4B4B4B" mb={3}>
+                I am ad;ljfal;sdjf;aksdj asdlfjasldkf adsfasdasdf asdf asdf asdf
+                alsdnfknas;lkv;jasdfandl;f a
+              </Typography>
+              <Box sx={{ mb: 1 }}>
+                <Typography
+                  variant="h6"
+                  component="span"
+                  fontWeight={700}
+                  color="#4B4B4B"
+                >
+                  Age:
+                </Typography>
+                <Typography
+                  variant="h6"
+                  component="span"
+                  color="#4B4B4B"
+                  ml={1}
+                >
+                  21
+                </Typography>
+              </Box>
+              <Box sx={{ mb: 1 }}>
+                <Typography
+                  variant="h6"
+                  component="span"
+                  fontWeight={700}
+                  color="#4B4B4B"
+                >
+                  Major:
+                </Typography>
+                <Typography
+                  variant="h6"
+                  component="span"
+                  color="#4B4B4B"
+                  ml={1}
+                >
+                  Computer Engineering
+                </Typography>
+              </Box>
+              <Box sx={{ mb: 1 }}>
+                <Typography
+                  variant="h6"
+                  component="span"
+                  fontWeight={700}
+                  color="#4B4B4B"
+                >
+                  Gender:
+                </Typography>
+                <Typography
+                  variant="h6"
+                  component="span"
+                  color="#4B4B4B"
+                  ml={1}
+                >
+                  Male
+                </Typography>
+              </Box>
+            </Box>
+            <Box>
+              <Typography
+                variant="h5"
+                fontWeight={700}
+                color="#4B4B4B"
+                mb={2}
+              >
+                My Preferences
+              </Typography>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  gap: 2,
+                  mb: 2,
+                }}
+              >
+                <Chip
+                  label="Sleep Time: 11:00"
+                  sx={{
+                    backgroundColor: "#95AAFF",
+                    color: "white",
+                    fontWeight: 600,
+                    borderRadius: 28,
+                    px: 2,
+                    py: 2.5,
+                    height: 40,
+                    fontSize: "0.95rem",
+                  }}
+                />
+                <Chip
+                  label="On-Campus"
+                  sx={{
+                    backgroundColor: "#95AAFF",
+                    color: "white",
+                    fontWeight: 600,
+                    borderRadius: 28,
+                    px: 2,
+                    py: 2.5,
+                    height: 40,
+                    fontSize: "0.95rem",
+                  }}
+                />
+              </Box>
+            </Box>
+          </Box>
+        </Box>
+      </Box>
+
+      <Modal open={open} onClose={() => setOpen(false)}>
         <Box
           sx={{
             position: "absolute",
-            width: "90%", // Narrowed width
-            height: "80%", // Adjusted height
             top: "50%",
             left: "50%",
+            width: 300,
+            height: 430,
             transform: "translate(-50%, -50%)",
-            background:
-              "linear-gradient(to bottom, rgba(255,255,255,0.6), rgba(255,255,255,0))",
-            borderTopLeftRadius: "50%",
-            borderTopRightRadius: "50%",
-            borderBottomLeftRadius: "20px",
-            borderBottomRightRadius: "20px",
-            zIndex: 0,
-          }}
-        />
-
-        {/* Profile Card Positioned within Background Shape */}
-        <Box
-          sx={{
-            position: "relative",
-            width: 280,
-            height: 380,
+            bgcolor: "white",
+            boxShadow: 24,
+            borderRadius: 2,
+            overflow: "hidden",
             display: "flex",
             flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            zIndex: 1,
-            padding: "1.5rem",
-            textAlign: "center",
           }}
         >
-          {/* Enlarged Profile Image using Material UI Avatar */}
-          <Avatar
-            sx={{
-              width: 180, // Increased size
-              height: 180, // Increased size
-              mb: 2,
-            }}
-            alt="Profile Image"
-            src="/broken-image.jpg" // Replace with actual image path or state variable
-          />
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              gap: 1,
-              paddingTop: "0.2rem",
-            }}
-          >
-            <Typography
-              variant="h3"
-              sx={{ fontWeight: 700, color: "white", whiteSpace: "nowrap" }}
-            >
-              Profile Name
-            </Typography>
-            <Typography variant="h3" sx={{ fontWeight: 700, color: "white" }}>
-              21
-            </Typography>
+          <Box sx={{ flexGrow: 1, position: "relative" }}>
+            <Cropper
+              image={imageSrc}
+              crop={crop}
+              zoom={zoom}
+              aspect={1}
+              onCropChange={setCrop}
+              onZoomChange={setZoom}
+              onCropComplete={onCropComplete}
+            />
           </Box>
 
-          {/* Edit Profile Button */}
-          <Box sx={{ mt: 4, display: "flex", gap: 2 }}>
-            <Button
+          <Box sx={{ px: 2, py: 1.5 }}>
+            <Slider
+              value={zoom}
+              min={1}
+              max={3}
+              step={0.1}
+              onChange={(e, z) => setZoom(z)}
               sx={{
-                backgroundColor: "white",
-                color: "#5a5d5e",
-                borderRadius: "8px",
-                px: 6,
-                whiteSpace: "nowrap",
+                color: "#95AAFF",
+                mb: 2,
+              }}
+            />
+            <Button
+              fullWidth
+              variant="contained"
+              onClick={handleCropSave}
+              sx={{
+                backgroundColor: "#95AAFF",
+                textTransform: "none",
                 fontWeight: 600,
-                textTransform: "none",
-              }}
-              size="large"
-            >
-              Edit My Profile
-            </Button>
-            <Button
-              sx={{
-                backgroundColor: "white",
-                color: "#5a5d5e",
-                borderRadius: "8px",
-                px: 9,
-                whiteSpace: "nowrap",
-                fontWeight: 600,
-                textTransform: "none",
-              }}
-              size="large"
-            >
-              My Likes
-            </Button>
-          </Box>
-
-          {/* Social Links */}
-          <Box
-            sx={{
-              mt: 2,
-              display: "flex",
-              flexDirection: "column",
-              gap: 2,
-              paddingTop: "1rem",
-            }}
-          >
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                gap: 1,
-                backgroundColor: "rgba(255, 255, 255, 0.5)",
-                padding: "0.75rem",
-                borderRadius: "8px",
-                width: "400px",
+                borderRadius: 2,
+                "&:hover": {
+                  backgroundColor: "#7B93FF",
+                },
               }}
             >
-              <Instagram sx={{ color: "white" }} />
-              <Typography variant="body1" color="white" fontWeight={500}>
-                @yourhandle
-              </Typography>
-            </Box>
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                gap: 1,
-                backgroundColor: "rgba(255, 255, 255, 0.5)",
-                padding: "0.75rem",
-                borderRadius: "8px",
-                width: "400px",
-              }}
-            >
-              <Facebook sx={{ color: "#ffffff" }} />
-              <Typography
-                variant="body1"
-                color="white"
-                fontWeight={500}
-                component="a"
-                href="https://facebook.com/yourprofile"
-                sx={{ textDecoration: "none" }}
-              >
-                Facebook Profile
-              </Typography>
-            </Box>
-          </Box>
-
-          {/* Edit My Preference Button */}
-          <Box sx={{ mt: 4, paddingTop: "1rem" }}>
-            <Button
-              sx={{
-                backgroundColor: "white",
-                color: "#FF6F61",
-                fontWeight: 800,
-                px: 5,
-                borderRadius: "8px",
-                textTransform: "none",
-              }}
-              size="large"
-            >
-              Edit My Preference
+              Save
             </Button>
           </Box>
         </Box>
-      </Box>
-
-      {/* Right Section - About Me & My Preferences */}
-      <Box
-        sx={{
-          flex: 1,
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          px: "4rem",
-        }}
-      >
-        <Typography variant="h3" sx={{ fontWeight: 700, color: "white" }}>
-          About Me
-        </Typography>
-        <Typography variant="h5" sx={{ color: "white", mt: 1, mb: 3 }}>
-          A short bio about the user goes here.
-        </Typography>
-        <Typography variant="h3" sx={{ fontWeight: 700, color: "white" }}>
-          My Preferences
-        </Typography>
-
-        <Box sx={{ maxWidth: 700 }}>
-          <Box
-            sx={{
-              maxWidth: 750,
-              width: "90%",
-              borderRadius: 12,
-              backgroundColor: "#FF6F61",
-              margin: "0 auto",
-              padding: 4,
-              minHeight: "200px",
-            }}
-          >
-            <Box
-              sx={{
-                display: "grid",
-                gridTemplateColumns: "repeat(3, 1fr)",
-                gap: 2,
-                justifyContent: "center",
-                maxWidth: "100%",
-              }}
-            >
-              {[
-                "Off-Campus",
-                "Non-Smoker",
-                "Sleep time: 11:00-12:00",
-                "Wakeup time: 8:00-9:00",
-                "No Pets Allowed",
-              ].map((preference) => (
-                <Chip
-                  key={preference}
-                  label={preference}
-                  sx={{
-                    backgroundColor: "white",
-                    color: "#FF6F61",
-                    fontWeight: "bold",
-                    fontSize: "1rem",
-                    padding: "10px",
-                    height: "50px",
-                    borderRadius: "30px",
-                  }}
-                />
-              ))}
-            </Box>
-          </Box>
-        </Box>
-      </Box>
+      </Modal>
     </Box>
   );
 }
