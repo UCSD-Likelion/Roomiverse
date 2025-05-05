@@ -174,7 +174,6 @@ export default function Signup() {
           py: 3,
           px: 2,
           boxShadow: 4,
-          border: "1px solid #4A4C54",
         }}
       >
         <CardContent sx={{ display: "flex", flexDirection: "column", px: 5 }}>
