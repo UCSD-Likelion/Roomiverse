@@ -11,9 +11,13 @@ import {
 import { CameraAlt } from "@mui/icons-material";
 import Cropper from "react-easy-crop";
 import { useState, useRef, useCallback } from "react";
-import getCroppedImg from "../utils/cropImage";
+import { useContext } from "react";
 
-export default function ProfileCard() {
+import getCroppedImg from "../utils/cropImage";
+import { calculateAge } from "../utils/utils";
+import { AuthContext } from "../context/AuthProvider";
+
+export default function ProfilePage() {
   const [profileImage, setProfileImage] = useState("");
   const [imageSrc, setImageSrc] = useState(null);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
@@ -21,6 +25,7 @@ export default function ProfileCard() {
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [open, setOpen] = useState(false);
   const fileInputRef = useRef(null);
+  const { user } = useContext(AuthContext);
 
   const toBase64 = (file) =>
     new Promise((resolve, reject) => {
@@ -52,12 +57,12 @@ export default function ProfileCard() {
     try {
       const croppedBlob = await getCroppedImg(imageSrc, croppedAreaPixels);
       const base64Image = await toBase64(croppedBlob);
-      
+
       // For now, just set the profile image directly without server call
       // This ensures the save button works even without a backend
       setProfileImage(base64Image);
       setOpen(false);
-      
+
       // If you want to re-enable server upload later, uncomment this code:
       /*
       const res = await fetch("http://localhost:4000/upload-profile-image", {
@@ -77,7 +82,9 @@ export default function ProfileCard() {
     } catch (e) {
       console.error("Upload failed:", e);
       // Still close the modal and use the cropped image even if server upload fails
-      setProfileImage(await toBase64(await getCroppedImg(imageSrc, croppedAreaPixels)));
+      setProfileImage(
+        await toBase64(await getCroppedImg(imageSrc, croppedAreaPixels))
+      );
       setOpen(false);
     }
   };
@@ -159,7 +166,7 @@ export default function ProfileCard() {
               </IconButton>
             </Box>
             <Typography variant="h4" fontWeight={700} color="#4B4B4B" mb={2}>
-              First Last
+              {user.name}
             </Typography>
             <Button
               variant="contained"
@@ -185,12 +192,7 @@ export default function ProfileCard() {
             }}
           >
             <Box sx={{ mb: 4 }}>
-              <Typography
-                variant="h5"
-                fontWeight={700}
-                color="#4B4B4B"
-                mb={2}
-              >
+              <Typography variant="h5" fontWeight={700} color="#4B4B4B" mb={2}>
                 About Me
               </Typography>
               <Typography variant="body1" color="#4B4B4B" mb={3}>
@@ -212,7 +214,7 @@ export default function ProfileCard() {
                   color="#4B4B4B"
                   ml={1}
                 >
-                  21
+                  {calculateAge(user.birthdate)}
                 </Typography>
               </Box>
               <Box sx={{ mb: 1 }}>
@@ -230,7 +232,8 @@ export default function ProfileCard() {
                   color="#4B4B4B"
                   ml={1}
                 >
-                  Computer Engineering
+                  {!user.major && "Not Specified"}
+                  {user.major && user.major}
                 </Typography>
               </Box>
               <Box sx={{ mb: 1 }}>
@@ -248,17 +251,12 @@ export default function ProfileCard() {
                   color="#4B4B4B"
                   ml={1}
                 >
-                  Male
+                  {user.gender}
                 </Typography>
               </Box>
             </Box>
             <Box>
-              <Typography
-                variant="h5"
-                fontWeight={700}
-                color="#4B4B4B"
-                mb={2}
-              >
+              <Typography variant="h5" fontWeight={700} color="#4B4B4B" mb={2}>
                 My Preferences
               </Typography>
               <Box
