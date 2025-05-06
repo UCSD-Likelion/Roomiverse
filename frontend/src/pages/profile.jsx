@@ -10,8 +10,7 @@ import {
 } from "@mui/material";
 import { CameraAlt } from "@mui/icons-material";
 import Cropper from "react-easy-crop";
-import { useState, useRef, useCallback } from "react";
-import { useContext } from "react";
+import { useState, useRef, useCallback, useContext } from "react";
 
 import getCroppedImg from "../utils/cropImage";
 import { calculateAge } from "../utils/utils";
@@ -196,8 +195,7 @@ export default function ProfilePage() {
                 About Me
               </Typography>
               <Typography variant="body1" color="#4B4B4B" mb={3}>
-                I am ad;ljfal;sdjf;aksdj asdlfjasldkf adsfasdasdf asdf asdf asdf
-                alsdnfknas;lkv;jasdfandl;f a
+                {user.aboutMe || "Not Specified. Please update your profile."}
               </Typography>
               <Box sx={{ mb: 1 }}>
                 <Typography

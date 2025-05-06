@@ -39,6 +39,8 @@ namespace api.Models
         public DateTime RefreshTokenExpiryTime { get; set; }
         [BsonElement("profilePicture")]
         public Photo? ProfilePicture { get; set; } = new Photo();
+        [BsonElement("aboutMe")]
+        public string AboutMe { get; set; } = string.Empty;
     }
 }
 
