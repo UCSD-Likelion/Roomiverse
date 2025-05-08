@@ -38,16 +38,8 @@ namespace api.Models
         public string? RefreshToken { get; set; }
         public DateTime RefreshTokenExpiryTime { get; set; }
         [BsonElement("profilePicture")]
-        public Photo? ProfilePicture { get; set; } = new Photo();
+        public string? ProfilePicture { get; set; } = null;
         [BsonElement("aboutMe")]
-        public string AboutMe { get; set; } = string.Empty;
+        public string? AboutMe { get; set; } = null;
     }
-}
-
-public class Photo
-{
-    public byte[] Bytes { get; set; } = Array.Empty<byte>();
-    public string Description { get; set; } = string.Empty;
-    public string FileExtension { get; set; } = string.Empty;
-    public decimal Size { get; set; }
 }

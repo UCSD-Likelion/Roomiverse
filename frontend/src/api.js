@@ -37,3 +37,32 @@ export const fetchProfile = async () => {
   console.log("Profile Data:", response.data);
   return response.data;
 };
+
+export const uploadProfilePicture = async (base64Image) => {
+  const token = localStorage.getItem("token");
+  console.log("Token:", token);
+
+  if (!token) {
+    console.error("Token not found");
+    throw new Error("Token not found");
+  }
+
+  try {
+    const response = await axios.post(
+      `${API_URL}/Users/upload`,
+      { Base64String: base64Image },
+      {
+        headers: {
+          Authorization: `Bearer ${token.trim()}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    console.log("Upload Response:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error uploading image:", error);
+    throw new Error("Error uploading image: " + error.response.data);
+  }
+};
