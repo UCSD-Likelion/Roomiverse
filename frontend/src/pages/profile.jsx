@@ -15,6 +15,7 @@ import { useState, useRef, useCallback, useContext } from "react";
 import getCroppedImg from "../utils/cropImage";
 import { calculateAge } from "../utils/utils";
 import { AuthContext } from "../context/AuthProvider";
+import { uploadProfilePicture } from "../api";
 
 export default function ProfilePage() {
   const [profileImage, setProfileImage] = useState("");
@@ -56,34 +57,14 @@ export default function ProfilePage() {
     try {
       const croppedBlob = await getCroppedImg(imageSrc, croppedAreaPixels);
       const base64Image = await toBase64(croppedBlob);
-
-      // For now, just set the profile image directly without server call
-      // This ensures the save button works even without a backend
       setProfileImage(base64Image);
       setOpen(false);
 
-      // If you want to re-enable server upload later, uncomment this code:
-      /*
-      const res = await fetch("http://localhost:4000/upload-profile-image", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ image: base64Image }),
-      });
-  
-      const data = await res.json();
-  
-      if (!res.ok) {
-        throw new Error(data.error || "Upload failed");
-      }
-  
-      setProfileImage(data.url);
-      */
+      console.log("Cropped Image:", base64Image);
+
+      await uploadProfilePicture(base64Image);
     } catch (e) {
       console.error("Upload failed:", e);
-      // Still close the modal and use the cropped image even if server upload fails
-      setProfileImage(
-        await toBase64(await getCroppedImg(imageSrc, croppedAreaPixels))
-      );
       setOpen(false);
     }
   };
