@@ -323,8 +323,8 @@ export default function RegisterForm({
                 },
               }}
             >
-              <MenuItem value={"male"}>Male</MenuItem>
-              <MenuItem value={"female"}>Female</MenuItem>
+              <MenuItem value={"Male"}>Male</MenuItem>
+              <MenuItem value={"Female"}>Female</MenuItem>
             </Select>
           </FormControl>
         </Grid>

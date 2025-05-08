@@ -37,5 +37,9 @@ namespace api.Models
         public string Role { get; set; } = "User";
         public string? RefreshToken { get; set; }
         public DateTime RefreshTokenExpiryTime { get; set; }
+        [BsonElement("profilePicture")]
+        public string? ProfilePicture { get; set; } = null;
+        [BsonElement("aboutMe")]
+        public string? AboutMe { get; set; } = null;
     }
 }

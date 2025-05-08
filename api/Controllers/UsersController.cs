@@ -178,6 +178,7 @@ namespace api.Controllers
             return Ok(new { accessToken = accessToken, refreshToken = refreshToken });
         }
 
+        // POST: api/users/logout
         [HttpPost("logout")]
         public async Task<ActionResult> Logout()
         {
@@ -225,5 +226,42 @@ namespace api.Controllers
             await _service.DeleteAsync(id);
             return NoContent();
         }
+
+        // POST: api/users/upload
+        [HttpPost("upload")]
+        [Authorize]
+        public async Task<IActionResult> Upload([FromBody] Base64ImageDto base64ImageDto)
+        {
+            // Retrieve user ID from token
+            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null)
+                return Unauthorized("No user ID claim present in token.");
+
+            // Find user by ID
+            var id = userId;
+            var user = await _service.GetByIdAsync(id);
+
+            if (user == null)
+                return NotFound();
+
+
+            if (string.IsNullOrEmpty(base64ImageDto.Base64String))
+                return BadRequest("Base64 string is empty");
+
+            // Validate base64 string
+            if (!base64ImageDto.Base64String.StartsWith("data:image/"))
+                return BadRequest("Invalid base64 string format");
+
+            user.ProfilePicture = base64ImageDto.Base64String;
+
+            await _service.UpdateAsync(id, user);
+
+            return Ok(new { message = "File uploaded successfully" });
+        }
+    }
+
+    public class Base64ImageDto
+    {
+        public string Base64String { get; set; } = string.Empty;
     }
 }
