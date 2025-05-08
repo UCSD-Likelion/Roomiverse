@@ -15,6 +15,7 @@ function App() {
   return (
     <BrowserRouter>
       <main>
+        <Header />
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/userprofile" element={<UserProfile />} />

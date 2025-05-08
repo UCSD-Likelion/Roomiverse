@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { CameraAlt } from "@mui/icons-material";
 import Cropper from "react-easy-crop";
-import { useState, useRef, useCallback, useContext } from "react";
+import { useState, useRef, useCallback, useContext, useEffect } from "react";
 
 import getCroppedImg from "../utils/cropImage";
 import { calculateAge } from "../utils/utils";
@@ -26,6 +26,12 @@ export default function ProfilePage() {
   const [open, setOpen] = useState(false);
   const fileInputRef = useRef(null);
   const { user } = useContext(AuthContext);
+
+  useEffect(() => {
+    if (user?.profilePicture) {
+      setProfileImage(user.profilePicture);
+    }
+  }, [user]);
 
   const toBase64 = (file) =>
     new Promise((resolve, reject) => {
