@@ -143,7 +143,12 @@ function Header() {
               anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
               transformOrigin={{ vertical: "top", horizontal: "left" }}
             >
-              <StyledMenuItem onClick={handleCloseLogoMenu}>
+              <StyledMenuItem
+                onClick={() => {
+                  navigate("/");
+                  handleCloseLogoMenu();
+                }}
+              >
                 Home
               </StyledMenuItem>
               <StyledMenuItem onClick={handleCloseLogoMenu}>
