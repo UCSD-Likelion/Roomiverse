@@ -25,6 +25,7 @@ const StyledMenu = styled(Menu)(({ theme }) => ({
     width: "100vw",
     maxWidth: "100vw",
     margin: 0,
+    marginTop: "10px !important",
     left: "0 !important",
     right: "0 !important",
     backgroundColor: "rgba(0, 0, 0, 0.5)", // semi-transparent dark
@@ -95,11 +96,12 @@ function Header() {
     <AppBar
       position="fixed"
       sx={{
-        background: "linear-gradient(#8FADEB, #9CB3DB)",
+        background: "transparent",
         top: 0,
         left: 0,
         right: 0,
         minHeight: "60px",
+        boxShadow: "none",
       }}
     >
       <Container maxWidth>
