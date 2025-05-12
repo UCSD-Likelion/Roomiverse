@@ -3,10 +3,6 @@ import { useNavigate } from "react-router-dom";
 import {
   AppBar,
   Button,
-  Drawer,
-  List,
-  ListItem,
-  ListItemText,
   Box,
   Toolbar,
   IconButton,
@@ -17,18 +13,41 @@ import {
   Tooltip,
   Menu,
   MenuItem,
+  styled,
 } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
-import CloseIcon from "@mui/icons-material/Close";
 import logo from "../assets/images/logo.png";
 import { AuthContext } from "../context/AuthProvider";
 
-const navItems = ["Home", "About", "Contact"];
 const settings = ["Profile", "Logout"];
+
+const StyledMenu = styled(Menu)(({ theme }) => ({
+  "& .MuiPaper-root": {
+    width: "100vw",
+    maxWidth: "100vw",
+    margin: 0,
+    left: "0 !important",
+    right: "0 !important",
+    backgroundColor: "rgba(0, 0, 0, 0.5)", // semi-transparent dark
+    color: "#fff",
+    padding: theme.spacing(1, 0),
+    boxShadow: "none",
+    borderRadius: "0",
+  },
+}));
+
+const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
+  "&:hover": {
+    backgroundColor: "rgba(255, 255, 255, 0.1)", // subtle hover effect
+    fontWeight: 600,
+  },
+  fontSize: "1.1rem",
+  width: "100%",
+  padding: theme.spacing(2),
+}));
 
 function Header() {
   const [anchorElUser, setAnchorElUser] = useState(null);
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [anchorElLogo, setAnchorElLogo] = useState(null);
   const { logout, user, loading } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -40,6 +59,13 @@ function Header() {
     setAnchorElUser(null);
   };
 
+  const handleOpenLogoMenu = (event) => {
+    setAnchorElLogo(event.currentTarget);
+  };
+  const handleCloseLogoMenu = () => {
+    setAnchorElLogo(null);
+  };
+
   const handleMenuClick = (setting) => {
     if (setting === "Logout") {
       logout();
@@ -48,19 +74,11 @@ function Header() {
     handleCloseUserMenu();
   };
 
-  const handleToggleDrawer = (open) => () => {
-    setDrawerOpen(open);
-  };
-
-  const handleLogoClick = () => {
-    window.location.href = "/";
-  };
-
   return (
     <AppBar
       position="fixed"
       sx={{
-        backgroundColor: "#FF6F61",
+        background: "linear-gradient(#8FADEB, #9CB3DB)",
         top: 0,
         left: 0,
         right: 0,
@@ -79,37 +97,7 @@ function Header() {
             }}
           >
             <IconButton
-              size="large"
-              aria-label="menu"
-              onClick={handleToggleDrawer(true)}
-              sx={{ color: "white" }}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Drawer
-              anchor="left"
-              open={drawerOpen}
-              onClose={handleToggleDrawer(false)}
-            >
-              <Box sx={{ width: 250 }}>
-                <IconButton onClick={handleToggleDrawer(false)}>
-                  <CloseIcon />
-                </IconButton>
-                <List>
-                  {navItems.map((item) => (
-                    <ListItem
-                      button
-                      key={item}
-                      onClick={handleToggleDrawer(false)}
-                    >
-                      <ListItemText primary={item} />
-                    </ListItem>
-                  ))}
-                </List>
-              </Box>
-            </Drawer>
-            <IconButton
-              onClick={handleLogoClick}
+              onClick={handleOpenLogoMenu}
               sx={{ padding: 0, display: "flex", alignItems: "center" }}
               disableRipple
             >
@@ -131,6 +119,23 @@ function Header() {
                 Roomiverse
               </Typography>
             </IconButton>
+            <StyledMenu
+              anchorEl={anchorElLogo}
+              open={!!anchorElLogo}
+              onClose={handleCloseLogoMenu}
+              anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+              transformOrigin={{ vertical: "top", horizontal: "left" }}
+            >
+              <StyledMenuItem onClick={handleCloseLogoMenu}>
+                Home
+              </StyledMenuItem>
+              <StyledMenuItem onClick={handleCloseLogoMenu}>
+                Find Roomies
+              </StyledMenuItem>
+              <StyledMenuItem onClick={handleCloseLogoMenu}>
+                My Preferences
+              </StyledMenuItem>
+            </StyledMenu>
           </Box>
           <Box
             sx={{
@@ -183,13 +188,13 @@ function Header() {
                   variant="contained"
                   href="/login"
                   sx={{
-                    color: "#ff6f61",
+                    color: "#164863",
                     borderRadius: "2rem",
                     backgroundColor: "white",
                     px: 4,
                     fontWeight: "bold",
                     fontSize: "1rem",
-                    "&:hover": { backgroundColor: "#ff6f61", color: "white" },
+                    "&:hover": { backgroundColor: "#95AAFF", color: "white" },
                   }}
                 >
                   Login
@@ -198,13 +203,13 @@ function Header() {
                   variant="contained"
                   href="register"
                   sx={{
-                    color: "#ff6f61",
+                    color: "#164863",
                     borderRadius: "2rem",
                     backgroundColor: "white",
                     px: 3,
                     fontWeight: "bold",
                     fontSize: "1rem",
-                    "&:hover": { backgroundColor: "#ff6f61", color: "white" },
+                    "&:hover": { backgroundColor: "#95AAFF", color: "white" },
                   }}
                 >
                   Sign Up
