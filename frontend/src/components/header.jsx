@@ -102,6 +102,7 @@ function Header() {
         right: 0,
         minHeight: "60px",
         boxShadow: "none",
+        padding: "0 1rem",
       }}
     >
       <Container maxWidth>
