@@ -3,10 +3,6 @@ import { useNavigate } from "react-router-dom";
 import {
   AppBar,
   Button,
-  Drawer,
-  List,
-  ListItem,
-  ListItemText,
   Box,
   Toolbar,
   IconButton,
@@ -17,18 +13,56 @@ import {
   Tooltip,
   Menu,
   MenuItem,
+  styled,
 } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
-import CloseIcon from "@mui/icons-material/Close";
 import logo from "../assets/images/logo.png";
 import { AuthContext } from "../context/AuthProvider";
 
-const navItems = ["Home", "About", "Contact"];
 const settings = ["Profile", "Logout"];
+
+const StyledMenu = styled(Menu)(({ theme }) => ({
+  "& .MuiPaper-root": {
+    width: "100vw",
+    maxWidth: "100vw",
+    margin: 0,
+    marginTop: "10px !important",
+    left: "0 !important",
+    right: "0 !important",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    color: "#fff",
+    padding: theme.spacing(1, 0),
+    boxShadow: "none",
+    borderRadius: "0",
+  },
+}));
+
+const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
+  "&:hover": {
+    backgroundColor: "rgba(255, 255, 255, 0.1)",
+    fontWeight: 600,
+  },
+  fontSize: "1.1rem",
+  width: "100%",
+  padding: theme.spacing(2),
+}));
+
+const StyledUserMenuItem = styled(MenuItem)(({ theme }) => ({
+  fontSize: "1.1rem",
+  width: "100%",
+  padding: theme.spacing(2),
+  display: "flex",
+  alignItems: "center",
+  gap: theme.spacing(2),
+  "&.Mui-disabled": {
+    opacity: 1,
+    color: "#fff",
+    cursor: "default",
+  },
+}));
 
 function Header() {
   const [anchorElUser, setAnchorElUser] = useState(null);
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [anchorElLogo, setAnchorElLogo] = useState(null);
   const { logout, user, loading } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -40,31 +74,35 @@ function Header() {
     setAnchorElUser(null);
   };
 
+  const handleOpenLogoMenu = (event) => {
+    setAnchorElLogo(event.currentTarget);
+  };
+  const handleCloseLogoMenu = () => {
+    setAnchorElLogo(null);
+  };
+
   const handleMenuClick = (setting) => {
     if (setting === "Logout") {
       logout();
       navigate("/login");
     }
+    if (setting === "Profile") {
+      navigate("/profile");
+    }
     handleCloseUserMenu();
-  };
-
-  const handleToggleDrawer = (open) => () => {
-    setDrawerOpen(open);
-  };
-
-  const handleLogoClick = () => {
-    window.location.href = "/";
   };
 
   return (
     <AppBar
       position="fixed"
       sx={{
-        backgroundColor: "#FF6F61",
+        background: "transparent",
         top: 0,
         left: 0,
         right: 0,
         minHeight: "60px",
+        boxShadow: "none",
+        padding: "0 1rem",
       }}
     >
       <Container maxWidth>
@@ -79,37 +117,7 @@ function Header() {
             }}
           >
             <IconButton
-              size="large"
-              aria-label="menu"
-              onClick={handleToggleDrawer(true)}
-              sx={{ color: "white" }}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Drawer
-              anchor="left"
-              open={drawerOpen}
-              onClose={handleToggleDrawer(false)}
-            >
-              <Box sx={{ width: 250 }}>
-                <IconButton onClick={handleToggleDrawer(false)}>
-                  <CloseIcon />
-                </IconButton>
-                <List>
-                  {navItems.map((item) => (
-                    <ListItem
-                      button
-                      key={item}
-                      onClick={handleToggleDrawer(false)}
-                    >
-                      <ListItemText primary={item} />
-                    </ListItem>
-                  ))}
-                </List>
-              </Box>
-            </Drawer>
-            <IconButton
-              onClick={handleLogoClick}
+              onClick={handleOpenLogoMenu}
               sx={{ padding: 0, display: "flex", alignItems: "center" }}
               disableRipple
             >
@@ -131,6 +139,28 @@ function Header() {
                 Roomiverse
               </Typography>
             </IconButton>
+            <StyledMenu
+              anchorEl={anchorElLogo}
+              open={!!anchorElLogo}
+              onClose={handleCloseLogoMenu}
+              anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+              transformOrigin={{ vertical: "top", horizontal: "left" }}
+            >
+              <StyledMenuItem
+                onClick={() => {
+                  navigate("/");
+                  handleCloseLogoMenu();
+                }}
+              >
+                Home
+              </StyledMenuItem>
+              <StyledMenuItem onClick={handleCloseLogoMenu}>
+                Find Roomies
+              </StyledMenuItem>
+              <StyledMenuItem onClick={handleCloseLogoMenu}>
+                My Preferences
+              </StyledMenuItem>
+            </StyledMenu>
           </Box>
           <Box
             sx={{
@@ -144,29 +174,55 @@ function Header() {
             {loading ? (
               <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                 <Skeleton
-                  width={50}
+                  width={45}
                   height={70}
                   sx={{ borderRadius: "100%" }}
                 />
-                <Skeleton width={150} height={40} />
               </Box>
             ) : user ? (
               <>
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt="User Profile" />
+                    <Avatar alt="User Profile" src={user.profilePicture} />
                   </IconButton>
                 </Tooltip>
-                <Typography variant="h6" sx={{ color: "white", marginLeft: 1 }}>
-                  {user.name}
-                </Typography>
                 <Menu
-                  sx={{ mt: "5px" }}
+                  sx={{
+                    mt: "5px",
+                    "& .MuiPaper-root": {
+                      maxWidth: 180,
+                      padding: "0 1rem",
+                      backgroundColor: "rgba(0, 0, 0, 0.5)",
+                      color: "#fff",
+                      boxShadow: "none",
+                    },
+                  }}
                   id="menu-appbar"
                   anchorEl={anchorElUser}
                   open={Boolean(anchorElUser)}
                   onClose={handleCloseUserMenu}
                 >
+                  <StyledUserMenuItem
+                    disabled
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 2,
+                      justifyContent: "center",
+                      opacity: 1,
+                    }}
+                  >
+                    <Avatar alt="User Profile" src={user.profilePicture} />
+                    <Typography
+                      textAlign="center"
+                      sx={{
+                        fontWeight: "bold",
+                        fontSize: "1.2rem",
+                      }}
+                    >
+                      {user.name}
+                    </Typography>
+                  </StyledUserMenuItem>
                   {settings.map((setting) => (
                     <MenuItem
                       key={setting}
@@ -183,13 +239,13 @@ function Header() {
                   variant="contained"
                   href="/login"
                   sx={{
-                    color: "#ff6f61",
+                    color: "#164863",
                     borderRadius: "2rem",
                     backgroundColor: "white",
                     px: 4,
                     fontWeight: "bold",
                     fontSize: "1rem",
-                    "&:hover": { backgroundColor: "#ff6f61", color: "white" },
+                    "&:hover": { backgroundColor: "#95AAFF", color: "white" },
                   }}
                 >
                   Login
@@ -198,13 +254,13 @@ function Header() {
                   variant="contained"
                   href="register"
                   sx={{
-                    color: "#ff6f61",
+                    color: "#164863",
                     borderRadius: "2rem",
                     backgroundColor: "white",
                     px: 3,
                     fontWeight: "bold",
                     fontSize: "1rem",
-                    "&:hover": { backgroundColor: "#ff6f61", color: "white" },
+                    "&:hover": { backgroundColor: "#95AAFF", color: "white" },
                   }}
                 >
                   Sign Up

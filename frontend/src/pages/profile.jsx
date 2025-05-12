@@ -83,7 +83,6 @@ export default function ProfilePage() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        p: 4,
       }}
     >
       <Box
