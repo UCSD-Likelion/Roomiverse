@@ -45,6 +45,20 @@ const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
   padding: theme.spacing(2),
 }));
 
+const StyledUserMenuItem = styled(MenuItem)(({ theme }) => ({
+  fontSize: "1.1rem",
+  width: "100%",
+  padding: theme.spacing(2),
+  display: "flex",
+  alignItems: "center",
+  gap: theme.spacing(2),
+  "&.Mui-disabled": {
+    opacity: 1,
+    color: "#fff",
+    cursor: "default",
+  },
+}));
+
 function Header() {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [anchorElLogo, setAnchorElLogo] = useState(null);
@@ -70,6 +84,9 @@ function Header() {
     if (setting === "Logout") {
       logout();
       navigate("/login");
+    }
+    if (setting === "Profile") {
+      navigate("/profile");
     }
     handleCloseUserMenu();
   };
@@ -149,29 +166,55 @@ function Header() {
             {loading ? (
               <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                 <Skeleton
-                  width={50}
+                  width={45}
                   height={70}
                   sx={{ borderRadius: "100%" }}
                 />
-                <Skeleton width={150} height={40} />
               </Box>
             ) : user ? (
               <>
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt="User Profile" />
+                    <Avatar alt="User Profile" src={user.profilePicture} />
                   </IconButton>
                 </Tooltip>
-                <Typography variant="h6" sx={{ color: "white", marginLeft: 1 }}>
-                  {user.name}
-                </Typography>
                 <Menu
-                  sx={{ mt: "5px" }}
+                  sx={{
+                    mt: "5px",
+                    "& .MuiPaper-root": {
+                      maxWidth: 180,
+                      padding: "0 1rem",
+                      backgroundColor: "rgba(0, 0, 0, 0.5)",
+                      color: "#fff",
+                      boxShadow: "none",
+                    },
+                  }}
                   id="menu-appbar"
                   anchorEl={anchorElUser}
                   open={Boolean(anchorElUser)}
                   onClose={handleCloseUserMenu}
                 >
+                  <StyledUserMenuItem
+                    disabled
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 2,
+                      justifyContent: "center",
+                      opacity: 1,
+                    }}
+                  >
+                    <Avatar alt="User Profile" src={user.profilePicture} />
+                    <Typography
+                      textAlign="center"
+                      sx={{
+                        fontWeight: "bold",
+                        fontSize: "1.2rem",
+                      }}
+                    >
+                      {user.name}
+                    </Typography>
+                  </StyledUserMenuItem>
                   {settings.map((setting) => (
                     <MenuItem
                       key={setting}
