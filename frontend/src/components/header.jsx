@@ -28,7 +28,7 @@ const StyledMenu = styled(Menu)(({ theme }) => ({
     marginTop: "10px !important",
     left: "0 !important",
     right: "0 !important",
-    backgroundColor: "rgba(0, 0, 0, 0.5)", // semi-transparent dark
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
     color: "#fff",
     padding: theme.spacing(1, 0),
     boxShadow: "none",
@@ -38,7 +38,7 @@ const StyledMenu = styled(Menu)(({ theme }) => ({
 
 const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
   "&:hover": {
-    backgroundColor: "rgba(255, 255, 255, 0.1)", // subtle hover effect
+    backgroundColor: "rgba(255, 255, 255, 0.1)",
     fontWeight: 600,
   },
   fontSize: "1.1rem",
