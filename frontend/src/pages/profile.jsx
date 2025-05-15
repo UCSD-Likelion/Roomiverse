@@ -10,12 +10,14 @@ import {
 } from "@mui/material";
 import { CameraAlt } from "@mui/icons-material";
 import Cropper from "react-easy-crop";
-import { useState, useRef, useCallback } from "react";
 import getCroppedImg from "../utils/cropImage";
+import { useState, useRef, useCallback, useContext, useEffect } from "react";
+import { calculateAge } from "../utils/utils";
+import { AuthContext } from "../context/AuthProvider";
+import { uploadProfilePicture } from "../api";
 
-export default function ProfileCard() {
+export default function ProfilePage() {
   const MAX_ABOUT_ME_LENGTH = 100;
-
   const [profileImage, setProfileImage] = useState("");
   const [imageSrc, setImageSrc] = useState(null);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
@@ -29,6 +31,13 @@ export default function ProfileCard() {
     "I am ad;ljfal;sdjf;aksdj asdlfjasldkf adsfasdasdf asdf asdf asdf alsdnfknas;lkv;jasdfandl;f a"
   );
   const [originalAboutMe, setOriginalAboutMe] = useState(aboutMe);
+  const { user } = useContext(AuthContext);
+
+  useEffect(() => {
+    if (user?.profilePicture) {
+      setProfileImage(user.profilePicture);
+    }
+  }, [user]);
 
   const toBase64 = (file) =>
     new Promise((resolve, reject) => {
@@ -154,7 +163,7 @@ export default function ProfileCard() {
               </IconButton>
             </Box>
             <Typography variant="h4" fontWeight={700} color="#4B4B4B" mb={2}>
-              First Last
+              {user.name}
             </Typography>
             {isEditing ? (
               <>
@@ -290,7 +299,7 @@ export default function ProfileCard() {
                   Age:
                 </Typography>
                 <Typography component="span" ml={1}>
-                  21
+                  {calculateAge(user.birthdate)}
                 </Typography>
               </Box>
               <Box sx={{ mb: 1 }}>
@@ -298,7 +307,8 @@ export default function ProfileCard() {
                   Major:
                 </Typography>
                 <Typography component="span" ml={1}>
-                  Computer Engineering
+                  {!user.major && "Not Specified"}
+                  {user.major && user.major}
                 </Typography>
               </Box>
               <Box sx={{ mb: 1 }}>
@@ -306,16 +316,23 @@ export default function ProfileCard() {
                   Gender:
                 </Typography>
                 <Typography component="span" ml={1}>
-                  Male
+                  {user.gender}
                 </Typography>
               </Box>
             </Box>
-
             <Box>
               <Typography variant="h5" fontWeight={700} color="#4B4B4B" mb={2}>
                 My Preferences
               </Typography>
               <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, mb: 2 }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  gap: 2,
+                  mb: 2,
+                }}
+              >
                 <Chip
                   label="Sleep Time: 11:00"
                   sx={{

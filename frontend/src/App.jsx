@@ -5,7 +5,7 @@ import UserProfile from "./pages/user-profile";
 import Login from "./pages/login";
 import LandingPage from "./pages/landing";
 import Signup from "./pages/signup";
-import ProfileCard from "./pages/profile";
+import ProfilePage from "./pages/profile";
 import Dashboard from "./pages/dashboard";
 import PrivateRoute from "./utils/private-route";
 import MatchingForm from "./pages/matchingForm";
@@ -15,6 +15,7 @@ function App() {
   return (
     <BrowserRouter>
       <main>
+        <Header />
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/userprofile" element={<UserProfile />} />
@@ -22,9 +23,9 @@ function App() {
           <Route path="/register" element={<Signup />} />
           <Route path="/" element={<PrivateRoute />}>
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/profile" element={<ProfilePage />} />
           </Route>
           <Route path="/matching-form" element={<MatchingForm />} />
-          <Route path="/profile" element={<ProfileCard />} />
           <Route path="/userprofile" element={<UserProfile />} />
           <Route path="/matching" element={<MatchingPage />} />
         </Routes>
