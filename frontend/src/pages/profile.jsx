@@ -14,7 +14,7 @@ import getCroppedImg from "../utils/cropImage";
 import { useState, useRef, useCallback, useContext, useEffect } from "react";
 import { calculateAge } from "../utils/utils";
 import { AuthContext } from "../context/AuthProvider";
-import { uploadProfilePicture, updateAboutMe, fetchProfile } from "../api";
+import { uploadProfilePicture, updateAboutMe } from "../api";
 
 export default function ProfilePage() {
   const MAX_ABOUT_ME_LENGTH = 100;
