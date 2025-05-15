@@ -10,14 +10,14 @@ import {
 } from "@mui/material";
 import { CameraAlt } from "@mui/icons-material";
 import Cropper from "react-easy-crop";
-import { useState, useRef, useCallback, useContext, useEffect } from "react";
-
 import getCroppedImg from "../utils/cropImage";
+import { useState, useRef, useCallback, useContext, useEffect } from "react";
 import { calculateAge } from "../utils/utils";
 import { AuthContext } from "../context/AuthProvider";
-import { uploadProfilePicture } from "../api";
+import { uploadProfilePicture, updateAboutMe, fetchProfile } from "../api";
 
 export default function ProfilePage() {
+  const MAX_ABOUT_ME_LENGTH = 100;
   const [profileImage, setProfileImage] = useState("");
   const [imageSrc, setImageSrc] = useState(null);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
@@ -26,6 +26,8 @@ export default function ProfilePage() {
   const [open, setOpen] = useState(false);
   const fileInputRef = useRef(null);
   const { user } = useContext(AuthContext);
+  const [isEditing, setIsEditing] = useState(false);
+  const [originalAboutMe, setOriginalAboutMe] = useState(user.aboutMe || "");
 
   useEffect(() => {
     if (user?.profilePicture) {
@@ -67,12 +69,28 @@ export default function ProfilePage() {
       setOpen(false);
 
       console.log("Cropped Image:", base64Image);
-
       await uploadProfilePicture(base64Image);
     } catch (e) {
       console.error("Upload failed:", e);
       setOpen(false);
     }
+  };
+
+  const handleEdit = () => {
+    setOriginalAboutMe(user.aboutMe);
+    setIsEditing(true);
+  };
+
+  const handleSave = async () => {
+    const success = await updateAboutMe(user.userID, originalAboutMe);
+    if (success) {
+      window.location.reload();
+      console.log("About Me updated successfully");
+    }
+  };
+
+  const handleCancel = () => {
+    setIsEditing(false);
   };
 
   return (
@@ -83,6 +101,7 @@ export default function ProfilePage() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        p: 4,
       }}
     >
       <Box
@@ -93,16 +112,11 @@ export default function ProfilePage() {
           maxWidth: 800,
           p: { xs: 3, md: 5 },
           boxShadow: 3,
-          height: "auto",
+          height: 440,
+          overflow: "hidden",
         }}
       >
-        <Typography
-          variant="h3"
-          fontWeight={700}
-          color="#4B4B4B"
-          textAlign="left"
-          mb={6}
-        >
+        <Typography variant="h3" fontWeight={700} color="#4B4B4B" mb={6}>
           My Profile
         </Typography>
         <Box
@@ -112,6 +126,7 @@ export default function ProfilePage() {
             justifyContent: "space-between",
           }}
         >
+          {/* Left Column */}
           <Box
             sx={{
               display: "flex",
@@ -153,88 +168,158 @@ export default function ProfilePage() {
             <Typography variant="h4" fontWeight={700} color="#4B4B4B" mb={2}>
               {user.name}
             </Typography>
-            <Button
-              variant="contained"
-              sx={{
-                backgroundColor: "#95AAFF",
-                textTransform: "none",
-                fontWeight: 600,
-                borderRadius: 28,
-                px: 4,
-                py: 1,
-                fontSize: "1rem",
-                color: "white",
-                "&:hover": { backgroundColor: "#7B93FF" },
-              }}
-            >
-              Edit Profile
-            </Button>
+            {isEditing ? (
+              <>
+                <Button
+                  variant="contained"
+                  onClick={handleSave}
+                  sx={{
+                    backgroundColor: "#95AAFF",
+                    textTransform: "none",
+                    fontWeight: 600,
+                    borderRadius: 28,
+                    px: 4,
+                    py: 1,
+                    fontSize: "1rem",
+                    color: "white",
+                    "&:hover": { backgroundColor: "#7B93FF" },
+                    mb: 1,
+                    width: 160,
+                  }}
+                >
+                  Save
+                </Button>
+                <Button
+                  variant="contained"
+                  onClick={handleCancel}
+                  sx={{
+                    backgroundColor: "#95AAFF",
+                    textTransform: "none",
+                    fontWeight: 600,
+                    borderRadius: 28,
+                    px: 4,
+                    py: 1,
+                    fontSize: "1rem",
+                    color: "white",
+                    "&:hover": { backgroundColor: "#7B93FF" },
+                    width: 160,
+                  }}
+                >
+                  Cancel
+                </Button>
+              </>
+            ) : (
+              <Button
+                variant="contained"
+                onClick={handleEdit}
+                sx={{
+                  backgroundColor: "#95AAFF",
+                  textTransform: "none",
+                  fontWeight: 600,
+                  borderRadius: 28,
+                  px: 4,
+                  py: 1,
+                  fontSize: "1rem",
+                  color: "white",
+                  "&:hover": { backgroundColor: "#7B93FF" },
+                  width: 160,
+                }}
+              >
+                Edit Profile
+              </Button>
+            )}
           </Box>
+
+          {/* Right Column */}
           <Box
             sx={{
               width: { xs: "100%", md: "55%" },
               mt: { xs: 0, md: -4 },
+              position: "relative",
             }}
           >
             <Box sx={{ mb: 4 }}>
               <Typography variant="h5" fontWeight={700} color="#4B4B4B" mb={2}>
                 About Me
               </Typography>
-              <Typography variant="body1" color="#4B4B4B" mb={3}>
-                {user.aboutMe || "Not Specified. Please update your profile."}
-              </Typography>
+
+              <Box sx={{ position: "relative", minHeight: 50, mb: 3 }}>
+                {!isEditing ? (
+                  <Typography variant="body1" color="#4B4B4B">
+                    {user.aboutMe ||
+                      "Not Specified. Please update your profile."}
+                  </Typography>
+                ) : (
+                  <>
+                    <Box
+                      sx={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        height: 50,
+                        bgcolor: "white",
+                        border: "1px solid #ccc",
+                        borderRadius: 1,
+                        zIndex: 10,
+                        p: 1,
+                      }}
+                    >
+                      <textarea
+                        value={originalAboutMe}
+                        onChange={(e) => setOriginalAboutMe(e.target.value)}
+                        maxLength={MAX_ABOUT_ME_LENGTH}
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          fontSize: "1rem",
+                          padding: "10px",
+                          borderRadius: "6px",
+                          border: "none",
+                          resize: "none",
+                          outline: "none",
+                          boxSizing: "border-box",
+                          background: "transparent",
+                        }}
+                      />
+                      <Typography
+                        variant="caption"
+                        sx={{
+                          textAlign: "right",
+                          display: "block",
+                          color: "#888",
+                          mt: 0.5,
+                        }}
+                      >
+                        {(originalAboutMe || "").length}/{MAX_ABOUT_ME_LENGTH}
+                      </Typography>
+                    </Box>
+                  </>
+                )}
+              </Box>
+
               <Box sx={{ mb: 1 }}>
-                <Typography
-                  variant="h6"
-                  component="span"
-                  fontWeight={700}
-                  color="#4B4B4B"
-                >
+                <Typography variant="h6" component="span" fontWeight={700}>
                   Age:
                 </Typography>
-                <Typography
-                  variant="h6"
-                  component="span"
-                  color="#4B4B4B"
-                  ml={1}
-                >
+                <Typography component="span" ml={1}>
                   {calculateAge(user.birthdate)}
                 </Typography>
               </Box>
               <Box sx={{ mb: 1 }}>
-                <Typography
-                  variant="h6"
-                  component="span"
-                  fontWeight={700}
-                  color="#4B4B4B"
-                >
+                <Typography variant="h6" component="span" fontWeight={700}>
                   Major:
                 </Typography>
-                <Typography
-                  variant="h6"
-                  component="span"
-                  color="#4B4B4B"
-                  ml={1}
-                >
+                <Typography component="span" ml={1}>
                   {!user.major && "Not Specified"}
                   {user.major && user.major}
                 </Typography>
               </Box>
               <Box sx={{ mb: 1 }}>
-                <Typography
-                  variant="h6"
-                  component="span"
-                  fontWeight={700}
-                  color="#4B4B4B"
-                >
+                <Typography variant="h6" component="span" fontWeight={700}>
                   Gender:
                 </Typography>
-                <Typography
-                  variant="h6"
-                  component="span"
-                  color="#4B4B4B"
-                  ml={1}
-                >
+                <Typography component="span" ml={1}>
                   {user.gender}
                 </Typography>
               </Box>
@@ -243,106 +328,103 @@ export default function ProfilePage() {
               <Typography variant="h5" fontWeight={700} color="#4B4B4B" mb={2}>
                 My Preferences
               </Typography>
-              <Box
-                sx={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  gap: 2,
-                  mb: 2,
-                }}
-              >
-                <Chip
-                  label="Sleep Time: 11:00"
+              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, mb: 2 }}>
+                <Box
                   sx={{
-                    backgroundColor: "#95AAFF",
-                    color: "white",
-                    fontWeight: 600,
-                    borderRadius: 28,
-                    px: 2,
-                    py: 2.5,
-                    height: 40,
-                    fontSize: "0.95rem",
+                    display: "flex",
+                    flexWrap: "wrap",
+                    gap: 2,
+                    mb: 2,
                   }}
-                />
-                <Chip
-                  label="On-Campus"
-                  sx={{
-                    backgroundColor: "#95AAFF",
-                    color: "white",
-                    fontWeight: 600,
-                    borderRadius: 28,
-                    px: 2,
-                    py: 2.5,
-                    height: 40,
-                    fontSize: "0.95rem",
-                  }}
-                />
+                >
+                  <Chip
+                    label="Sleep Time: 11:00"
+                    sx={{
+                      backgroundColor: "#95AAFF",
+                      color: "white",
+                      fontWeight: 600,
+                      borderRadius: 28,
+                      px: 2,
+                      py: 2.5,
+                      height: 40,
+                      fontSize: "0.95rem",
+                    }}
+                  />
+                  <Chip
+                    label="On-Campus"
+                    sx={{
+                      backgroundColor: "#95AAFF",
+                      color: "white",
+                      fontWeight: 600,
+                      borderRadius: 28,
+                      px: 2,
+                      py: 2.5,
+                      height: 40,
+                      fontSize: "0.95rem",
+                    }}
+                  />
+                </Box>
               </Box>
             </Box>
           </Box>
         </Box>
+
+        {/* Image Cropper Modal */}
+        <Modal open={open} onClose={() => setOpen(false)}>
+          <Box
+            sx={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              width: 300,
+              height: 430,
+              transform: "translate(-50%, -50%)",
+              bgcolor: "white",
+              boxShadow: 24,
+              borderRadius: 2,
+              overflow: "hidden",
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            <Box sx={{ flexGrow: 1, position: "relative" }}>
+              <Cropper
+                image={imageSrc}
+                crop={crop}
+                zoom={zoom}
+                aspect={1}
+                onCropChange={setCrop}
+                onZoomChange={setZoom}
+                onCropComplete={onCropComplete}
+              />
+            </Box>
+            <Box sx={{ px: 2, py: 1.5 }}>
+              <Slider
+                value={zoom}
+                min={1}
+                max={3}
+                step={0.1}
+                onChange={(e, z) => setZoom(z)}
+                sx={{ color: "#95AAFF", mb: 2 }}
+              />
+              <Button
+                fullWidth
+                variant="contained"
+                onClick={handleCropSave}
+                sx={{
+                  backgroundColor: "#95AAFF",
+                  textTransform: "none",
+                  fontWeight: 600,
+                  borderRadius: 2,
+                  "&:hover": { backgroundColor: "#7B93FF" },
+                }}
+              >
+                Save
+              </Button>
+            </Box>
+          </Box>
+        </Modal>
       </Box>
-
-      <Modal open={open} onClose={() => setOpen(false)}>
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            width: 300,
-            height: 430,
-            transform: "translate(-50%, -50%)",
-            bgcolor: "white",
-            boxShadow: 24,
-            borderRadius: 2,
-            overflow: "hidden",
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          <Box sx={{ flexGrow: 1, position: "relative" }}>
-            <Cropper
-              image={imageSrc}
-              crop={crop}
-              zoom={zoom}
-              aspect={1}
-              onCropChange={setCrop}
-              onZoomChange={setZoom}
-              onCropComplete={onCropComplete}
-            />
-          </Box>
-
-          <Box sx={{ px: 2, py: 1.5 }}>
-            <Slider
-              value={zoom}
-              min={1}
-              max={3}
-              step={0.1}
-              onChange={(e, z) => setZoom(z)}
-              sx={{
-                color: "#95AAFF",
-                mb: 2,
-              }}
-            />
-            <Button
-              fullWidth
-              variant="contained"
-              onClick={handleCropSave}
-              sx={{
-                backgroundColor: "#95AAFF",
-                textTransform: "none",
-                fontWeight: 600,
-                borderRadius: 2,
-                "&:hover": {
-                  backgroundColor: "#7B93FF",
-                },
-              }}
-            >
-              Save
-            </Button>
-          </Box>
-        </Box>
-      </Modal>
     </Box>
   );
 }
