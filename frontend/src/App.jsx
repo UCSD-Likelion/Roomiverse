@@ -10,14 +10,16 @@ import Dashboard from "./pages/dashboard";
 import PrivateRoute from "./utils/private-route";
 import MatchingForm from "./pages/matchingForm";
 import MatchingPage from "./pages/matching-page";
+import HomePage from "./pages/homepage";
 
 function App() {
   return (
     <BrowserRouter>
       <main>
-        <Header />
+        {/* <Header /> */}
         <Routes>
           <Route path="/" element={<LandingPage />} />
+          <Route path="/homepage" element={<HomePage />} />
           <Route path="/userprofile" element={<UserProfile />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Signup />} />
