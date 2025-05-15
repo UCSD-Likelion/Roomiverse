@@ -54,7 +54,6 @@ export const uploadProfilePicture = async (base64Image) => {
       {
         headers: {
           Authorization: `Bearer ${token.trim()}`,
-          "Content-Type": "application/json",
         },
       }
     );
@@ -64,5 +63,28 @@ export const uploadProfilePicture = async (base64Image) => {
   } catch (error) {
     console.error("Error uploading image:", error);
     throw new Error("Error uploading image: " + error.response.data);
+  }
+};
+
+export const updateAboutMe = async (userID, aboutMe) => {
+  const token = localStorage.getItem("token");
+  console.log("Token:", token);
+
+  try {
+    const response = await axios.post(
+      `${API_URL}/Users/aboutme`,
+      { aboutMe },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return response.status === 200;
+  } catch (error) {
+    console.error("Error updating About Me:", error);
+    return false;
   }
 };

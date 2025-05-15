@@ -200,19 +200,26 @@ namespace api.Controllers
             return Ok("Logged out successfully");
         }
 
-        // PUT: api/users/123456
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(string id, [FromBody] User updatedUser)
+        // PUT: api/aboutme
+        [HttpPost("aboutme")]
+        [Authorize]
+        public async Task<IActionResult> Update([FromBody] UpdateAboutMeDto dto)
         {
-            var existing = await _service.GetByIdAsync(id);
-            if (existing == null)
+            // Retrieve user ID from token
+            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+            if (userId == null)
+                return Unauthorized("No user ID claim present in token.");
+
+            // Check if the user ID in the token matches the ID in the URL
+            var user = await _service.GetByIdAsync(userId);
+            if (user == null)
                 return NotFound();
 
-            // ensure ID match
-            updatedUser.Id = id;
+            user.AboutMe = dto.AboutMe;
 
-            await _service.UpdateAsync(id, updatedUser);
-            return NoContent();
+            await _service.UpdateAsync(userId, user);
+            return Ok(new { message = "User updated successfully" });
         }
 
         // DELETE: api/users/123456
@@ -224,7 +231,7 @@ namespace api.Controllers
                 return NotFound();
 
             await _service.DeleteAsync(id);
-            return NoContent();
+            return Ok(new { message = "User deleted successfully" });
         }
 
         // POST: api/users/upload
@@ -263,5 +270,10 @@ namespace api.Controllers
     public class Base64ImageDto
     {
         public string Base64String { get; set; } = string.Empty;
+    }
+
+    public class UpdateAboutMeDto
+    {
+        public string AboutMe { get; set; } = string.Empty;
     }
 }

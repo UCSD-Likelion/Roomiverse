@@ -14,7 +14,7 @@ import getCroppedImg from "../utils/cropImage";
 import { useState, useRef, useCallback, useContext, useEffect } from "react";
 import { calculateAge } from "../utils/utils";
 import { AuthContext } from "../context/AuthProvider";
-import { uploadProfilePicture } from "../api";
+import { uploadProfilePicture, updateAboutMe, fetchProfile } from "../api";
 
 export default function ProfilePage() {
   const MAX_ABOUT_ME_LENGTH = 100;
@@ -25,13 +25,9 @@ export default function ProfilePage() {
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [open, setOpen] = useState(false);
   const fileInputRef = useRef(null);
-
-  const [isEditing, setIsEditing] = useState(false);
-  const [aboutMe, setAboutMe] = useState(
-    "I am ad;ljfal;sdjf;aksdj asdlfjasldkf adsfasdasdf asdf asdf asdf alsdnfknas;lkv;jasdfandl;f a"
-  );
-  const [originalAboutMe, setOriginalAboutMe] = useState(aboutMe);
   const { user } = useContext(AuthContext);
+  const [isEditing, setIsEditing] = useState(false);
+  const [originalAboutMe, setOriginalAboutMe] = useState(user.aboutMe || "");
 
   useEffect(() => {
     if (user?.profilePicture) {
@@ -71,22 +67,29 @@ export default function ProfilePage() {
       const base64Image = await toBase64(croppedBlob);
       setProfileImage(base64Image);
       setOpen(false);
+
+      console.log("Cropped Image:", base64Image);
+      await uploadProfilePicture(base64Image);
     } catch (e) {
       console.error("Upload failed:", e);
+      setOpen(false);
     }
   };
 
   const handleEdit = () => {
-    setOriginalAboutMe(aboutMe);
+    setOriginalAboutMe(user.aboutMe);
     setIsEditing(true);
   };
 
-  const handleSave = () => {
-    setIsEditing(false);
+  const handleSave = async () => {
+    const success = await updateAboutMe(user.userID, originalAboutMe);
+    if (success) {
+      window.location.reload();
+      console.log("About Me updated successfully");
+    }
   };
 
   const handleCancel = () => {
-    setAboutMe(originalAboutMe);
     setIsEditing(false);
   };
 
@@ -243,7 +246,8 @@ export default function ProfilePage() {
               <Box sx={{ position: "relative", minHeight: 50, mb: 3 }}>
                 {!isEditing ? (
                   <Typography variant="body1" color="#4B4B4B">
-                    {aboutMe}
+                    {user.aboutMe ||
+                      "Not Specified. Please update your profile."}
                   </Typography>
                 ) : (
                   <>
@@ -262,8 +266,8 @@ export default function ProfilePage() {
                       }}
                     >
                       <textarea
-                        value={aboutMe}
-                        onChange={(e) => setAboutMe(e.target.value)}
+                        value={originalAboutMe}
+                        onChange={(e) => setOriginalAboutMe(e.target.value)}
                         maxLength={MAX_ABOUT_ME_LENGTH}
                         style={{
                           width: "100%",
@@ -287,7 +291,7 @@ export default function ProfilePage() {
                           mt: 0.5,
                         }}
                       >
-                        {aboutMe.length}/{MAX_ABOUT_ME_LENGTH}
+                        {(originalAboutMe || "").length}/{MAX_ABOUT_ME_LENGTH}
                       </Typography>
                     </Box>
                   </>
@@ -325,101 +329,102 @@ export default function ProfilePage() {
                 My Preferences
               </Typography>
               <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, mb: 2 }}>
-              <Box
-                sx={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  gap: 2,
-                  mb: 2,
-                }}
-              >
-                <Chip
-                  label="Sleep Time: 11:00"
+                <Box
                   sx={{
-                    backgroundColor: "#95AAFF",
-                    color: "white",
-                    fontWeight: 600,
-                    borderRadius: 28,
-                    px: 2,
-                    py: 2.5,
-                    height: 40,
-                    fontSize: "0.95rem",
+                    display: "flex",
+                    flexWrap: "wrap",
+                    gap: 2,
+                    mb: 2,
                   }}
-                />
-                <Chip
-                  label="On-Campus"
-                  sx={{
-                    backgroundColor: "#95AAFF",
-                    color: "white",
-                    fontWeight: 600,
-                    borderRadius: 28,
-                    px: 2,
-                    py: 2.5,
-                    height: 40,
-                    fontSize: "0.95rem",
-                  }}
-                />
+                >
+                  <Chip
+                    label="Sleep Time: 11:00"
+                    sx={{
+                      backgroundColor: "#95AAFF",
+                      color: "white",
+                      fontWeight: 600,
+                      borderRadius: 28,
+                      px: 2,
+                      py: 2.5,
+                      height: 40,
+                      fontSize: "0.95rem",
+                    }}
+                  />
+                  <Chip
+                    label="On-Campus"
+                    sx={{
+                      backgroundColor: "#95AAFF",
+                      color: "white",
+                      fontWeight: 600,
+                      borderRadius: 28,
+                      px: 2,
+                      py: 2.5,
+                      height: 40,
+                      fontSize: "0.95rem",
+                    }}
+                  />
+                </Box>
               </Box>
             </Box>
           </Box>
         </Box>
-      </Box>
 
-      {/* Image Cropper Modal */}
-      <Modal open={open} onClose={() => setOpen(false)}>
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            width: 300,
-            height: 430,
-            transform: "translate(-50%, -50%)",
-            bgcolor: "white",
-            boxShadow: 24,
-            borderRadius: 2,
-            overflow: "hidden",
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          <Box sx={{ flexGrow: 1, position: "relative" }}>
-            <Cropper
-              image={imageSrc}
-              crop={crop}
-              zoom={zoom}
-              aspect={1}
-              onCropChange={setCrop}
-              onZoomChange={setZoom}
-              onCropComplete={onCropComplete}
-            />
+        {/* Image Cropper Modal */}
+        <Modal open={open} onClose={() => setOpen(false)}>
+          <Box
+            sx={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              width: 300,
+              height: 430,
+              transform: "translate(-50%, -50%)",
+              bgcolor: "white",
+              boxShadow: 24,
+              borderRadius: 2,
+              overflow: "hidden",
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            <Box sx={{ flexGrow: 1, position: "relative" }}>
+              <Cropper
+                image={imageSrc}
+                crop={crop}
+                zoom={zoom}
+                aspect={1}
+                onCropChange={setCrop}
+                onZoomChange={setZoom}
+                onCropComplete={onCropComplete}
+              />
+            </Box>
+            <Box sx={{ px: 2, py: 1.5 }}>
+              <Slider
+                value={zoom}
+                min={1}
+                max={3}
+                step={0.1}
+                onChange={(e, z) => setZoom(z)}
+                sx={{ color: "#95AAFF", mb: 2 }}
+              />
+              <Button
+                fullWidth
+                variant="contained"
+                onClick={handleCropSave}
+                sx={{
+                  backgroundColor: "#95AAFF",
+                  textTransform: "none",
+                  fontWeight: 600,
+                  borderRadius: 2,
+                  "&:hover": { backgroundColor: "#7B93FF" },
+                }}
+              >
+                Save
+              </Button>
+            </Box>
           </Box>
-          <Box sx={{ px: 2, py: 1.5 }}>
-            <Slider
-              value={zoom}
-              min={1}
-              max={3}
-              step={0.1}
-              onChange={(e, z) => setZoom(z)}
-              sx={{ color: "#95AAFF", mb: 2 }}
-            />
-            <Button
-              fullWidth
-              variant="contained"
-              onClick={handleCropSave}
-              sx={{
-                backgroundColor: "#95AAFF",
-                textTransform: "none",
-                fontWeight: 600,
-                borderRadius: 2,
-                "&:hover": { backgroundColor: "#7B93FF" },
-              }}
-            >
-              Save
-            </Button>
-          </Box>
-        </Box>
-      </Modal>
+        </Modal>
+      </Box>
     </Box>
   );
 }
