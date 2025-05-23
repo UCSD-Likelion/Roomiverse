@@ -1,9 +1,22 @@
-import React from "react";
 import { Box, Typography, Button } from "@mui/material";
 // Feature icons replaced with images
 import RoomiverseHomeIcon from "../assets/images/roomiverse-home.png";
 import ArrowHomeIcon from "../assets/images/arrow-home.png";
 import HumanHomeIcon from "../assets/images/human-home.png";
+import { motion } from "framer-motion";
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: (i = 0) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: i * 0.2,
+      duration: 0.6,
+      ease: "easeOut",
+    },
+  }),
+};
 
 export default function HomePage() {
   return (
@@ -15,25 +28,32 @@ export default function HomePage() {
           minHeight: "120vh",
           color: "#fff",
           fontFamily: '"M PLUS 1p", sans-serif',
-          position: 'relative'
+          position: "relative",
+          overflow: "hidden",
         }}
       >
         {/* Hero Content */}
-        <Box sx={{ position: "relative", textAlign: "center", pt: 8, pb: 54}}>
+        <Box sx={{ position: "relative", textAlign: "center", pt: 8 }}>
           <Box
             sx={{
               position: "absolute",
               top: 0,
               left: -190,
               right: -190,
-              height: '207.5vh',
+              height: "207.5vh",
               mt: 12,
               backgroundColor: "#FFFFFF33",
               borderRadius: "100% 100% 0 0",
-              zIndex: 0
+              zIndex: 0,
             }}
           />
-          <Box sx={{ position: "relative", zIndex: 1, px: 2 }}>
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            custom={0}
+            variants={fadeUp}
+            style={{ position: "relative", zIndex: 1, paddingInline: 16 }}
+          >
             <Typography
               component="h1"
               sx={{
@@ -41,10 +61,11 @@ export default function HomePage() {
                 fontSize: { xs: 40, md: 60 },
                 lineHeight: 1.1,
                 mb: 4,
-                mt:23
+                mt: 23,
               }}
             >
-              Find Your Vibe,<br /> Share Your Space
+              Find Your Vibe,
+              <br /> Share Your Space
             </Typography>
             <Button
               variant="contained"
@@ -57,28 +78,34 @@ export default function HomePage() {
                 py: 1,
                 mt: 3,
                 fontSize: 26,
-                fontWeight: 700
+                fontWeight: 700,
               }}
             >
               Find your Roomie
             </Button>
-          </Box>
+          </motion.div>
         </Box>
 
         {/* Features Section - now inside hero container */}
-        <Box sx={{ px: { xs: 2, md: 8 }, py: 10 }}>
+        <Box sx={{ px: { xs: 2, md: 8 }, py: 10, mt: 10 }}>
           <Box
             sx={{
-              display: 'flex',
-              flexDirection: 'column',
+              display: "flex",
+              flexDirection: "column",
               gap: 15,
-              alignItems: 'center'
+              alignItems: "center",
             }}
           >
             {/* About Us */}
-            <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 6 }}>
+            <Box sx={{ display: "flex", alignItems: "flex-start", gap: 6 }}>
               <Box
-                sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: .5, width: 190 }}
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  gap: 0.5,
+                  width: 190,
+                }}
               >
                 <Box
                   component="img"
@@ -93,15 +120,25 @@ export default function HomePage() {
                   About Us
                 </Typography>
               </Box>
-              <Typography sx={{ color: "#fff", mt: 5, fontSize: 18, maxWidth: 600 }}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi.
+              <Typography
+                sx={{ color: "#fff", mt: 5, fontSize: 18, maxWidth: 600 }}
+              >
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
+                nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed
+                nisi.
               </Typography>
             </Box>
 
             {/* Perfect Match */}
-            <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 6 }}>
+            <Box sx={{ display: "flex", alignItems: "flex-start", gap: 6 }}>
               <Box
-                sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0.1, width: 190 }}
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  gap: 0.1,
+                  width: 190,
+                }}
               >
                 <Box
                   component="img"
@@ -116,15 +153,24 @@ export default function HomePage() {
                   Perfect Match
                 </Typography>
               </Box>
-              <Typography sx={{ color: "#fff", mt: 5, fontSize: 18, maxWidth: 600 }}>
-                Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris.
+              <Typography
+                sx={{ color: "#fff", mt: 5, fontSize: 18, maxWidth: 600 }}
+              >
+                Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh
+                elementum imperdiet. Duis sagittis ipsum. Praesent mauris.
               </Typography>
             </Box>
 
             {/* Trustworthy */}
-            <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 6 }}>
+            <Box sx={{ display: "flex", alignItems: "flex-start", gap: 6 }}>
               <Box
-                sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2, width: 190 }}
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  gap: 2,
+                  width: 190,
+                }}
               >
                 <Box
                   component="img"
@@ -139,8 +185,11 @@ export default function HomePage() {
                   Trustworthy
                 </Typography>
               </Box>
-              <Typography sx={{ color: "#fff", mt: 5, fontSize: 18, maxWidth: 600 }}>
-                Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa.
+              <Typography
+                sx={{ color: "#fff", mt: 5, fontSize: 18, maxWidth: 600 }}
+              >
+                Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue
+                semper porta. Mauris massa.
               </Typography>
             </Box>
           </Box>
