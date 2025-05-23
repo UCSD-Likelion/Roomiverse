@@ -97,101 +97,125 @@ export default function HomePage() {
             }}
           >
             {/* About Us */}
-            <Box sx={{ display: "flex", alignItems: "flex-start", gap: 6 }}>
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  gap: 0.5,
-                  width: 190,
-                }}
-              >
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.2 }}
+              custom={1}
+              variants={fadeUp}
+            >
+              <Box sx={{ display: "flex", alignItems: "flex-start", gap: 6 }}>
                 <Box
-                  component="img"
-                  src={RoomiverseHomeIcon}
-                  alt="About Us"
-                  sx={{ width: 100, height: 100 }}
-                />
-                <Typography
-                  variant="h6"
-                  sx={{ fontWeight: 700, fontSize: 22, color: "#fff" }}
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    gap: 0.5,
+                    width: 190,
+                  }}
                 >
-                  About Us
+                  <Box
+                    component="img"
+                    src={RoomiverseHomeIcon}
+                    alt="About Us"
+                    sx={{ width: 100, height: 100 }}
+                  />
+                  <Typography
+                    variant="h6"
+                    sx={{ fontWeight: 700, fontSize: 22, color: "#fff" }}
+                  >
+                    About Us
+                  </Typography>
+                </Box>
+                <Typography
+                  sx={{ color: "#fff", mt: 5, fontSize: 18, maxWidth: 600 }}
+                >
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  Integer nec odio. Praesent libero. Sed cursus ante dapibus
+                  diam. Sed nisi.
                 </Typography>
               </Box>
-              <Typography
-                sx={{ color: "#fff", mt: 5, fontSize: 18, maxWidth: 600 }}
-              >
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
-                nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed
-                nisi.
-              </Typography>
-            </Box>
+            </motion.div>
 
             {/* Perfect Match */}
-            <Box sx={{ display: "flex", alignItems: "flex-start", gap: 6 }}>
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  gap: 0.1,
-                  width: 190,
-                }}
-              >
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.2 }}
+              custom={2}
+              variants={fadeUp}
+            >
+              <Box sx={{ display: "flex", alignItems: "flex-start", gap: 6 }}>
                 <Box
-                  component="img"
-                  src={ArrowHomeIcon}
-                  alt="Perfect Match"
-                  sx={{ width: 100, height: 100 }}
-                />
-                <Typography
-                  variant="h6"
-                  sx={{ fontWeight: 700, fontSize: 22, color: "#fff" }}
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    gap: 0.1,
+                    width: 190,
+                  }}
                 >
-                  Perfect Match
+                  <Box
+                    component="img"
+                    src={ArrowHomeIcon}
+                    alt="Perfect Match"
+                    sx={{ width: 100, height: 100 }}
+                  />
+                  <Typography
+                    variant="h6"
+                    sx={{ fontWeight: 700, fontSize: 22, color: "#fff" }}
+                  >
+                    Perfect Match
+                  </Typography>
+                </Box>
+                <Typography
+                  sx={{ color: "#fff", mt: 5, fontSize: 18, maxWidth: 600 }}
+                >
+                  Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh
+                  elementum imperdiet. Duis sagittis ipsum. Praesent mauris.
                 </Typography>
               </Box>
-              <Typography
-                sx={{ color: "#fff", mt: 5, fontSize: 18, maxWidth: 600 }}
-              >
-                Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh
-                elementum imperdiet. Duis sagittis ipsum. Praesent mauris.
-              </Typography>
-            </Box>
+            </motion.div>
 
             {/* Trustworthy */}
-            <Box sx={{ display: "flex", alignItems: "flex-start", gap: 6 }}>
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  gap: 2,
-                  width: 190,
-                }}
-              >
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.2 }}
+              custom={3}
+              variants={fadeUp}
+            >
+              <Box sx={{ display: "flex", alignItems: "flex-start", gap: 6 }}>
                 <Box
-                  component="img"
-                  src={HumanHomeIcon}
-                  alt="Trustworthy"
-                  sx={{ width: 100, height: 75 }}
-                />
-                <Typography
-                  variant="h6"
-                  sx={{ fontWeight: 700, fontSize: 22, color: "#fff" }}
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    gap: 2,
+                    width: 190,
+                  }}
                 >
-                  Trustworthy
+                  <Box
+                    component="img"
+                    src={HumanHomeIcon}
+                    alt="Trustworthy"
+                    sx={{ width: 100, height: 75 }}
+                  />
+                  <Typography
+                    variant="h6"
+                    sx={{ fontWeight: 700, fontSize: 22, color: "#fff" }}
+                  >
+                    Trustworthy
+                  </Typography>
+                </Box>
+                <Typography
+                  sx={{ color: "#fff", mt: 5, fontSize: 18, maxWidth: 600 }}
+                >
+                  Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed
+                  augue semper porta. Mauris massa.
                 </Typography>
               </Box>
-              <Typography
-                sx={{ color: "#fff", mt: 5, fontSize: 18, maxWidth: 600 }}
-              >
-                Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue
-                semper porta. Mauris massa.
-              </Typography>
-            </Box>
+            </motion.div>
           </Box>
         </Box>
       </Box>
