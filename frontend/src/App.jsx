@@ -3,13 +3,13 @@ import "./global.css";
 import Header from "./components/header";
 import UserProfile from "./pages/user-profile";
 import Login from "./pages/login";
-import LandingPage from "./pages/landing";
 import Signup from "./pages/signup";
 import ProfilePage from "./pages/profile";
 import Dashboard from "./pages/dashboard";
 import PrivateRoute from "./utils/private-route";
 import MatchingForm from "./pages/matchingForm";
 import MatchingPage from "./pages/matching-page";
+import HomePage from "./pages/homepage";
 
 function App() {
   return (
@@ -17,7 +17,7 @@ function App() {
       <main>
         <Header />
         <Routes>
-          <Route path="/" element={<LandingPage />} />
+          <Route path="/" element={<HomePage />} />
           <Route path="/userprofile" element={<UserProfile />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Signup />} />
