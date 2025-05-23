@@ -3,7 +3,6 @@ import "./global.css";
 import Header from "./components/header";
 import UserProfile from "./pages/user-profile";
 import Login from "./pages/login";
-import LandingPage from "./pages/landing";
 import Signup from "./pages/signup";
 import ProfilePage from "./pages/profile";
 import Dashboard from "./pages/dashboard";
@@ -16,10 +15,9 @@ function App() {
   return (
     <BrowserRouter>
       <main>
-        {/* <Header /> */}
+        <Header />
         <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/homepage" element={<HomePage />} />
+          <Route path="/" element={<HomePage />} />
           <Route path="/userprofile" element={<UserProfile />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Signup />} />
