@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.ML;
 using System.Text;
+using api.Services;
+using api.Models;
 
 namespace api.Controllers
 {
@@ -12,31 +14,74 @@ namespace api.Controllers
     [Route("api/[controller]")]
     public class ConsineSimilarityController : ControllerBase
     {
-        [HttpPost]
-        public IActionResult CalculateSimilarity([FromBody] SimilarityRequest request)
+        private readonly PreferencesService _preferencesService;
+
+        public ConsineSimilarityController(PreferencesService preferencesService)
         {
-            if (request == null)
-            {
-                return BadRequest("Text1 and Text2 are required");
-            }
-            double[] vectorUser1 = ConvertToVector(request.User1);
-            double[] vectorUser2 = ConvertToVector(request.User2);
-            double similarity = CalculateCosineSimilarity(vectorUser1, vectorUser2);
-            return Ok(similarity);
+            _preferencesService = preferencesService;
         }
 
-        private double[] ConvertToVector(UserData user)
+        [HttpGet("{userId}")]
+        public async Task<IActionResult> CalculateSimilarity(string userId)
+        {
+            var target = await _preferencesService.GetByUserIdAsync(userId);
+            if (target == null)
+            {
+                return NotFound(new { message = "Preferences not found" });
+            }
+
+            var allPreferences = await _preferencesService.GetAllAsync();
+            var otherUsers = allPreferences.Where(p => p.UserId != userId).ToList();
+
+            if (otherUsers.Count == 0)
+            {
+                return NotFound(new { message = "No other users found" });
+            }
+
+            var results = new List<SimilarityResult>();
+            var targetVector = ConvertToVector(target);
+
+            foreach (var user in otherUsers)
+            {
+                if (user.GuestFrequency == null || user.SleepTime == null || user.WakeTime == null ||
+                    user.ImportanceOfSleepSchedule == null || user.CleaningFrequency == null)
+                {
+                    continue; // Skip users with null values
+                }
+                var userVector = ConvertToVector(user);
+                double score = CalculateCosineSimilarity(targetVector, userVector);
+                results.Add(new SimilarityResult
+                {
+                    UserId = user.UserId,
+                    Similarity = score
+                });
+            }
+
+            var sorted = results.OrderByDescending(r => r.Similarity).Take(20).ToList();
+            return Ok(sorted);
+        }
+
+        private static double[] ConvertToVector(Preferences p)
         {
             return new double[] {
-                user.GuestFrequency,
-                user.SleepTimeHours + user.SleepTimeMins / 60.0,
-                user.WakeTimeHours + user.WakeTimeMins / 60.0,
-                user.SleepImportance,
-                user.CleaningFrequency
+                Convert.ToDouble(p.GuestFrequency),
+                TimeToDecimal(p.SleepTime!),
+                TimeToDecimal(p.WakeTime!),
+                Convert.ToDouble(p.ImportanceOfSleepSchedule),
+                Convert.ToDouble(p.CleaningFrequency)
             };
         }
 
-        private double CalculateCosineSimilarity(double[] vector1, double[] vector2)
+        private static double TimeToDecimal(string timeStr)
+        {
+            if (TimeSpan.TryParse(timeStr, out var time))
+            {
+                return time.Hours + time.Minutes / 60.0;
+            }
+            return 0;
+        }
+
+        private static double CalculateCosineSimilarity(double[] vector1, double[] vector2)
         {
             double dotProduct = vector1.Zip(vector2, (x, y) => x * y).Sum();
             double magnitude1 = Math.Sqrt(vector1.Sum(x => x * x));
@@ -51,21 +96,9 @@ namespace api.Controllers
         }
     }
 
-    public class SimilarityRequest
+    public class SimilarityResult
     {
-        public required UserData User1 { get; set; }
-        public required UserData User2 { get; set; }
-    }
-
-    public class UserData
-    {
-        public int UserId { get; set; }
-        public int GuestFrequency { get; set; }
-        public int SleepTimeHours { get; set; }
-        public int SleepTimeMins { get; set; }
-        public int WakeTimeHours { get; set; }
-        public int WakeTimeMins { get; set; }
-        public int SleepImportance { get; set; }
-        public int CleaningFrequency { get; set; }
+        public string UserId { get; set; } = string.Empty;
+        public double Similarity { get; set; }
     }
 }
