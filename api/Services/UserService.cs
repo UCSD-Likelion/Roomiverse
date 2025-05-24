@@ -60,12 +60,21 @@ namespace api.Services
         public async Task DeleteAsync(string id) =>
             await _userCollection.DeleteOneAsync(u => u.Id == id);
 
-        public async Task<User?> GetByEmailAsync(string email) {
+        public async Task<User?> GetByEmailAsync(string email)
+        {
             return await _userCollection.Find(u => u.Email == email).FirstOrDefaultAsync();
         }
 
-        public async Task<User?> GetByRefreshToken(string refreshToken) {
+        public async Task<User?> GetByRefreshToken(string refreshToken)
+        {
             return await _userCollection.Find(u => u.RefreshToken == refreshToken).FirstOrDefaultAsync();
+        }
+
+        public async Task UpdatePreferencesId(string userId, string preferencesId)
+        {
+            var filter = Builders<User>.Filter.Eq(u => u.Id, userId);
+            var update = Builders<User>.Update.Set(u => u.PreferencesId, preferencesId);
+            await _userCollection.UpdateOneAsync(filter, update);
         }
     }
 }

@@ -59,6 +59,7 @@ namespace api.Controllers
 
     public class UserData
     {
+        public int UserId { get; set; }
         public int GuestFrequency { get; set; }
         public int SleepTimeHours { get; set; }
         public int SleepTimeMins { get; set; }

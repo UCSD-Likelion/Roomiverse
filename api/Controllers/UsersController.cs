@@ -10,6 +10,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Cryptography;
 
+
 namespace api.Controllers
 {
     [ApiController]
@@ -17,13 +18,14 @@ namespace api.Controllers
     public class UsersController : ControllerBase
     {
         private readonly UserService _service;
+        private readonly PreferencesService _preferencesService;
         private readonly JwtSettings _jwtConfig;
 
-        public UsersController(UserService service, JwtSettings jwtSettings)
+        public UsersController(UserService service, JwtSettings jwtSettings, PreferencesService preferencesService)
         {
             _service = service;
             _jwtConfig = jwtSettings;
-
+            _preferencesService = preferencesService;
         }
 
         // GET: api/users
@@ -80,6 +82,21 @@ namespace api.Controllers
 
             // Create user with hashed password
             await _service.CreateAsync(newUser);
+            var createdUser = await _service.GetByEmailAsync(newUser.Email);
+
+            // Create default preferences
+            var preferences = new Preferences
+            {
+                UserId = createdUser.Id!,
+                OffCampus = false,
+                GuestFrequency = 0,
+            };
+
+            await _preferencesService.CreateAsync(preferences);
+
+            // Update user with preferences ID
+            newUser.PreferencesId = preferences.Id;
+            await _service.UpdatePreferencesId(createdUser.Id!, preferences.Id!);
 
             return CreatedAtAction(nameof(Get), new { id = newUser.Id }, newUser);
         }
