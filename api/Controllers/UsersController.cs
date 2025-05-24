@@ -88,8 +88,6 @@ namespace api.Controllers
             var preferences = new Preferences
             {
                 UserId = createdUser.Id!,
-                OffCampus = false,
-                GuestFrequency = 0,
             };
 
             await _preferencesService.CreateAsync(preferences);
