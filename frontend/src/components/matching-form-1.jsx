@@ -18,6 +18,7 @@ export default function MatchingForm1({
   setCurrentPage,
 }) {
   return (
+    
     <>
       <Box
         sx={{
@@ -29,11 +30,11 @@ export default function MatchingForm1({
         }}
       >
         <Typography variant="body1" sx={{ color: "#4A4C54", mb: 1 }}>
-          Step 1 of 4
+          Step 1 of 5
         </Typography>
         <LinearProgress
           variant="determinate"
-          value={25}
+          value={17}
           sx={{
             height: 10,
             borderRadius: 5,
@@ -52,6 +53,7 @@ export default function MatchingForm1({
           fontWeight: 700,
           marginBottom: 3,
           marginTop: 1,
+          paddingLeft: 3,
         }}
       >
         Backgrounds
@@ -64,6 +66,7 @@ export default function MatchingForm1({
           alignItems: "flex-start",
           marginBottom: 3,
           gap: 8,
+          paddingLeft: 3,
         }}
       >
         <Box
@@ -385,6 +388,7 @@ export default function MatchingForm1({
           flexDirection: "column",
           gap: 1,
           alignItems: "flex-start",
+          paddingLeft: 3,
         }}
       >
         <Typography
@@ -444,7 +448,7 @@ export default function MatchingForm1({
           </Select>
         </FormControl>
       </Box>
-
+      
       <button
         style={{
           position: "absolute",
