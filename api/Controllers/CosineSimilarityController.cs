@@ -12,11 +12,11 @@ namespace api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class ConsineSimilarityController : ControllerBase
+    public class CosineSimilarityController : ControllerBase
     {
         private readonly PreferencesService _preferencesService;
 
-        public ConsineSimilarityController(PreferencesService preferencesService)
+        public CosineSimilarityController(PreferencesService preferencesService)
         {
             _preferencesService = preferencesService;
         }
