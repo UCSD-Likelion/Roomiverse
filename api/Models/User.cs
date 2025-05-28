@@ -41,5 +41,9 @@ namespace api.Models
         public string? ProfilePicture { get; set; } = null;
         [BsonElement("aboutMe")]
         public string? AboutMe { get; set; } = null;
+
+        [BsonElement("preferencesId")]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string? PreferencesId { get; set; } = null;
     }
 }

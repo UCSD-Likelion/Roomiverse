@@ -299,27 +299,42 @@ export default function ProfilePage() {
               </Box>
 
               <Box sx={{ mb: 1 }}>
-                <Typography variant="h6" component="span" fontWeight={700}>
+                <Typography
+                  variant="h6"
+                  component="span"
+                  color="#4B4B4B"
+                  fontWeight={700}
+                >
                   Age:
                 </Typography>
-                <Typography component="span" ml={1}>
+                <Typography component="span" ml={1} color="#4B4B4B">
                   {calculateAge(user.birthdate)}
                 </Typography>
               </Box>
               <Box sx={{ mb: 1 }}>
-                <Typography variant="h6" component="span" fontWeight={700}>
+                <Typography
+                  variant="h6"
+                  component="span"
+                  color="#4B4B4B"
+                  fontWeight={700}
+                >
                   Major:
                 </Typography>
-                <Typography component="span" ml={1}>
+                <Typography component="span" ml={1} color="#4B4B4B">
                   {!user.major && "Not Specified"}
                   {user.major && user.major}
                 </Typography>
               </Box>
               <Box sx={{ mb: 1 }}>
-                <Typography variant="h6" component="span" fontWeight={700}>
+                <Typography
+                  variant="h6"
+                  component="span"
+                  color="#4B4B4B"
+                  fontWeight={700}
+                >
                   Gender:
                 </Typography>
-                <Typography component="span" ml={1}>
+                <Typography component="span" ml={1} color="#4B4B4B">
                   {user.gender}
                 </Typography>
               </Box>
