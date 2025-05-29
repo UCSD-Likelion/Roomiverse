@@ -11,9 +11,9 @@ import {
 } from "@mui/material";
 import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
 import ArrowCircleLeftOutlinedIcon from "@mui/icons-material/ArrowCircleLeftOutlined";
-import { useState } from "react";
 
 export default function MatchingForm2({
+  progressValue,
   preference,
   handlePreferenceChange,
   sameGender,
@@ -39,7 +39,7 @@ export default function MatchingForm2({
         </Typography>
         <LinearProgress
           variant="determinate"
-          value={40}
+          value={progressValue}
           sx={{
             height: 10,
             borderRadius: 5,

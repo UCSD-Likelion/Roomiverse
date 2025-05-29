@@ -12,19 +12,20 @@ import ArrowCircleLeftOutlinedIcon from "@mui/icons-material/ArrowCircleLeftOutl
 import CheckIcon from "@mui/icons-material/Check";
 
 export default function MatchingForm4({
+  progressValue,
   bedtime,
   waketime,
   onBedtimeChange,
   onWaketimeChange,
-  importance: initialImportance,          
+  importance: initialImportance,
   onImportanceChange,
-  frequency: initialFrequency,            
+  frequency: initialFrequency,
   onFrequencyChange,
   setCurrentPage,
 }) {
   // local state for toggles
   const [importance, setImportance] = useState(initialImportance || "");
-  const [frequency, setFrequency]   = useState(initialFrequency || "");
+  const [frequency, setFrequency] = useState(initialFrequency || "");
 
   const handleImportanceToggle = (_e, val) => {
     const next = val === importance ? "" : val;
@@ -50,12 +51,15 @@ export default function MatchingForm4({
       }}
     >
       {/* Step & Progress */}
-      <Typography variant="body1" sx={{ color: "#4A4C54", fontWeight: 500, mb: 1 }}>
+      <Typography
+        variant="body1"
+        sx={{ color: "#4A4C54", fontWeight: 500, mb: 1 }}
+      >
         Step 4 of 5
       </Typography>
       <LinearProgress
         variant="determinate"
-        value={80}
+        value={progressValue}
         sx={{
           height: 10,
           borderRadius: 5,
@@ -65,12 +69,18 @@ export default function MatchingForm4({
       />
 
       {/* Title */}
-      <Typography variant="h4" sx={{ color: "#333333", fontWeight: 700, mt: 4, mb: 3 }}>
+      <Typography
+        variant="h4"
+        sx={{ color: "#333333", fontWeight: 700, mt: 4, mb: 3 }}
+      >
         Daily Routine
       </Typography>
 
       {/* Bed & Wake Times */}
-      <Typography variant="subtitle1" sx={{ color: "#4A4C54", fontWeight: 600, mb: 2 }}>
+      <Typography
+        variant="subtitle1"
+        sx={{ color: "#4A4C54", fontWeight: 600, mb: 2 }}
+      >
         What time do you usually go to bed and wake up?
       </Typography>
       <Box sx={{ display: "flex", gap: 2, mb: 4 }}>
@@ -101,7 +111,10 @@ export default function MatchingForm4({
       </Box>
 
       {/* Sleep Schedule Importance */}
-      <Typography variant="subtitle1" sx={{ color: "#4A4C54", fontWeight: 600, mb: 2 }}>
+      <Typography
+        variant="subtitle1"
+        sx={{ color: "#4A4C54", fontWeight: 600, mb: 2 }}
+      >
         How important is it that your roommate has a similar sleep schedule?
       </Typography>
       <Box sx={{ display: "flex", alignItems: "center", mb: 4 }}>
@@ -132,27 +145,30 @@ export default function MatchingForm4({
           }}
         >
           {[
-            { v: "very-important",     size: 70 },
-            { v: "pretty-important",   size: 57 },
-            { v: "important",          size: 44 },
-            { v: "middle",             size: 31 },
-            { v: "unimportant",        size: 44 },
+            { v: "very-important", size: 70 },
+            { v: "pretty-important", size: 57 },
+            { v: "important", size: 44 },
+            { v: "middle", size: 31 },
+            { v: "unimportant", size: 44 },
             { v: "pretty-unimportant", size: 57 },
-            { v: "very-unimportant",   size: 70 },
+            { v: "very-unimportant", size: 70 },
           ].map(({ v, size }) => (
             <ToggleButton
               key={v}
               value={v}
               sx={{
-                width:          `${size}px`,
-                height:         `${size}px`,
+                width: `${size}px`,
+                height: `${size}px`,
                 backgroundColor: "#E2E8FF",
-                marginRight:    2,
-                border:         "none",
-                borderRadius:   "50px 0 0 16px",
+                marginRight: 2,
+                border: "none",
+                borderRadius: "50px 0 0 16px",
                 "&:not(:last-of-type)": { borderRadius: "50px" },
                 "&:not(:first-of-type)": { borderRadius: "50px" },
-                "&.Mui-selected": { backgroundColor: "#95AAFF", color: "#95AAFF" },
+                "&.Mui-selected": {
+                  backgroundColor: "#95AAFF",
+                  color: "#95AAFF",
+                },
                 "&.Mui-selected:hover": { backgroundColor: "#95AAFF" },
                 "&:hover": { backgroundColor: "#95AAFF" },
               }}
@@ -177,7 +193,10 @@ export default function MatchingForm4({
       </Box>
 
       {/* Cleaning Frequency */}
-      <Typography variant="subtitle1" sx={{ color: "#4A4C54", fontWeight: 600, mb: 2 }}>
+      <Typography
+        variant="subtitle1"
+        sx={{ color: "#4A4C54", fontWeight: 600, mb: 2 }}
+      >
         How often do you clean your room?
       </Typography>
       <ToggleButtonGroup

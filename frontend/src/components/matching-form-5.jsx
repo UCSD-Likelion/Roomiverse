@@ -12,6 +12,7 @@ import {
 import ArrowCircleLeftOutlinedIcon from "@mui/icons-material/ArrowCircleLeftOutlined";
 
 export default function MatchingForm5({
+  progressValue,
   distance,
   handleDistanceChange,
   rent,
@@ -36,7 +37,7 @@ export default function MatchingForm5({
         </Typography>
         <LinearProgress
           variant="determinate"
-          value={100}
+          value={progressValue}
           sx={{
             height: 10,
             borderRadius: 5,
@@ -330,7 +331,7 @@ export default function MatchingForm5({
             padding: "2px",
           }}
           onClick={() => {
-            setCurrentPage(0);
+            setCurrentPage(3);
           }}
         >
           <ArrowCircleLeftOutlinedIcon

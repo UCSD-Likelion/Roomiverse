@@ -1,25 +1,11 @@
 import { useState } from "react";
-import {
-  Box,
-  Typography,
-  Grid2 as Grid,
-  ToggleButton,
-  ToggleButtonGroup,
-  Slider,
-  Button,
-} from "@mui/material";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
+import { Box } from "@mui/material";
 import logo from "/src/assets/images/logo.png";
-import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
-import { LinearProgress } from "@mui/material";
 
 import MatchingForm1 from "../components/matching-form-1";
 import MatchingForm2 from "../components/matching-form-2";
 import MatchingForm3 from "../components/matching-form-3";
 import MatchingForm4 from "../components/matching-form-4";
-import { et } from "date-fns/locale";
 import MatchingForm5 from "../components/matching-form-5";
 
 export default function MatchingForm() {
@@ -129,6 +115,7 @@ export default function MatchingForm() {
 
         {currentPage === 1 && (
           <MatchingForm2
+            progressValue={progressValue}
             preference={preference}
             handlePreferenceChange={handlePreferenceChange}
             setCurrentPage={setCurrentPage}
@@ -141,6 +128,7 @@ export default function MatchingForm() {
 
         {currentPage === 2 && (
           <MatchingForm3
+            progressValue={progressValue}
             pets={pets}
             handlePetsChange={handlePetsChange}
             drinks={drinks}
@@ -157,6 +145,7 @@ export default function MatchingForm() {
 
         {currentPage === 3 && (
           <MatchingForm4
+            progressValue={progressValue}
             sleepImportance={sleepImportance}
             handleSleepImportanceChange={handleSleepImportanceChange}
             setCurrentPage={setCurrentPage}
@@ -168,6 +157,7 @@ export default function MatchingForm() {
 
         {currentPage === 4 && (
           <MatchingForm5
+            progressValue={progressValue}
             roomType={roomType}
             handleRoomTypeChange={handleRoomTypeChange}
             distance={distance}
