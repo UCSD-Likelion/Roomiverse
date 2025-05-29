@@ -156,8 +156,9 @@ export default function MatchingForm() {
 
         {currentPage === 3 && (
           <MatchingForm4
-            ethnicity={ethnicity}
-            handleEthnicityChange={handleEthnicityChange}
+            sleepImportance={sleepImportance}
+            handleSleepImportanceChange={handleSleepImportanceChange}
+            setCurrentPage={setCurrentPage}
             preference={preference}
             handlePreferenceChange={handlePreferenceChange}
             setCurrentPage={setCurrentPage}
