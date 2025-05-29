@@ -16,8 +16,9 @@ export default function MatchingForm5({
   handleDistanceChange,
   rent,
   handleRentChange,
-  ethnicity,
-  handleEthnicityChange,
+  roomType,
+  handleRoomTypeChange,
+  setCurrentPage,
 }) {
   return (
     <>
@@ -45,14 +46,21 @@ export default function MatchingForm5({
             },
           }}
         />
-        <Box component={"offcampus"}>
+        <Box
+          component={"offcampus"}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 1.5,
+          }}
+        >
           <Typography
             variant="h4"
             sx={{
-              color: "white",
+              color: "#4A4C54",
               fontWeight: 700,
               marginBottom: 3,
-              marginTop: 9,
+              marginTop: 3,
             }}
           >
             Off Campus
@@ -69,9 +77,69 @@ export default function MatchingForm5({
             <Typography
               variant="p"
               sx={{
-                color: "white",
-                fontWeight: 600,
-                fontSize: 24,
+                color: "#4A4C54",
+                fontSize: 20,
+                fontWeight: 400,
+                width: 600,
+              }}
+            >
+              What type of room do you prefer?
+            </Typography>
+            <FormControl
+              sx={{
+                minWidth: 500,
+                backgroundColor: "#95AAFF",
+                opacity: 0.5,
+                borderRadius: "5px",
+                border: "none",
+                "& .MuiOutlinedInput-notchedOutline": { border: "none" },
+                "& .MuiSelect-select": { padding: "20px" },
+              }}
+            >
+              <Select
+                value={roomType}
+                onChange={handleRoomTypeChange}
+                displayEmpty
+                renderValue={(selected) =>
+                  selected
+                    ? selected
+                    : "(Please Select Your Prefered room type)"
+                }
+                sx={{
+                  color: "white",
+                  fontSize: "20px",
+                  "& .MuiSelect-select": {
+                    padding: "14px",
+                    paddingLeft: "20px",
+                  },
+                  "& .MuiSvgIcon-root": {
+                    color: "white",
+                  },
+                }}
+              >
+                <MenuItem value="Triple">Triple</MenuItem>
+                <MenuItem value="Double">Double</MenuItem>
+                <MenuItem value="Single">Singlke</MenuItem>
+                <MenuItem value="Master Bedroom">Master Bedroom</MenuItem>
+                <MenuItem value="Don't Mind">Don't Mind</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 1,
+              alignItems: "flex-start",
+              marginBottom: 3,
+            }}
+          >
+            <Typography
+              variant="p"
+              sx={{
+                color: "#4A4C54",
+                fontWeight: 400,
+                fontSize: 20,
                 width: 600,
               }}
             >
@@ -84,7 +152,7 @@ export default function MatchingForm5({
                 position: "relative",
                 transform: "translateX(-50%)",
                 backgroundColor: "white",
-                color: "#FF6F61",
+                color: "#4A4C54",
                 padding: "5px 10px",
                 borderRadius: "10px",
                 fontSize: "16px",
@@ -115,7 +183,7 @@ export default function MatchingForm5({
                 },
                 "& .MuiSlider-rail": {
                   height: 20, // Makes the inactive track thicker
-                  backgroundColor: "rgba(255, 255, 255, 0.4)",
+                  backgroundColor: "#95AAFF",
                 },
               }}
             />
@@ -129,7 +197,7 @@ export default function MatchingForm5({
             >
               <Typography
                 sx={{
-                  color: "white",
+                  color: "#4A4C54",
                   fontWeight: "bold",
                   fontSize: "16px",
                 }}
@@ -138,16 +206,7 @@ export default function MatchingForm5({
               </Typography>
               <Typography
                 sx={{
-                  color: "white",
-                  fontWeight: "bold",
-                  fontSize: "16px",
-                }}
-              >
-                5 miles
-              </Typography>
-              <Typography
-                sx={{
-                  color: "white",
+                  color: "#4A4C54",
                   fontWeight: "bold",
                   fontSize: "16px",
                 }}
@@ -169,9 +228,9 @@ export default function MatchingForm5({
             <Typography
               variant="p"
               sx={{
-                color: "white",
-                fontWeight: 600,
-                fontSize: 24,
+                color: "#4A4C54",
+                fontWeight: 400,
+                fontSize: 20,
                 width: 600,
               }}
             >
@@ -184,7 +243,7 @@ export default function MatchingForm5({
                 position: "relative",
                 transform: "translateX(-50%)",
                 backgroundColor: "white",
-                color: "#FF6F61",
+                color: "#4A4C54",
                 padding: "5px 10px",
                 borderRadius: "10px",
                 fontSize: "16px",
@@ -215,7 +274,7 @@ export default function MatchingForm5({
                 },
                 "& .MuiSlider-rail": {
                   height: 20, // Makes the inactive track thicker
-                  backgroundColor: "rgba(255, 255, 255, 0.4)",
+                  backgroundColor: "#95AAFF",
                 },
               }}
             />
@@ -229,7 +288,7 @@ export default function MatchingForm5({
             >
               <Typography
                 sx={{
-                  color: "white",
+                  color: "#4A4C54",
                   fontWeight: "bold",
                   fontSize: "16px",
                 }}
@@ -238,16 +297,7 @@ export default function MatchingForm5({
               </Typography>
               <Typography
                 sx={{
-                  color: "white",
-                  fontWeight: "bold",
-                  fontSize: "16px",
-                }}
-              >
-                $ 1000
-              </Typography>
-              <Typography
-                sx={{
-                  color: "white",
+                  color: "#4A4C54",
                   fontWeight: "bold",
                   fontSize: "16px",
                 }}
@@ -255,71 +305,6 @@ export default function MatchingForm5({
                 $ 2500+
               </Typography>
             </Box>
-          </Box>
-
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              gap: 1,
-              alignItems: "flex-start",
-              marginBottom: 3,
-            }}
-          >
-            <Typography
-              variant="p"
-              sx={{ color: "white", fontWeight: 600, fontSize: 24 }}
-            >
-              What type of room do you prefer?
-            </Typography>
-            <FormControl
-              sx={{
-                minWidth: 500,
-                backgroundColor: "rgba(255, 255, 255, 0.4)",
-                borderRadius: "10px",
-                border: "none",
-                "& .MuiOutlinedInput-notchedOutline": { border: "none" },
-                "& .MuiSelect-select": { padding: "20px" },
-              }}
-            >
-              <Select
-                value={ethnicity}
-                onChange={handleEthnicityChange}
-                displayEmpty
-                renderValue={(selected) =>
-                  selected
-                    ? selected
-                    : "(Please Select Your Prefered room type)"
-                }
-                sx={{
-                  color: "white",
-                  fontSize: "20px",
-                  "& .MuiSelect-select": {
-                    padding: "14px",
-                    paddingLeft: "20px",
-                  },
-                  "& .MuiSvgIcon-root": {
-                    color: "white",
-                  },
-                }}
-              >
-                <MenuItem value="Asian">Asian</MenuItem>
-                <MenuItem value="Black">Black or African American</MenuItem>
-                <MenuItem value="Hispanic">Hispanic or Latino</MenuItem>
-                <MenuItem value="White">White</MenuItem>
-                <MenuItem value="Native American">
-                  Native American or Alaska Native
-                </MenuItem>
-                <MenuItem value="Pacific Islander">
-                  Native Hawaiian or Pacific Islander
-                </MenuItem>
-                <MenuItem value="Middle Eastern">
-                  Middle Eastern or North African
-                </MenuItem>
-                <MenuItem value="Mixed">Two or More Races</MenuItem>
-                <MenuItem value="Other">Other (Please Specify)</MenuItem>
-              </Select>
-            </FormControl>
           </Box>
         </Box>
       </Box>
@@ -352,19 +337,21 @@ export default function MatchingForm5({
             style={{ fontSize: 40, color: "#4A4C54" }}
           />
         </button>
-        
+
         <Button
           variant="contained"
           sx={{
-            backgroundColor: "white",
-            color: "#FF6F61",
+            backgroundColor: "#E2E8FF",
+            color: "#4A4C54",
             fontSize: "18px",
             fontWeight: "bold",
             padding: "10px 24px",
             borderRadius: "30px",
+            boxShadow: "none",
             "&:hover": {
-              backgroundColor: "#FF6F61",
+              backgroundColor: "#95AAFF",
               color: "white",
+              boxShadow: "none",
             },
           }}
           onClick={() => alert("Matching started!")} // Replace with actual function
