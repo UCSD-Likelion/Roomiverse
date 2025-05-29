@@ -140,11 +140,17 @@ export default function MatchingForm() {
 
         {currentPage === 2 && (
           <MatchingForm3
-            ethnicity={ethnicity}
-            handleEthnicityChange={handleEthnicityChange}
-            preference={preference}
-            handlePreferenceChange={handlePreferenceChange}
+            pets={pets}
+            handlePetsChange={handlePetsChange}
+            drinks={drinks}
+            handleDrinksChange={handleDrinksChange}
+            smokes={smokes}
+            handleSmokesChange={handleSmokesChange}
             setCurrentPage={setCurrentPage}
+            okayWithSmoking={okayWithSmoking}
+            handleOkayWithSmokingChange={handleOkayWithSmokingChange}
+            okayWithDrinking={okayWithDrinking}
+            handleOkayWithDrinkingChange={handleOkayWithDrinkingChange}
           />
         )}
 
@@ -156,6 +162,8 @@ export default function MatchingForm() {
             handlePreferenceChange={handlePreferenceChange}
             setCurrentPage={setCurrentPage}
             sameGender={sameGender}
+            sleepImportance={sleepImportance}
+            handleSleepImportanceChange={handleSleepImportanceChange}
           />
         )}
 

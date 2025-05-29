@@ -293,7 +293,7 @@ import {
                 flexDirection: "column",
                 gap: 1,
                 alignItems: "flex-start",
-                marginBottom: 3,
+                marginBottom: 1,
             }}
             >
             <Typography
@@ -323,7 +323,7 @@ import {
                     paddingTop: 2,
                     textTransform: "none",
                     backgroundColor: "#E2E8FF",
-                    color: "#ffff",
+                    color: "#4A4C54",
                     border: "none",
                     borderRadius: "30px 0 0 16px", // Round left side
                     "&:not(:last-of-type)": {
@@ -331,15 +331,15 @@ import {
                     },
                     "&.Mui-selected": {
                     backgroundColor: "#96AAFF",
-                    color: "#fffff",
+                    color: "white",
                     },
                     "&.Mui-selected:hover": {
                     backgroundColor: "#95AAFF",
-                    color: "#fffff",
+                    color: "white",
                     },
                     "&:hover": {
                     backgroundColor: "#95AAFF",
-                    color: "#fffff",
+                    color: "white",
                     },
                 }}
                 >
@@ -359,16 +359,18 @@ import {
                     borderRadius: "30px", // Add a subtle left border
                     },
                     backgroundColor: "#E2E8FF",
-                    color: "#fff",
+                    color: "#4A4C54",
                     "&.Mui-selected": {
                     backgroundColor: "#95AAFF",
-                    color: "#fffff",
+                    color: "white",
                     },
                     "&.Mui-selected:hover": {
                     backgroundColor: "#95AAFF",
+                    color: "white",
                     },
                     "&:hover": {
                     backgroundColor: "#95AAFF",
+                    color: "white",
                     },
                 }}
                 >
@@ -391,7 +393,13 @@ import {
             >
             <Typography
                 variant="p"
-                sx={{ color: "#4A4C54", fontWeight: 400, fontSize: 20, paddingBottom: 1, paddingLeft: 1 }}
+                sx={{ 
+                  color: "#4A4C54", 
+                  fontWeight: 400, 
+                  fontSize: 20, 
+                  paddingBottom: 1, 
+                  paddingLeft: 1 
+                }}
             > Are you okay with a roommate who smokes?
             </Typography>
             <ToggleButtonGroup
@@ -416,7 +424,7 @@ import {
                     paddingTop: 2,
                     textTransform: "none",
                     backgroundColor: "#E2E8FF",
-                    color: "#ffff",
+                    color: "#4A4C54",
                     border: "none",
                     borderRadius: "30px 0 0 16px", // Round left side
                     "&:not(:last-of-type)": {
@@ -424,15 +432,15 @@ import {
                     },
                     "&.Mui-selected": {
                     backgroundColor: "#96AAFF",
-                    color: "#fffff",
+                    color: "white",
                     },
                     "&.Mui-selected:hover": {
                     backgroundColor: "#95AAFF",
-                    color: "#fffff",
+                    color: "white",
                     },
                     "&:hover": {
                     backgroundColor: "#95AAFF",
-                    color: "#fffff",
+                    color: "white",
                     },
                 }}
                 >
@@ -452,16 +460,121 @@ import {
                     borderRadius: "30px", // Add a subtle left border
                     },
                     backgroundColor: "#E2E8FF",
-                    color: "#fff",
+                    color: "#4A4C54",
                     "&.Mui-selected": {
                     backgroundColor: "#95AAFF",
-                    color: "#fffff",
+                    color: "white",
                     },
                     "&.Mui-selected:hover": {
                     backgroundColor: "#95AAFF",
+                    color: "white",
                     },
                     "&:hover": {
                     backgroundColor: "#95AAFF",
+                    color: "white",
+                    },
+                }}
+                >
+                No
+                </ToggleButton>
+            </ToggleButtonGroup>
+        </Box>
+        </Box>
+
+        
+        <Box                    //Yes or No Button 
+            sx={{
+            display: "flex",
+            flexDirection: "row",
+            gap: 1,
+            alignItems: "flex-start",
+            marginTop: 2,
+            }}
+        >
+            <Box
+            sx={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 1,
+                alignItems: "flex-start",
+                marginBottom: 1,
+            }}
+            >
+            <Typography
+                variant="p"
+                sx={{ color: "#4A4C54", fontWeight: 400, fontSize: 20, paddingBottom: 1, paddingLeft: 1 }}
+            > Do you drink?
+            </Typography>
+            <ToggleButtonGroup
+                value={drinks}
+                exclusive
+                onChange={handleDrinksChange}
+                sx={{
+                display: "flex",
+                gap: 2,
+                borderRadius: "16px",
+                overflow: "hidden",
+                border: "none",
+                }}
+            >
+                <ToggleButton
+                value="I-drink"
+                sx={{
+                    width: "230px",
+                    height: "45px",
+                    fontSize: "15px",
+                    fontWeight: 600,
+                    paddingTop: 2,
+                    textTransform: "none",
+                    backgroundColor: "#E2E8FF",
+                    color: "#4A4C54",
+                    border: "none",
+                    borderRadius: "30px 0 0 16px", // Round left side
+                    "&:not(:last-of-type)": {
+                    borderRadius: "30px", // Add border only between buttons
+                    },
+                    "&.Mui-selected": {
+                    backgroundColor: "#96AAFF",
+                    color: "white",
+                    },
+                    "&.Mui-selected:hover": {
+                    backgroundColor: "#95AAFF",
+                    color: "white",
+                    },
+                    "&:hover": {
+                    backgroundColor: "#95AAFF",
+                    color: "white",
+                    },
+                }}
+                >
+                Yes
+                </ToggleButton>
+                <ToggleButton
+                value="I-dont-drink"
+                sx={{
+                    width: "230px",
+                    height: "45px",
+                    fontWeight: 600,
+                    fontSize: "15px",
+                    textTransform: "none",
+                    border: "none",
+                    borderRadius: "30px", // Round left side
+                    "&:not(:first-of-type)": {
+                    borderRadius: "30px", // Add a subtle left border
+                    },
+                    backgroundColor: "#E2E8FF",
+                    color: "#4A4C54",
+                    "&.Mui-selected": {
+                    backgroundColor: "#95AAFF",
+                    color: "white",
+                    },
+                    "&.Mui-selected:hover": {
+                    backgroundColor: "#95AAFF",
+                    color: "white",
+                    },
+                    "&:hover": {
+                    backgroundColor: "#95AAFF",
+                    color: "white",
                     },
                 }}
                 >
@@ -469,189 +582,107 @@ import {
                 </ToggleButton>
             </ToggleButtonGroup>
             </Box>
+
+
+
+            <Box
+            sx={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 1,
+                alignItems: "flex-start",
+                marginBottom: 3,
+                marginLeft: 20,
+            }}
+            >
+            <Typography
+                variant="p"
+                sx={{ 
+                  color: "#4A4C54", 
+                  fontWeight: 400, 
+                  fontSize: 20, 
+                  paddingBottom: 1, 
+                  paddingLeft: 1 
+                }}
+            > Are you okay with a roommate who drinks?
+            </Typography>
+            <ToggleButtonGroup
+                value={okayWithDrinking}
+                exclusive
+                onChange={handleOkayWithDrinkingChange}
+                sx={{
+                display: "flex",
+                gap: 2,
+                borderRadius: "16px",
+                overflow: "hidden",
+                border: "none",
+                }}
+            >
+                <ToggleButton
+                value="Okay-drinks"
+                sx={{
+                    width: "230px",
+                    height: "45px",
+                    fontSize: "15px",
+                    fontWeight: 600,
+                    paddingTop: 2,
+                    textTransform: "none",
+                    backgroundColor: "#E2E8FF",
+                    color: "#4A4C54",
+                    border: "none",
+                    borderRadius: "30px 0 0 16px", // Round left side
+                    "&:not(:last-of-type)": {
+                    borderRadius: "30px", // Add border only between buttons
+                    },
+                    "&.Mui-selected": {
+                    backgroundColor: "#96AAFF",
+                    color: "white",
+                    },
+                    "&.Mui-selected:hover": {
+                    backgroundColor: "#95AAFF",
+                    color: "white",
+                    },
+                    "&:hover": {
+                    backgroundColor: "#95AAFF",
+                    color: "white",
+                    },
+                }}
+                >
+                Yes
+                </ToggleButton>
+                <ToggleButton
+                value="Not-okay-drinks"
+                sx={{
+                    width: "230px",
+                    height: "45px",
+                    fontWeight: 600,
+                    fontSize: "15px",
+                    textTransform: "none",
+                    border: "none",
+                    borderRadius: "30px", // Round left side
+                    "&:not(:first-of-type)": {
+                    borderRadius: "30px", // Add a subtle left border
+                    },
+                    backgroundColor: "#E2E8FF",
+                    color: "#4A4C54",
+                    "&.Mui-selected": {
+                    backgroundColor: "#95AAFF",
+                    color: "white",
+                    },
+                    "&.Mui-selected:hover": {
+                    backgroundColor: "#95AAFF",
+                    color: "white",
+                    },
+                    "&:hover": {
+                    backgroundColor: "#95AAFF",
+                    color: "white",
+                    },
+                }}
+                >
+                No
+                </ToggleButton>
+            </ToggleButtonGroup>
         </Box>
-
-        
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            gap: 1,
-            alignItems: "flex-start",
-            marginBottom: 3,
-          }}
-        >
-          <Typography
-            variant="p"
-            sx={{
-              color: "white",
-              fontWeight: 600,
-              fontSize: 24,
-              marginBottom: 1,
-            }}
-          >
-            Do you drink alchol?
-          </Typography>
-          <ToggleButtonGroup
-            value={preference}
-            exclusive
-            onChange={handlePreferenceChange}
-            sx={{
-              display: "flex",
-              gap: 2,
-              borderRadius: "16px",
-              overflow: "hidden",
-              border: "none",
-            }}
-          >
-            <ToggleButton
-              value="on-campus"
-              sx={{
-                width: "220px",
-                fontSize: "20px",
-                fontWeight: 600,
-                textTransform: "none",
-                backgroundColor: "rgba(255, 255, 255, 0.4)",
-                color: "#fff",
-                border: "none",
-                borderRadius: "30px 0 0 16px", // Round left side
-                "&:not(:last-of-type)": {
-                  borderRadius: "30px", // Add border only between buttons
-                },
-                "&.Mui-selected": {
-                  backgroundColor: "white",
-                  color: "#FF6F61",
-                },
-                "&.Mui-selected:hover": {
-                  backgroundColor: "white",
-                },
-                "&:hover": {
-                  backgroundColor: "rgba(255, 255, 255, 0.6)",
-                },
-              }}
-            >
-              Yes
-            </ToggleButton>
-
-            <ToggleButton
-              value="off-campus"
-              sx={{
-                width: "220px",
-                fontWeight: 600,
-                fontSize: "20px",
-                textTransform: "none",
-                border: "none",
-                borderRadius: "30px", // Round left side
-                "&:not(:first-of-type)": {
-                  borderRadius: "30px", // Add a subtle left border
-                },
-                backgroundColor: "rgba(255, 255, 255, 0.4)",
-                color: "#fff",
-                "&.Mui-selected": {
-                  backgroundColor: "white",
-                  color: "#FF6F61",
-                },
-                "&.Mui-selected:hover": {
-                  backgroundColor: "white",
-                },
-                "&:hover": {
-                  backgroundColor: "rgba(255, 255, 255, 0.6)",
-                },
-              }}
-            >
-              No
-            </ToggleButton>
-          </ToggleButtonGroup>
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            gap: 1,
-            alignItems: "flex-start",
-          }}
-        >
-          <Typography
-            variant="p"
-            sx={{
-              color: "white",
-              fontWeight: 600,
-              fontSize: 24,
-              marginBottom: 1,
-            }}
-          >
-            Are you okay with a roommate who drinks?
-          </Typography>
-          <ToggleButtonGroup
-            value={preference}
-            exclusive
-            onChange={handlePreferenceChange}
-            sx={{
-              display: "flex",
-              gap: 2,
-              borderRadius: "16px",
-              overflow: "hidden",
-              border: "none",
-            }}
-          >
-            <ToggleButton
-              value="on-campus"
-              sx={{
-                width: "220px",
-                fontSize: "20px",
-                fontWeight: 600,
-                textTransform: "none",
-                backgroundColor: "rgba(255, 255, 255, 0.4)",
-                color: "#fff",
-                border: "none",
-                borderRadius: "30px 0 0 16px", // Round left side
-                "&:not(:last-of-type)": {
-                  borderRadius: "30px", // Add border only between buttons
-                },
-                "&.Mui-selected": {
-                  backgroundColor: "white",
-                  color: "#FF6F61",
-                },
-                "&.Mui-selected:hover": {
-                  backgroundColor: "white",
-                },
-                "&:hover": {
-                  backgroundColor: "rgba(255, 255, 255, 0.6)",
-                },
-              }}
-            >
-              Yes
-            </ToggleButton>
-
-            <ToggleButton
-              value="off-campus"
-              sx={{
-                width: "220px",
-                fontWeight: 600,
-                fontSize: "20px",
-                textTransform: "none",
-                border: "none",
-                borderRadius: "30px", // Round left side
-                "&:not(:first-of-type)": {
-                  borderRadius: "30px", // Add a subtle left border
-                },
-                backgroundColor: "rgba(255, 255, 255, 0.4)",
-                color: "#fff",
-                "&.Mui-selected": {
-                  backgroundColor: "white",
-                  color: "#FF6F61",
-                },
-                "&.Mui-selected:hover": {
-                  backgroundColor: "white",
-                },
-                "&:hover": {
-                  backgroundColor: "rgba(255, 255, 255, 0.6)",
-                },
-              }}
-            >
-              No
-            </ToggleButton>
-          </ToggleButtonGroup>
         </Box>
 
 
