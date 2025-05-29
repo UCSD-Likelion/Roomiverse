@@ -1,547 +1,236 @@
+import React, { useState } from "react";
 import {
   Box,
   Typography,
   LinearProgress,
-  FormControl,
-  Select,
-  MenuItem,
+  TextField,
   ToggleButton,
   ToggleButtonGroup,
 } from "@mui/material";
 import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
 import ArrowCircleLeftOutlinedIcon from "@mui/icons-material/ArrowCircleLeftOutlined";
+import CheckIcon from "@mui/icons-material/Check";
 
 export default function MatchingForm4({
-  ethnicity,
-  handleEthnicityChange,
-  preference,
-  handlePreferenceChange,
+  bedtime,
+  waketime,
+  onBedtimeChange,
+  onWaketimeChange,
+  importance: initialImportance,          
+  onImportanceChange,
+  frequency: initialFrequency,            
+  onFrequencyChange,
   setCurrentPage,
 }) {
+  // local state for toggles
+  const [importance, setImportance] = useState(initialImportance || "");
+  const [frequency, setFrequency]   = useState(initialFrequency || "");
+
+  const handleImportanceToggle = (_e, val) => {
+    const next = val === importance ? "" : val;
+    setImportance(next);
+    onImportanceChange(next);
+  };
+
+  const handleFrequencyToggle = (_e, val) => {
+    const next = val === frequency ? "" : val;
+    setFrequency(next);
+    onFrequencyChange(next);
+  };
+
   return (
-    <>
-      <Box
+    <Box
+      sx={{
+        width: "65vw",
+        maxWidth: "1100px",
+        bgcolor: "white",
+        borderRadius: 4,
+        p: 0,
+        mx: "auto",
+      }}
+    >
+      {/* Step & Progress */}
+      <Typography variant="body1" sx={{ color: "#4A4C54", fontWeight: 500, mb: 1 }}>
+        Step 4 of 5
+      </Typography>
+      <LinearProgress
+        variant="determinate"
+        value={80}
         sx={{
-          width: "65vw",
-          maxWidth: "1100px",
-          marginBottom: 5,
-          paddingLeft: 3,
-          paddingRight: 3,
+          height: 10,
+          borderRadius: 5,
+          backgroundColor: "#E2E8FF",
+          "& .MuiLinearProgress-bar": { backgroundColor: "#95AAFF" },
         }}
-      >
-        <Typography variant="body1" sx={{ color: "#4A4C54", mb: 1 }}>
-          Step 4 of 5
-        </Typography>
-        <LinearProgress
-          variant="determinate"
-          value={80}
+      />
+
+      {/* Title */}
+      <Typography variant="h4" sx={{ color: "#333333", fontWeight: 700, mt: 4, mb: 3 }}>
+        Daily Routine
+      </Typography>
+
+      {/* Bed & Wake Times */}
+      <Typography variant="subtitle1" sx={{ color: "#4A4C54", fontWeight: 600, mb: 2 }}>
+        What time do you usually go to bed and wake up?
+      </Typography>
+      <Box sx={{ display: "flex", gap: 2, mb: 4 }}>
+        <TextField
+          fullWidth
+          placeholder="e.g. 11:00 PM"
+          value={bedtime}
+          onChange={onBedtimeChange}
+          variant="outlined"
           sx={{
-            height: 10,
-            borderRadius: 5,
-            backgroundColor: "#E2E8FF",
-            "& .MuiLinearProgress-bar": {
-              backgroundColor: "#95AAFF",
-            },
+            bgcolor: "#E2E8FF",
+            borderRadius: 2,
+            "& .MuiOutlinedInput-notchedOutline": { border: "none" },
+          }}
+        />
+        <TextField
+          fullWidth
+          placeholder="e.g. 7:00 AM"
+          value={waketime}
+          onChange={onWaketimeChange}
+          variant="outlined"
+          sx={{
+            bgcolor: "#E2E8FF",
+            borderRadius: 2,
+            "& .MuiOutlinedInput-notchedOutline": { border: "none" },
           }}
         />
       </Box>
 
-      <Typography
-        variant="h4"
-        sx={{
-          color: "white",
-          fontWeight: 700,
-          marginBottom: 3,
-          marginTop: 9,
-        }}
-      >
-        Daily Routine
+      {/* Sleep Schedule Importance */}
+      <Typography variant="subtitle1" sx={{ color: "#4A4C54", fontWeight: 600, mb: 2 }}>
+        How important is it that your roommate has a similar sleep schedule?
       </Typography>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          gap: 1,
-          alignItems: "flex-start",
-          marginBottom: 3,
-        }}
-      >
+      <Box sx={{ display: "flex", alignItems: "center", mb: 4 }}>
         <Typography
-          variant="p"
-          sx={{ color: "white", fontWeight: 600, fontSize: 24 }}
-        >
-          What time do you usually go to bed and wake up?
-        </Typography>
-        <FormControl
+          variant="body1"
           sx={{
-            minWidth: 500,
-            backgroundColor: "rgba(255, 255, 255, 0.4)",
-            borderRadius: "10px",
-            border: "none",
-            "& .MuiOutlinedInput-notchedOutline": { border: "none" },
-            "& .MuiSelect-select": { padding: "20px" },
-          }}
-        >
-          <Select
-            value={ethnicity}
-            onChange={handleEthnicityChange}
-            displayEmpty
-            renderValue={(selected) =>
-              selected ? selected : "(Please Select Your Prefer Bed Time)"
-            }
-            sx={{
-              color: "white",
-              fontSize: "20px",
-              "& .MuiSelect-select": {
-                padding: "14px",
-                paddingLeft: "20px",
-              },
-              "& .MuiSvgIcon-root": {
-                color: "white",
-              },
-            }}
-          >
-            <MenuItem value="Asian">Asian</MenuItem>
-            <MenuItem value="Black">Black or African American</MenuItem>
-            <MenuItem value="Hispanic">Hispanic or Latino</MenuItem>
-            <MenuItem value="White">White</MenuItem>
-            <MenuItem value="Native American">
-              Native American or Alaska Native
-            </MenuItem>
-            <MenuItem value="Pacific Islander">
-              Native Hawaiian or Pacific Islander
-            </MenuItem>
-            <MenuItem value="Middle Eastern">
-              Middle Eastern or North African
-            </MenuItem>
-            <MenuItem value="Mixed">Two or More Races</MenuItem>
-            <MenuItem value="Other">Other (Please Specify)</MenuItem>
-          </Select>
-        </FormControl>
-        <FormControl
-          sx={{
-            marginTop: 1,
-            minWidth: 500,
-            backgroundColor: "rgba(255, 255, 255, 0.4)",
-            borderRadius: "10px",
-            border: "none",
-            "& .MuiOutlinedInput-notchedOutline": { border: "none" },
-            "& .MuiSelect-select": { padding: "20px" },
-          }}
-        >
-          <Select
-            value={ethnicity}
-            onChange={handleEthnicityChange}
-            displayEmpty
-            renderValue={(selected) =>
-              selected ? selected : "(Please Select Your Prefer Wake Up Time)"
-            } // ✅ Adds Placeholder
-            sx={{
-              color: "white", // ✅ Text color for selected value
-              fontSize: "20px", // ✅ Make text larger
-              "& .MuiSelect-select": {
-                padding: "14px", // ✅ Adjust padding
-                paddingLeft: "20px", // ✅ Adjust padding
-              },
-              "& .MuiSvgIcon-root": {
-                color: "white", // ✅ Makes dropdown arrow white
-              },
-            }}
-          >
-            <MenuItem value="Asian">Asian</MenuItem>
-            <MenuItem value="Black">Black or African American</MenuItem>
-            <MenuItem value="Hispanic">Hispanic or Latino</MenuItem>
-            <MenuItem value="White">White</MenuItem>
-            <MenuItem value="Native American">
-              Native American or Alaska Native
-            </MenuItem>
-            <MenuItem value="Pacific Islander">
-              Native Hawaiian or Pacific Islander
-            </MenuItem>
-            <MenuItem value="Middle Eastern">
-              Middle Eastern or North African
-            </MenuItem>
-            <MenuItem value="Mixed">Two or More Races</MenuItem>
-            <MenuItem value="Other">Other (Please Specify)</MenuItem>
-          </Select>
-        </FormControl>
-      </Box>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          gap: 1,
-          alignItems: "flex-start",
-          marginBottom: 3,
-        }}
-      >
-        <Typography
-          variant="p"
-          sx={{
-            color: "white",
+            color: "#4A4C54",
             fontWeight: 600,
-            fontSize: 24,
-            marginBottom: 1,
+            fontSize: 19,
+            marginRight: 2.5,
+            paddingLeft: 0.5,
           }}
         >
-          How important is it that your roommate has a similar sleep schedule?
+          Not Important
         </Typography>
-        <Box
+
+        <ToggleButtonGroup
+          value={importance}
+          exclusive
+          onChange={handleImportanceToggle}
           sx={{
             display: "flex",
-            flexDirection: "row",
-            gap: 1,
+            gap: 2,
+            borderRadius: "16px",
+            overflow: "hidden",
+            border: "none",
             alignItems: "center",
           }}
         >
-          <Typography
-            variant="p"
-            sx={{
-              color: "white",
-              fontWeight: 600,
-              fontSize: 20,
-              marginRight: 1,
-            }}
-          >
-            Not Important
-          </Typography>
-          <ToggleButtonGroup
-            value={preference}
-            exclusive
-            onChange={handlePreferenceChange}
-            sx={{
-              display: "flex",
-              gap: 2,
-              borderRadius: "16px",
-              overflow: "hidden",
-              border: "none",
-              alignItems: "center",
-            }}
-          >
+          {[
+            { v: "very-important",     size: 70 },
+            { v: "pretty-important",   size: 57 },
+            { v: "important",          size: 44 },
+            { v: "middle",             size: 31 },
+            { v: "unimportant",        size: 44 },
+            { v: "pretty-unimportant", size: 57 },
+            { v: "very-unimportant",   size: 70 },
+          ].map(({ v, size }) => (
             <ToggleButton
-              value="0"
+              key={v}
+              value={v}
               sx={{
-                width: "73px",
-                height: "73px",
-                backgroundColor: "rgba(255, 255, 255, 0.4)",
-                color: "#fff",
-                border: "none",
-                borderRadius: "50px 0 0 16px", // Round left side
-                "&:not(:last-of-type)": {
-                  borderRadius: "50px", // Add border only between buttons
-                },
-                "&.Mui-selected": {
-                  backgroundColor: "white",
-                  color: "#FF6F61",
-                },
-                "&.Mui-selected:hover": {
-                  backgroundColor: "white",
-                },
-                "&:hover": {
-                  backgroundColor: "rgba(255, 255, 255, 0.6)",
-                },
+                width:          `${size}px`,
+                height:         `${size}px`,
+                backgroundColor: "#E2E8FF",
+                marginRight:    2,
+                border:         "none",
+                borderRadius:   "50px 0 0 16px",
+                "&:not(:last-of-type)": { borderRadius: "50px" },
+                "&:not(:first-of-type)": { borderRadius: "50px" },
+                "&.Mui-selected": { backgroundColor: "#95AAFF", color: "#95AAFF" },
+                "&.Mui-selected:hover": { backgroundColor: "#95AAFF" },
+                "&:hover": { backgroundColor: "#95AAFF" },
               }}
-            ></ToggleButton>
-            <ToggleButton
-              value="1"
-              sx={{
-                width: "60px",
-                height: "60px",
-                backgroundColor: "rgba(255, 255, 255, 0.4)",
-                color: "#fff",
-                border: "none",
-                borderRadius: "50px 0 0 16px", // Round left side
-                "&:not(:last-of-type)": {
-                  borderRadius: "50px", // Add border only between buttons
-                },
-                "&.Mui-selected": {
-                  backgroundColor: "white",
-                  color: "#FF6F61",
-                },
-                "&.Mui-selected:hover": {
-                  backgroundColor: "white",
-                },
-                "&:hover": {
-                  backgroundColor: "rgba(255, 255, 255, 0.6)",
-                },
-              }}
-            ></ToggleButton>
-            <ToggleButton
-              value="2"
-              sx={{
-                width: "47px",
-                height: "47px",
-                backgroundColor: "rgba(255, 255, 255, 0.4)",
-                color: "#fff",
-                border: "none",
-                borderRadius: "50px 0 0 16px", // Round left side
-                "&:not(:last-of-type)": {
-                  borderRadius: "50px", // Add border only between buttons
-                },
-                "&.Mui-selected": {
-                  backgroundColor: "white",
-                  color: "#FF6F61",
-                },
-                "&.Mui-selected:hover": {
-                  backgroundColor: "white",
-                },
-                "&:hover": {
-                  backgroundColor: "rgba(255, 255, 255, 0.6)",
-                },
-              }}
-            ></ToggleButton>
+            >
+              {importance === v && <CheckIcon fontSize="small" />}
+            </ToggleButton>
+          ))}
+        </ToggleButtonGroup>
 
-            <ToggleButton
-              value="3"
-              sx={{
-                width: "60px",
-                height: "60px",
-                backgroundColor: "rgba(255, 255, 255, 0.4)",
-                color: "#fff",
-                border: "none",
-                borderRadius: "50px 0 0 16px", // Round left side
-                "&:not(:last-of-type)": {
-                  borderRadius: "50px", // Add border only between buttons
-                },
-                "&.Mui-selected": {
-                  backgroundColor: "white",
-                  color: "#FF6F61",
-                },
-                "&.Mui-selected:hover": {
-                  backgroundColor: "white",
-                },
-                "&:hover": {
-                  backgroundColor: "rgba(255, 255, 255, 0.6)",
-                },
-              }}
-            ></ToggleButton>
-            <ToggleButton
-              value="4"
-              sx={{
-                width: "73px",
-                height: "73px",
-                backgroundColor: "rgba(255, 255, 255, 0.4)",
-                color: "#fff",
-                border: "none",
-                borderRadius: "50px 0 0 16px", // Round left side
-                "&:not(:last-of-type)": {
-                  borderRadius: "50px", // Add border only between buttons
-                },
-                "&:not(:first-of-type)": {
-                  borderRadius: "50px", // Add a subtle left border
-                },
-                "&.Mui-selected": {
-                  backgroundColor: "white",
-                  color: "#FF6F61",
-                },
-                "&.Mui-selected:hover": {
-                  backgroundColor: "white",
-                },
-                "&:hover": {
-                  backgroundColor: "rgba(255, 255, 255, 0.6)",
-                },
-              }}
-            ></ToggleButton>
-          </ToggleButtonGroup>
-          <Typography
-            variant="p"
-            sx={{
-              color: "white",
-              fontWeight: 600,
-              fontSize: 20,
-              marginLeft: 1,
-            }}
-          >
-            Very Important
-          </Typography>
-        </Box>
-        <Box
+        <Typography
+          variant="body1"
           sx={{
-            display: "flex",
-            flexDirection: "column",
-            gap: 1,
-            alignItems: "flex-start",
+            color: "#4A4C54",
+            fontWeight: 600,
+            fontSize: 19,
+            marginLeft: 1,
+            paddingRight: 0,
           }}
         >
-          <Typography
-            variant="p"
-            sx={{
-              color: "white",
-              fontWeight: 600,
-              fontSize: 24,
-              marginBottom: 1,
-            }}
-          >
-            How important is it that your roommate has a similar sleep schedule?
-          </Typography>
-          <ToggleButtonGroup
-            value={preference}
-            exclusive
-            onChange={handlePreferenceChange}
-            sx={{
-              display: "flex",
-              gap: 2,
-              borderRadius: "16px",
-              overflow: "hidden",
-              border: "none",
-            }}
-          >
-            <ToggleButton
-              value="on-campus"
-              sx={{
-                width: "180px",
-                fontSize: "20px",
-                fontWeight: 600,
-                textTransform: "none",
-                backgroundColor: "rgba(255, 255, 255, 0.4)",
-                color: "#fff",
-                border: "none",
-                borderRadius: "30px 0 0 16px", // Round left side
-                "&:not(:last-of-type)": {
-                  borderRadius: "30px", // Add border only between buttons
-                },
-                "&.Mui-selected": {
-                  backgroundColor: "white",
-                  color: "#FF6F61",
-                },
-                "&.Mui-selected:hover": {
-                  backgroundColor: "white",
-                },
-                "&:hover": {
-                  backgroundColor: "rgba(255, 255, 255, 0.6)",
-                },
-              }}
-            >
-              Daily
-            </ToggleButton>
-            <ToggleButton
-              value="on-campus"
-              sx={{
-                width: "180px",
-                fontSize: "20px",
-                fontWeight: 600,
-                textTransform: "none",
-                backgroundColor: "rgba(255, 255, 255, 0.4)",
-                color: "#fff",
-                border: "none",
-                borderRadius: "30px 0 0 16px", // Round left side
-                "&:not(:last-of-type)": {
-                  borderRadius: "30px", // Add border only between buttons
-                },
-                "&.Mui-selected": {
-                  backgroundColor: "white",
-                  color: "#FF6F61",
-                },
-                "&.Mui-selected:hover": {
-                  backgroundColor: "white",
-                },
-                "&:hover": {
-                  backgroundColor: "rgba(255, 255, 255, 0.6)",
-                },
-              }}
-            >
-              Weekly
-            </ToggleButton>
-            <ToggleButton
-              value="on-campus"
-              sx={{
-                width: "180px",
-                fontSize: "20px",
-                fontWeight: 600,
-                textTransform: "none",
-                backgroundColor: "rgba(255, 255, 255, 0.4)",
-                color: "#fff",
-                border: "none",
-                borderRadius: "30px 0 0 16px", // Round left side
-                "&:not(:last-of-type)": {
-                  borderRadius: "30px", // Add border only between buttons
-                },
-                "&.Mui-selected": {
-                  backgroundColor: "white",
-                  color: "#FF6F61",
-                },
-                "&.Mui-selected:hover": {
-                  backgroundColor: "white",
-                },
-                "&:hover": {
-                  backgroundColor: "rgba(255, 255, 255, 0.6)",
-                },
-              }}
-            >
-              Montly
-            </ToggleButton>
-
-            <ToggleButton
-              value="off-campus"
-              sx={{
-                width: "370px",
-                fontWeight: 600,
-                fontSize: "20px",
-                textTransform: "none",
-                border: "none",
-                borderRadius: "30px", // Round left side
-                "&:not(:first-of-type)": {
-                  borderRadius: "30px", // Add a subtle left border
-                },
-                backgroundColor: "rgba(255, 255, 255, 0.4)",
-                color: "#fff",
-                "&.Mui-selected": {
-                  backgroundColor: "white",
-                  color: "#FF6F61",
-                },
-                "&.Mui-selected:hover": {
-                  backgroundColor: "white",
-                },
-                "&:hover": {
-                  backgroundColor: "rgba(255, 255, 255, 0.6)",
-                },
-              }}
-            >
-              Whenever it feels necessary
-            </ToggleButton>
-          </ToggleButtonGroup>
-        </Box>
+          Very Important
+        </Typography>
       </Box>
 
-      <button
-        style={{
-          position: "absolute",
-          bottom: "30px",
-          right: "1200px",
-          size: "large",
-          backgroundColor: "transparent",
-          border: "none",
-          cursor: "pointer",
-          padding: "2px",
+      {/* Cleaning Frequency */}
+      <Typography variant="subtitle1" sx={{ color: "#4A4C54", fontWeight: 600, mb: 2 }}>
+        How often do you clean your room?
+      </Typography>
+      <ToggleButtonGroup
+        value={frequency}
+        exclusive
+        onChange={handleFrequencyToggle}
+        sx={{
+          display: "flex",
+          gap: 3,
+          "& .MuiToggleButton-root": {
+            width: "280px",
+            height: "40px",
+            border: "none",
+            borderRadius: "30px !important",
+            bgcolor: "#E2E8FF",
+            fontFamily: "'Mplus 1p'",
+            fontWeight: 800,
+            fontSize: "12px",
+            lineHeight: "100%",
+            letterSpacing: "0%",
+            color: "#4A4C54",
+            "&.Mui-selected": { backgroundColor: "#95AAFF", color: "#FFFFFF" },
+            "&:hover": { backgroundColor: "#95AAFF", color: "#FFFFFF" },
+          },
         }}
-        onClick={() => {
-          setCurrentPage(2);
+      >
+        {["Daily", "Weekly", "Monthly", "Whenever it feels necessary"].map(
+          (opt) => (
+            <ToggleButton key={opt} value={opt}>
+              {opt}
+            </ToggleButton>
+          )
+        )}
+      </ToggleButtonGroup>
+
+      {/* Navigation Arrows */}
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          mt: 3,
         }}
       >
         <ArrowCircleLeftOutlinedIcon
-          style={{ fontSize: 40, color: "#4A4C54" }}
+          onClick={() => setCurrentPage(2)}
+          sx={{ fontSize: 40, color: "#4A4C54", cursor: "pointer" }}
         />
-      </button>
-
-      <button
-        style={{
-          position: "absolute",
-          bottom: "30px",
-          right: "30px",
-          size: "large",
-          backgroundColor: "transparent",
-          border: "none",
-          cursor: "pointer",
-          padding: "2px",
-        }}
-        onClick={() => {
-          setCurrentPage(4);
-        }}
-      >
         <ArrowCircleRightOutlinedIcon
-          style={{ fontSize: 40, color: "#4A4C54" }}
+          onClick={() => setCurrentPage(4)}
+          sx={{ fontSize: 40, color: "#4A4C54", cursor: "pointer" }}
         />
-      </button>
-    </>
+      </Box>
+    </Box>
   );
 }
