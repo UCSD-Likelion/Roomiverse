@@ -82,7 +82,7 @@ export default function MatchingForm() {
   const [currentPage, setCurrentPage] = useState(0);
   const totalPages = 5; // Total number of pages
   console.log(currentPage);
-  const progressValue = (currentPage / totalPages) * 100;
+  const progressValue = ((currentPage + 1) / totalPages) * 100;
 
   return (
     <Box
@@ -116,6 +116,7 @@ export default function MatchingForm() {
       >
         {currentPage === 0 && (
           <MatchingForm1
+            progressValue={progressValue}
             ethnicity={ethnicity}
             handleEthnicityChange={handleEthnicityChange}
             major={major}
@@ -161,10 +162,7 @@ export default function MatchingForm() {
             setCurrentPage={setCurrentPage}
             preference={preference}
             handlePreferenceChange={handlePreferenceChange}
-            setCurrentPage={setCurrentPage}
             sameGender={sameGender}
-            sleepImportance={sleepImportance}
-            handleSleepImportanceChange={handleSleepImportanceChange}
           />
         )}
 

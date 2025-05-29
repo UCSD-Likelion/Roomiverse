@@ -5,10 +5,12 @@ import {
   MenuItem,
   FormControl,
   Select,
+  IconButton,
 } from "@mui/material";
 import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
 
 export default function MatchingForm1({
+  progressValue,
   ethnicity,
   handleEthnicityChange,
   major,
@@ -18,7 +20,6 @@ export default function MatchingForm1({
   setCurrentPage,
 }) {
   return (
-    
     <>
       <Box
         sx={{
@@ -34,7 +35,7 @@ export default function MatchingForm1({
         </Typography>
         <LinearProgress
           variant="determinate"
-          value={17}
+          value={progressValue}
           sx={{
             height: 10,
             borderRadius: 5,
@@ -448,8 +449,8 @@ export default function MatchingForm1({
           </Select>
         </FormControl>
       </Box>
-      
-      <button
+
+      <IconButton
         style={{
           position: "absolute",
           bottom: "30px",
@@ -467,7 +468,7 @@ export default function MatchingForm1({
         <ArrowCircleRightOutlinedIcon
           style={{ fontSize: 40, color: "#4A4C54" }}
         />
-      </button>
+      </IconButton>
     </>
   );
 }

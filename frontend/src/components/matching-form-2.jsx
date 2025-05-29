@@ -6,6 +6,8 @@ import {
   MenuItem,
   Select,
   IconButton,
+  ToggleButton,
+  ToggleButtonGroup,
 } from "@mui/material";
 import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
 import ArrowCircleLeftOutlinedIcon from "@mui/icons-material/ArrowCircleLeftOutlined";
@@ -20,20 +22,6 @@ export default function MatchingForm2({
   handleGuestFrequencyChange,
   setCurrentPage,
 }) {
-  const [selectedGuestLevel, setSelectedGuestLevel] = useState(guestFrequency || "");
-
-  const guestLevels = [
-    "so-rare",
-    "rare",
-    "less-middle",
-    "middle",
-    "more-middle",
-    "often",
-    "so-often",
-  ];
-
-  const circleSizes = [60, 50, 40, 30, 40, 50, 60];
-
   return (
     <>
       {/* Step & Progress */}
@@ -53,7 +41,7 @@ export default function MatchingForm2({
           variant="determinate"
           value={40}
           sx={{
-            height: 8,
+            height: 10,
             borderRadius: 5,
             backgroundColor: "#E2E8FF",
             "& .MuiLinearProgress-bar": {
@@ -65,9 +53,15 @@ export default function MatchingForm2({
 
       {/* Title */}
       <Typography
-        variant="h4"
-        sx={{ fontWeight: 700, marginBottom: 3, marginTop: 3, color: "#4A4C54"}}
->
+        variant="h3"
+        sx={{
+          color: "#4A4C54",
+          fontWeight: 700,
+          marginBottom: 3,
+          marginTop: 1,
+          paddingLeft: 3,
+        }}
+      >
         Living Preference
       </Typography>
 
@@ -75,25 +69,38 @@ export default function MatchingForm2({
       <Box
         sx={{
           display: "flex",
-          gap: 4,
+          flexDirection: "row",
+          alignItems: "flex-start",
+          marginBottom: 3,
+          gap: 8,
           paddingLeft: 3,
-          paddingRight: 3,
-          mb: 4,
         }}
       >
         {/* Living Preference */}
-        <Box sx={{ flex: 1 }}>
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
           <Typography
+            variant="p"
             sx={{
-              fontSize: 20,
-              fontWeight: 400,
-              width: 600,
               color: "#4A4C54",
+              fontWeight: 400,
+              fontSize: 20,
+              marginTop: 1,
+              paddingLeft: 1,
             }}
           >
             Where do you prefer to live?
           </Typography>
-          <FormControl fullWidth>
+          <FormControl
+            sx={{
+              minWidth: 500,
+              backgroundColor: "#95AAFF",
+              opacity: 0.5,
+              borderRadius: "5px",
+              border: "none",
+              "& .MuiOutlinedInput-notchedOutline": { border: "none" },
+              "& .MuiSelect-select": { padding: "20px" },
+            }}
+          >
             <Select
               value={preference}
               onChange={handlePreferenceChange}
@@ -102,19 +109,14 @@ export default function MatchingForm2({
                 selected ? selected : "(Please Select Your Preference)"
               }
               sx={{
-                backgroundColor: "#D8DFFF",
-                borderRadius: 2,
-                height: 56,
                 color: "white",
-                "& .MuiSelect-icon": { display: "none" },
-                "& .MuiOutlinedInput-notchedOutline": {
-                  border: "none",
+                fontSize: "20px",
+                "& .MuiSelect-select": {
+                  padding: "14px",
+                  paddingLeft: "20px",
                 },
-                "&:hover .MuiOutlinedInput-notchedOutline": {
-                  border: "none",
-                },
-                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                  border: "none",
+                "& .MuiSvgIcon-root": {
+                  color: "white",
                 },
               }}
             >
@@ -125,19 +127,37 @@ export default function MatchingForm2({
         </Box>
 
         {/* Same Gender */}
-        <Box sx={{ flex: 1 }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 1,
+            marginLeft: 5,
+          }}
+        >
           <Typography
+            variant="p"
             sx={{
-              fontSize: 20,
-              fontWeight: 400,
-              width: 600,
               color: "#4A4C54",
-              marginBottom: 1,
+              fontWeight: 400,
+              fontSize: 20,
+              marginTop: 1,
+              paddingLeft: 1,
             }}
           >
             Do you prefer a roommate of the same gender?
           </Typography>
-          <FormControl fullWidth>
+          <FormControl
+            sx={{
+              minWidth: 500,
+              backgroundColor: "#95AAFF",
+              opacity: 0.5,
+              borderRadius: "5px",
+              border: "none",
+              "& .MuiOutlinedInput-notchedOutline": { border: "none" },
+              "& .MuiSelect-select": { padding: "20px" },
+            }}
+          >
             <Select
               value={sameGender}
               onChange={handleSameGenderChange}
@@ -146,19 +166,14 @@ export default function MatchingForm2({
                 selected ? selected : "(Please Select Your Preference)"
               }
               sx={{
-                backgroundColor: "#D8DFFF",
-                borderRadius: 2,
-                height: 56,
                 color: "white",
-                "& .MuiSelect-icon": { display: "none" },
-                "& .MuiOutlinedInput-notchedOutline": {
-                  border: "none",
+                fontSize: "20px",
+                "& .MuiSelect-select": {
+                  padding: "14px",
+                  paddingLeft: "20px",
                 },
-                "&:hover .MuiOutlinedInput-notchedOutline": {
-                  border: "none",
-                },
-                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                  border: "none",
+                "& .MuiSvgIcon-root": {
+                  color: "white",
                 },
               }}
             >
@@ -192,42 +207,173 @@ export default function MatchingForm2({
             mb: 4,
           }}
         >
-          <Typography variant="h6" sx={{ fontWeight: 600, fontSize: "18px", color: "#4A4C54" }}>
+          <Typography
+            variant="h6"
+            sx={{ fontWeight: 600, fontSize: "18px", color: "#4A4C54" }}
+          >
             Rarely
           </Typography>
 
-          {guestLevels.map((level, idx) => {
-            const isSelected = selectedGuestLevel === level;
-            const circleSize = circleSizes[idx];
+          <ToggleButtonGroup
+            value={guestFrequency}
+            exclusive
+            onChange={handleGuestFrequencyChange}
+            sx={{
+              display: "flex",
+              gap: 2,
+              borderRadius: "16px",
+              overflow: "hidden",
+              border: "none",
+              alignItems: "center",
+            }}
+          >
+            <ToggleButton
+              value="very-uncomfortable"
+              sx={{
+                width: "73px",
+                height: "73px",
+                backgroundColor: "#E2E8FF",
+                marginRight: 2,
 
-            return (
-              <Box
-                key={level}
-                onClick={(e) => {
-                  e.preventDefault();
-                  setSelectedGuestLevel(level);
-                  handleGuestFrequencyChange(level);
-                }}
-                sx={{
-                  width: `${circleSize}px`,
-                  height: `${circleSize}px`,
-                  borderRadius: "50%",
-                  backgroundColor: isSelected ? "#6B7FFF" : "#D8DFFF",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  cursor: "pointer",
-                  transition: "all 0.2s ease",
-                  border: isSelected ? "3px solid white" : "3px solid transparent",
-                  "&:hover": {
-                    backgroundColor: isSelected ? "#6B7FFF" : "#C4D1FF",
-                  },
-                }}
-              ></Box>
-            );
-          })}
+                border: "none",
+                borderRadius: "50px 0 0 16px", // Round left side
+                "&:not(:last-of-type)": {
+                  borderRadius: "50px", // Add border only between buttons
+                },
+                "&:not(:first-of-type)": {
+                  borderRadius: "50px", // Add a subtle left border
+                },
+                "&.Mui-selected": {
+                  backgroundColor: "#95AAFF",
+                  color: "#95AAFF",
+                },
+                "&.Mui-selected:hover": {
+                  backgroundColor: "#95AAFF",
+                },
+                "&:hover": {
+                  backgroundColor: "#95AAFF",
+                },
+              }}
+            ></ToggleButton>
+            <ToggleButton
+              value="uncomfortable"
+              sx={{
+                width: "60px",
+                height: "60px",
+                backgroundColor: "#E2E8FF",
+                marginRight: 2,
 
-          <Typography variant="h6" sx={{ fontWeight: 600, fontSize: "18px", color: "#4A4C54" }}>
+                border: "none",
+                borderRadius: "50px 0 0 16px", // Round left side
+                "&:not(:last-of-type)": {
+                  borderRadius: "50px", // Add border only between buttons
+                },
+                "&:not(:first-of-type)": {
+                  borderRadius: "50px", // Add a subtle left border
+                },
+                "&.Mui-selected": {
+                  backgroundColor: "#95AAFF",
+                  color: "#95AAFF",
+                },
+                "&.Mui-selected:hover": {
+                  backgroundColor: "#95AAFF",
+                },
+                "&:hover": {
+                  backgroundColor: "#95AAFF",
+                },
+              }}
+            ></ToggleButton>
+            <ToggleButton
+              value="middle"
+              sx={{
+                width: "47px",
+                height: "47px",
+                backgroundColor: "#E2E8FF",
+                marginRight: 2,
+
+                border: "none",
+                borderRadius: "50px 0 0 16px", // Round left side
+                "&:not(:last-of-type)": {
+                  borderRadius: "50px", // Add border only between buttons
+                },
+                "&:not(:first-of-type)": {
+                  borderRadius: "50px", // Add a subtle left border
+                },
+                "&.Mui-selected": {
+                  backgroundColor: "#95AAFF",
+                  color: "#95AAFF",
+                },
+                "&.Mui-selected:hover": {
+                  backgroundColor: "#95AAFF",
+                },
+                "&:hover": {
+                  backgroundColor: "#95AAFF",
+                },
+              }}
+            ></ToggleButton>
+
+            <ToggleButton
+              value="comfortable"
+              sx={{
+                width: "60px",
+                height: "60px",
+                backgroundColor: "#E2E8FF",
+                marginRight: 2,
+
+                border: "none",
+                borderRadius: "50px 0 0 16px", // Round left side
+                "&:not(:last-of-type)": {
+                  borderRadius: "50px", // Add border only between buttons
+                },
+                "&:not(:first-of-type)": {
+                  borderRadius: "50px", // Add a subtle left border
+                },
+                "&.Mui-selected": {
+                  backgroundColor: "#95AAFF",
+                  color: "#95AAFF",
+                },
+                "&.Mui-selected:hover": {
+                  backgroundColor: "#95AAFF",
+                },
+                "&:hover": {
+                  backgroundColor: "#95AAFF",
+                },
+              }}
+            ></ToggleButton>
+            <ToggleButton
+              value="very-comfortable"
+              sx={{
+                width: "73px",
+                height: "73px",
+                backgroundColor: "#E2E8FF",
+                marginRight: 2,
+
+                border: "none",
+                borderRadius: "50px 0 0 16px", // Round left side
+                "&:not(:last-of-type)": {
+                  borderRadius: "50px", // Add border only between buttons
+                },
+                "&:not(:first-of-type)": {
+                  borderRadius: "50px", // Add a subtle left border
+                },
+                "&.Mui-selected": {
+                  backgroundColor: "#95AAFF",
+                  color: "#95AAFF",
+                },
+                "&.Mui-selected:hover": {
+                  backgroundColor: "#95AAFF",
+                },
+                "&:hover": {
+                  backgroundColor: "#95AAFF",
+                },
+              }}
+            ></ToggleButton>
+          </ToggleButtonGroup>
+
+          <Typography
+            variant="h6"
+            sx={{ fontWeight: 600, fontSize: "18px", color: "#4A4C54" }}
+          >
             Often
           </Typography>
         </Box>
@@ -246,21 +392,37 @@ export default function MatchingForm2({
         <IconButton
           onClick={() => setCurrentPage(0)}
           sx={{
+            position: "absolute",
+            bottom: "30px",
+            left: "30px",
+            size: "large",
             backgroundColor: "transparent",
-            "&:hover": { backgroundColor: "rgba(0,0,0,0.04)" },
+            border: "none",
+            cursor: "pointer",
+            padding: "2px",
           }}
         >
-          <ArrowCircleLeftOutlinedIcon sx={{ fontSize: 40, color: "#4A4C54" }} />
+          <ArrowCircleLeftOutlinedIcon
+            sx={{ fontSize: 40, color: "#4A4C54" }}
+          />
         </IconButton>
 
         <IconButton
           onClick={() => setCurrentPage(2)}
           sx={{
+            position: "absolute",
+            bottom: "30px",
+            right: "30px",
+            size: "large",
             backgroundColor: "transparent",
-            "&:hover": { backgroundColor: "rgba(0,0,0,0.04)" },
+            border: "none",
+            cursor: "pointer",
+            padding: "2px",
           }}
         >
-          <ArrowCircleRightOutlinedIcon sx={{ fontSize: 40, color: "#4A4C54" }} />
+          <ArrowCircleRightOutlinedIcon
+            sx={{ fontSize: 40, color: "#4A4C54" }}
+          />
         </IconButton>
       </Box>
     </>
