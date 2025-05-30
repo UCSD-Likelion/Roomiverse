@@ -4,14 +4,13 @@ import {
   Typography,
   ToggleButton,
   ToggleButtonGroup,
+  IconButton,
 } from "@mui/material";
 import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
 import ArrowCircleLeftOutlinedIcon from "@mui/icons-material/ArrowCircleLeftOutlined";
 
 export default function MatchingForm3({
   progressValue,
-  preference,
-  handlePreferenceChange,
   setCurrentPage,
   pets,
   handlePetsChange,
@@ -58,6 +57,7 @@ export default function MatchingForm3({
           fontWeight: 700,
           marginBottom: 3,
           marginTop: 1,
+          paddingLeft: 3,
         }}
       >
         Lifestyle & Habbits
@@ -69,6 +69,7 @@ export default function MatchingForm3({
           gap: 1,
           alignItems: "flex-start",
           marginBottom: 3,
+          paddingLeft: 3,
         }}
       >
         <Typography
@@ -281,7 +282,8 @@ export default function MatchingForm3({
           flexDirection: "row",
           gap: 1,
           alignItems: "flex-start",
-          marginTop: 8,
+          marginTop: 3,
+          paddingLeft: 3,
         }}
       >
         <Box
@@ -303,7 +305,6 @@ export default function MatchingForm3({
               paddingLeft: 1,
             }}
           >
-            {" "}
             Do you smoke?
           </Typography>
           <ToggleButtonGroup
@@ -391,7 +392,7 @@ export default function MatchingForm3({
             gap: 1,
             alignItems: "flex-start",
             marginBottom: 3,
-            marginLeft: 20,
+            marginLeft: 10,
           }}
         >
           <Typography
@@ -404,7 +405,6 @@ export default function MatchingForm3({
               paddingLeft: 1,
             }}
           >
-            {" "}
             Are you okay with a roommate who smokes?
           </Typography>
           <ToggleButtonGroup
@@ -492,7 +492,6 @@ export default function MatchingForm3({
           flexDirection: "row",
           gap: 1,
           alignItems: "flex-start",
-          marginTop: 2,
         }}
       >
         <Box
@@ -502,6 +501,7 @@ export default function MatchingForm3({
             gap: 1,
             alignItems: "flex-start",
             marginBottom: 1,
+            paddingLeft: 3,
           }}
         >
           <Typography
@@ -601,8 +601,7 @@ export default function MatchingForm3({
             flexDirection: "column",
             gap: 1,
             alignItems: "flex-start",
-            marginBottom: 3,
-            marginLeft: 20,
+            marginLeft: 10,
           }}
         >
           <Typography
@@ -697,11 +696,11 @@ export default function MatchingForm3({
         </Box>
       </Box>
 
-      <button
-        style={{
+      <IconButton
+        sx={{
           position: "absolute",
           bottom: "30px",
-          right: "1200px",
+          left: "30px",
           size: "large",
           backgroundColor: "transparent",
           border: "none",
@@ -715,9 +714,9 @@ export default function MatchingForm3({
         <ArrowCircleLeftOutlinedIcon
           style={{ fontSize: 40, color: "#4A4C54" }}
         />
-      </button>
+      </IconButton>
 
-      <button
+      <IconButton
         style={{
           position: "absolute",
           bottom: "30px",
@@ -735,7 +734,7 @@ export default function MatchingForm3({
         <ArrowCircleRightOutlinedIcon
           style={{ fontSize: 40, color: "#4A4C54" }}
         />
-      </button>
+      </IconButton>
     </>
   );
 }
