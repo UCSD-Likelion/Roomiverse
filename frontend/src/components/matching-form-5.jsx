@@ -7,6 +7,7 @@ import {
   Select,
   Slider,
   Typography,
+  IconButton,
 } from "@mui/material";
 
 import ArrowCircleLeftOutlinedIcon from "@mui/icons-material/ArrowCircleLeftOutlined";
@@ -60,8 +61,8 @@ export default function MatchingForm5({
             sx={{
               color: "#4A4C54",
               fontWeight: 700,
-              marginBottom: 3,
-              marginTop: 3,
+              marginBottom: 2,
+              marginTop: 2,
             }}
           >
             Off Campus
@@ -72,7 +73,6 @@ export default function MatchingForm5({
               flexDirection: "column",
               gap: 1,
               alignItems: "flex-start",
-              marginBottom: 3,
             }}
           >
             <Typography
@@ -82,6 +82,7 @@ export default function MatchingForm5({
                 fontSize: 20,
                 fontWeight: 400,
                 width: 600,
+                marginBottom: 1,
               }}
             >
               What type of room do you prefer?
@@ -132,7 +133,6 @@ export default function MatchingForm5({
               flexDirection: "column",
               gap: 1,
               alignItems: "flex-start",
-              marginBottom: 3,
             }}
           >
             <Typography
@@ -193,7 +193,6 @@ export default function MatchingForm5({
                 display: "flex",
                 justifyContent: "space-between",
                 width: "100%",
-                marginTop: "5px",
               }}
             >
               <Typography
@@ -223,7 +222,6 @@ export default function MatchingForm5({
               flexDirection: "column",
               gap: 1,
               alignItems: "flex-start",
-              marginBottom: 3,
             }}
           >
             <Typography
@@ -313,17 +311,17 @@ export default function MatchingForm5({
       <Box
         sx={{
           display: "flex",
-          justifyContent: "center",
-          position: "absolute",
-          bottom: 20,
-          right: 20,
+          justifyContent: "space-between",
+          paddingLeft: 3,
+          paddingRight: 3,
+          mt: 12,
         }}
       >
-        <button
-          style={{
+        <IconButton
+          sx={{
             position: "absolute",
             bottom: "30px",
-            right: "1200px",
+            left: "30px",
             size: "large",
             backgroundColor: "transparent",
             border: "none",
@@ -337,7 +335,7 @@ export default function MatchingForm5({
           <ArrowCircleLeftOutlinedIcon
             style={{ fontSize: 40, color: "#4A4C54" }}
           />
-        </button>
+        </IconButton>
 
         <Button
           variant="contained"
@@ -349,6 +347,12 @@ export default function MatchingForm5({
             padding: "10px 24px",
             borderRadius: "30px",
             boxShadow: "none",
+            position: "absolute",
+            bottom: "30px",
+            right: "30px",
+            size: "large",
+            border: "none",
+            cursor: "pointer",
             "&:hover": {
               backgroundColor: "#95AAFF",
               color: "white",
