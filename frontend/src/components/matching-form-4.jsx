@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Box,
   Typography,
@@ -46,16 +46,13 @@ export default function MatchingForm4({
         sx={{
           width: "65vw",
           maxWidth: "1100px",
-          marginBottom: 5,
+          marginBottom: 4,
           paddingLeft: 3,
           paddingRight: 3,
         }}
       >
         {/* Step & Progress */}
-        <Typography
-          variant="body1"
-          sx={{ color: "#4A4C54", fontWeight: 500, mb: 1 }}
-        >
+        <Typography variant="body1" sx={{ color: "#4A4C54", mb: 1 }}>
           Step 4 of 5
         </Typography>
         <LinearProgress
@@ -76,7 +73,7 @@ export default function MatchingForm4({
         sx={{
           color: "#4A4C54",
           fontWeight: 700,
-          marginBottom: 3,
+          marginBottom: 2,
           marginTop: 1,
           paddingLeft: 3,
         }}
@@ -90,14 +87,13 @@ export default function MatchingForm4({
           display: "flex",
           flexDirection: "column",
           alignItems: "flex-start",
-          marginBottom: 3,
           gap: 2,
           paddingLeft: 3,
         }}
       >
         <Typography
           variant="p"
-          x={{
+          sx={{
             color: "#4A4C54",
             fontWeight: 400,
             fontSize: 20,
@@ -140,13 +136,19 @@ export default function MatchingForm4({
           display: "flex",
           flexDirection: "column",
           gap: 1,
-          marginLeft: 5,
+          marginLeft: 3,
         }}
       >
         {/* Sleep Schedule Importance */}
         <Typography
           variant="p"
-          sx={{ color: "#4A4C54", fontWeight: 600, mb: 2 }}
+          sx={{
+            color: "#A4A4C54",
+            fontWeight: 400,
+            fontSize: 20,
+            marginTop: 1,
+            paddingLeft: 1,
+          }}
         >
           How important is it that your roommate has a similar sleep schedule?
         </Typography>
@@ -233,44 +235,65 @@ export default function MatchingForm4({
       </Box>
 
       {/* Cleaning Frequency */}
-      <Typography
-        variant="subtitle1"
-        sx={{ color: "#4A4C54", fontWeight: 600, mb: 2 }}
-      >
-        How often do you clean your room?
-      </Typography>
-      <ToggleButtonGroup
-        value={frequency}
-        exclusive
-        onChange={handleFrequencyToggle}
+      <Box
         sx={{
           display: "flex",
-          gap: 3,
-          "& .MuiToggleButton-root": {
-            width: "280px",
-            height: "40px",
-            border: "none",
-            borderRadius: "30px !important",
-            bgcolor: "#E2E8FF",
-            fontFamily: "'Mplus 1p'",
-            fontWeight: 800,
-            fontSize: "12px",
-            lineHeight: "100%",
-            letterSpacing: "0%",
-            color: "#4A4C54",
-            "&.Mui-selected": { backgroundColor: "#95AAFF", color: "#FFFFFF" },
-            "&:hover": { backgroundColor: "#95AAFF", color: "#FFFFFF" },
-          },
+          flexDirection: "column",
+          gap: 1,
+          marginLeft: 5,
+          marginTop: 3,
         }}
       >
-        {["Daily", "Weekly", "Monthly", "Whenever it feels necessary"].map(
-          (opt) => (
+        <Typography
+          variant="p"
+          sx={{
+            color: "#A4A4C54",
+            fontWeight: 400,
+            fontSize: 20,
+            paddingBottom: 1,
+          }}
+        >
+          How often do you clean your room?
+        </Typography>
+        <ToggleButtonGroup
+          value={frequency}
+          exclusive
+          onChange={handleFrequencyToggle}
+          sx={{
+            display: "flex",
+            gap: 3,
+            "& .MuiToggleButton-root": {
+              width: "230px",
+              height: "45px",
+              fontSize: "15px",
+              fontWeight: 600,
+              textTransform: "none",
+              backgroundColor: "#E2E8FF",
+              color: "#4A4C54",
+              border: "none",
+              borderRadius: "30px", // Round left side
+              "&.Mui-selected": {
+                backgroundColor: "#96AAFF",
+                color: "white",
+              },
+              "&.Mui-selected:hover": {
+                backgroundColor: "#95AAFF",
+                color: "white",
+              },
+              "&:hover": {
+                backgroundColor: "#95AAFF",
+                color: "white",
+              },
+            },
+          }}
+        >
+          {["Daily", "Weekly", "Monthly", "Yearly"].map((opt) => (
             <ToggleButton key={opt} value={opt}>
               {opt}
             </ToggleButton>
-          )
-        )}
-      </ToggleButtonGroup>
+          ))}
+        </ToggleButtonGroup>
+      </Box>
 
       {/* Navigation Arrows */}
       <Box
