@@ -66,7 +66,7 @@ export const uploadProfilePicture = async (base64Image) => {
   }
 };
 
-export const updateAboutMe = async (userID, aboutMe) => {
+export const updateAboutMe = async (aboutMe) => {
   const token = localStorage.getItem("token");
   console.log("Token:", token);
 
@@ -86,5 +86,29 @@ export const updateAboutMe = async (userID, aboutMe) => {
   } catch (error) {
     console.error("Error updating About Me:", error);
     return false;
+  }
+};
+
+export const uploadPreferences = async (preferences) => {
+  const token = localStorage.getItem("token");
+  console.log("Token:", token);
+
+  if (!token) {
+    console.error("Token not found");
+    throw new Error("Token not found");
+  }
+
+  try {
+    const response = await axios.put(`${API_URL}/preferences`, preferences, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token.trim()}`,
+      },
+    });
+
+    return response.status === 200;
+  } catch (error) {
+    console.error("Error uploading preferences:", error);
+    throw new Error("Error uploading preferences: " + error.response.data);
   }
 };

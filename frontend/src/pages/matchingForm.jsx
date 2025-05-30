@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { Box } from "@mui/material";
-import logo from "/src/assets/images/logo.png";
 
 import MatchingForm1 from "../components/matching-form-1";
 import MatchingForm2 from "../components/matching-form-2";
 import MatchingForm3 from "../components/matching-form-3";
 import MatchingForm4 from "../components/matching-form-4";
 import MatchingForm5 from "../components/matching-form-5";
+import { uploadPreferences } from "../api";
 
 export default function MatchingForm() {
   const [ethnicity, setEthnicity] = useState("");
@@ -24,6 +24,9 @@ export default function MatchingForm() {
   const [roomType, setRoomType] = useState(""); // Preferred room type
   const [rent, setRent] = useState([900, 1100]); // Rent Range
   const [distance, setDistance] = useState([0, 5]); // Distance from Campus
+  const [sleepTime, setSleepTime] = useState([22, 24]); // Sleep time range
+  const [wakeTime, setWakeTime] = useState([6, 8]); // Wake time range
+  const [cleaningFrequency, setCleaningFrequency] = useState(""); // Cleaning frequency
 
   const handleEthnicityChange = (event) => setEthnicity(event.target.value);
 
@@ -60,8 +63,63 @@ export default function MatchingForm() {
 
   const handleDistanceChange = (event, newValue) => setDistance(newValue);
 
-  const valuetext = (value) => {
-    return `${value} miles`;
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const offCampusPreference = {
+      distanceFromSchool: distance,
+      preferredPriceRange: rent,
+      roomType: roomType,
+    };
+    const preferences = {
+      offCampus: preference === "off-campus",
+      guestFrequency: guestFrequency,
+      genderPreference: sameGender,
+      pets: pets,
+      smokingStatus: smokes,
+      okayWithSmoking: okayWithSmoking,
+      drinkingStatus: drinks,
+      okayWithDrinking: okayWithDrinking,
+      sleepTime: sleepTime,
+      wakeTime: wakeTime,
+      importanceOfSleepSchedule: sleepImportance,
+      cleaningFrequency: cleaningFrequency,
+      major: major,
+      college: college,
+      ethnicity: ethnicity,
+      offCampusPreferences: offCampusPreference,
+    };
+
+    try {
+      const response = await uploadPreferences(preferences);
+      if (response) {
+        console.log("Preferences uploaded successfully");
+      } else {
+        console.error("Failed to upload preferences");
+      }
+    } catch (error) {
+      console.error("Error uploading preferences:", error);
+    }
+    // Reset form or navigate to another page after submission
+    setCurrentPage(0); // Reset to the first page
+    setEthnicity("");
+    setMajor("");
+    setCollege("");
+    setPreference(null);
+    setSameGender(null);
+    setGuestFrequency("");
+    setPets("");
+    setSmokes("");
+    setOkayWithSmoking("");
+    setDrinks("");
+    setOkayWithDrinking("");
+    setSleepImportance("");
+    setRoomType("");
+    setRent([900, 1100]);
+    setDistance([0, 5]);
+    setSleepTime([22, 24]);
+    setWakeTime([6, 8]);
+    setCleaningFrequency("");
+    console.log("Form submitted and preferences uploaded successfully");
   };
 
   // progress bar
