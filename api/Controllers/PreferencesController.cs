@@ -3,6 +3,8 @@ using api.Services;   // Namespace for PreferencesService
 using api.Models;     // Namespace for Preferences model
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace api.Controllers  // Typical convention for controllers
 {
@@ -51,11 +53,21 @@ namespace api.Controllers  // Typical convention for controllers
         }
 
         // 4) Update Preferences
-        [HttpPut("{userId}")]
-        public async Task<IActionResult> UpdatePreferences(string userId, [FromBody] Preferences updatedPrefs)
+        [HttpPut]
+        [Authorize] // Ensure only authenticated users can update preferences
+        public async Task<IActionResult> UpdatePreferences([FromBody] Preferences updatedPrefs)
         {
-            // Fetch existing preferences to retain the `_id` field
+            // Retrieve ID from the token
+            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+            if (userId == null)
+            {
+                return Unauthorized(new { message = "User ID not found in token" });
+            }
+
+
             var existing = await _preferencesService.GetByUserIdAsync(userId);
+
             if (existing == null)
             {
                 return NotFound(new { message = "Preferences not found" });
