@@ -53,7 +53,7 @@ export default function MatchingForm2({
 
       {/* Title */}
       <Typography
-        variant="h3"
+        variant="h4"
         sx={{
           color: "#4A4C54",
           fontWeight: 700,

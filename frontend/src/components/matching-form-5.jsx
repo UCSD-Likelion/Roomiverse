@@ -62,7 +62,7 @@ export default function MatchingForm5({
               color: "#4A4C54",
               fontWeight: 700,
               marginBottom: 2,
-              marginTop: 2,
+              marginTop: 3,
             }}
           >
             Off Campus
@@ -282,7 +282,6 @@ export default function MatchingForm5({
                 display: "flex",
                 justifyContent: "space-between",
                 width: "100%",
-                marginTop: "5px",
               }}
             >
               <Typography
