@@ -40,22 +40,10 @@ namespace api.Controllers  // Typical convention for controllers
             return Ok(userPrefs);
         }
 
-        // 3) Create Preferences
-        [HttpPost]
-        public async Task<ActionResult> CreatePreferences([FromBody] Preferences prefs)
-        {
-            await _preferencesService.CreateAsync(prefs);
-            return CreatedAtAction(
-                nameof(GetPreferencesByUserId),
-                new { userId = prefs.UserId },
-                prefs
-            );
-        }
-
-        // 4) Update Preferences
+        // 3) Create or Update Preferences (Upsert)
         [HttpPut]
         [Authorize] // Ensure only authenticated users can update preferences
-        public async Task<IActionResult> UpdatePreferences([FromBody] Preferences updatedPrefs)
+        public async Task<IActionResult> UpsertPreferences([FromBody] Preferences updatedPrefs)
         {
             // Retrieve ID from the token
             var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
@@ -65,19 +53,26 @@ namespace api.Controllers  // Typical convention for controllers
                 return Unauthorized(new { message = "User ID not found in token" });
             }
 
-
             var existing = await _preferencesService.GetByUserIdAsync(userId);
 
             if (existing == null)
             {
-                return NotFound(new { message = "Preferences not found" });
+                // Create new preferences
+                updatedPrefs.UserId = userId;
+                await _preferencesService.CreateAsync(updatedPrefs);
+                return CreatedAtAction(
+                    nameof(GetPreferencesByUserId),
+                    new { userId = updatedPrefs.UserId },
+                    updatedPrefs
+                );
             }
-
-            // Retain the existing `_id` to prevent modification
-            updatedPrefs.Id = existing.Id;
-
-            await _preferencesService.UpdateAsync(userId, updatedPrefs);
-            return NoContent();
+            else
+            {
+                // Update existing preferences
+                updatedPrefs.Id = existing.Id; // Retain the existing `_id`
+                await _preferencesService.UpdateAsync(userId, updatedPrefs);
+                return NoContent(); // Or return Ok(updatedPrefs) if you want to send the updated object back
+            }
         }
 
         // 5) Delete Preferences

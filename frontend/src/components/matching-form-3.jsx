@@ -420,7 +420,7 @@ export default function MatchingForm3({
             }}
           >
             <ToggleButton
-              value="Okay-smoke"
+              value="yes"
               sx={{
                 width: "230px",
                 height: "45px",
@@ -452,7 +452,7 @@ export default function MatchingForm3({
               Yes
             </ToggleButton>
             <ToggleButton
-              value="Not-okay-smoke"
+              value="no"
               sx={{
                 width: "230px",
                 height: "45px",
@@ -514,7 +514,6 @@ export default function MatchingForm3({
               paddingLeft: 1,
             }}
           >
-            {" "}
             Do you drink?
           </Typography>
           <ToggleButtonGroup
@@ -614,7 +613,6 @@ export default function MatchingForm3({
               paddingLeft: 1,
             }}
           >
-            {" "}
             Are you okay with a roommate who drinks?
           </Typography>
           <ToggleButtonGroup
@@ -630,7 +628,7 @@ export default function MatchingForm3({
             }}
           >
             <ToggleButton
-              value="Okay-drinks"
+              value="yes"
               sx={{
                 width: "230px",
                 height: "45px",
@@ -662,7 +660,7 @@ export default function MatchingForm3({
               Yes
             </ToggleButton>
             <ToggleButton
-              value="Not-okay-drinks"
+              value="no"
               sx={{
                 width: "230px",
                 height: "45px",

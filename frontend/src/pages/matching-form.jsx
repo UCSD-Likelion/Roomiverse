@@ -6,7 +6,7 @@ import MatchingForm2 from "../components/matching-form-2";
 import MatchingForm3 from "../components/matching-form-3";
 import MatchingForm4 from "../components/matching-form-4";
 import MatchingForm5 from "../components/matching-form-5";
-import { uploadPreferences, fetchPreferences } from "../api";
+import { upsertPreferences, fetchPreferences } from "../api";
 import { AuthContext } from "../context/AuthProvider";
 import {
   SLEEP_IMPORTANCE_SCORES,
@@ -140,9 +140,6 @@ export default function MatchingForm() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Helper function to convert value to integer
-    const toInt = (value) => (value ? parseInt(value, 10) : null);
-
     const offCampusPreference = {
       distanceFromSchool: distance[1], // Assuming the upper value of the range
       preferredPriceRange: `${rent[0]}-${rent[1]}`,
@@ -173,15 +170,15 @@ export default function MatchingForm() {
     console.log("Submitting preferences:", preferences);
 
     try {
-      const response = await uploadPreferences(preferences);
-      if (response.status === 200) {
-        console.log("Preferences uploaded successfully");
+      const response = await upsertPreferences(preferences);
+      if (response.status === 201 || response.status === 204) {
+        console.log("Preferences upserted successfully");
         // Navigate to dashboard or profile page
       } else {
-        console.error("Failed to upload preferences:", response);
+        console.error("Failed to upsert preferences:", response);
       }
     } catch (error) {
-      console.error("Error uploading preferences:", error);
+      console.error("Error upserting preferences:", error);
     }
   };
 

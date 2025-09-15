@@ -89,7 +89,7 @@ export const updateAboutMe = async (aboutMe) => {
   }
 };
 
-export const uploadPreferences = async (preferences) => {
+export const upsertPreferences = async (preferences) => {
   const token = localStorage.getItem("token");
   console.log("Token:", token);
 
@@ -99,17 +99,17 @@ export const uploadPreferences = async (preferences) => {
   }
 
   try {
-    const response = await axios.post(`${API_URL}/preferences`, preferences, {
+    const response = await axios.put(`${API_URL}/preferences`, preferences, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token.trim()}`,
       },
     });
 
-    return response.status === 200;
+    return response;
   } catch (error) {
-    console.error("Error uploading preferences:", error);
-    throw new Error("Error uploading preferences: " + error.response.data);
+    console.error("Error upserting preferences:", error);
+    throw new Error("Error upserting preferences: " + error.response.data);
   }
 };
 
