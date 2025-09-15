@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { Box } from "@mui/material";
 
 import MatchingForm1 from "../components/matching-form-1";
@@ -6,7 +6,7 @@ import MatchingForm2 from "../components/matching-form-2";
 import MatchingForm3 from "../components/matching-form-3";
 import MatchingForm4 from "../components/matching-form-4";
 import MatchingForm5 from "../components/matching-form-5";
-import { uploadPreferences } from "../api";
+import { uploadPreferences, fetchPreferences } from "../api";
 import { AuthContext } from "../context/AuthProvider";
 import {
   SLEEP_IMPORTANCE_SCORES,
@@ -34,6 +34,66 @@ export default function MatchingForm() {
   const [sleepTime, setSleepTime] = useState(""); // Sleep time range
   const [wakeTime, setWakeTime] = useState(""); // Wake time range
   const [cleaningFrequency, setCleaningFrequency] = useState(""); // Cleaning frequency
+
+  useEffect(() => {
+    const loadPreferences = async () => {
+      if (user && user.id) {
+        try {
+          const data = await fetchPreferences(user.id);
+          if (data) {
+            setEthnicity(data.ethnicity || "");
+            setMajor(data.major || "");
+            setCollege(data.college || "");
+            setPreference(data.offCampus ? "off-campus" : "on-campus");
+            setSameGender(data.genderPreference || "");
+            setGuestFrequency(
+              Object.keys(GUEST_FREQUENCY_SCORES).find(
+                (key) => GUEST_FREQUENCY_SCORES[key] === data.guestFrequency
+              ) || ""
+            );
+            setPets(data.pets || "");
+            setSmokes(data.smokingStatus ? "yes" : "no");
+            setOkayWithSmoking(data.okayWithSmoker ? "yes" : "no");
+            setDrinks(data.drinkingStatus ? "yes" : "no");
+            setOkayWithDrinking(data.okayWithDrinker ? "yes" : "no");
+            setSleepImportance(
+              Object.keys(SLEEP_IMPORTANCE_SCORES).find(
+                (key) =>
+                  SLEEP_IMPORTANCE_SCORES[key] ===
+                  data.importanceOfSleepSchedule
+              ) || ""
+            );
+            setCleaningFrequency(
+              Object.keys(CLEANING_FREQUENCY_SCORES).find(
+                (key) =>
+                  CLEANING_FREQUENCY_SCORES[key] === data.cleaningFrequency
+              ) || ""
+            );
+            setSleepTime(data.sleepTime || "");
+            setWakeTime(data.wakeTime || "");
+
+            if (data.offCampusPreferences) {
+              setRoomType(data.offCampusPreferences.roomType || "");
+              if (data.offCampusPreferences.preferredPriceRange) {
+                const rentRange = data.offCampusPreferences.preferredPriceRange
+                  .split("-")
+                  .map(Number);
+                setRent(rentRange);
+              }
+              if (data.offCampusPreferences.distanceFromSchool) {
+                setDistance([0, data.offCampusPreferences.distanceFromSchool]);
+              }
+            }
+          }
+        } catch (error) {
+          console.error("Failed to load preferences:", error);
+          // If 404, it just means the user hasn't set preferences yet, which is fine.
+        }
+      }
+    };
+
+    loadPreferences();
+  }, [user]);
 
   const handleEthnicityChange = (event) => setEthnicity(event.target.value);
 
