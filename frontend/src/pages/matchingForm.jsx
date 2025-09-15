@@ -114,7 +114,7 @@ export default function MatchingForm() {
 
     try {
       const response = await uploadPreferences(preferences);
-      if (response.status === 201 || response.status === 204) {
+      if (response.status === 200) {
         console.log("Preferences uploaded successfully");
         // Navigate to dashboard or profile page
       } else {
