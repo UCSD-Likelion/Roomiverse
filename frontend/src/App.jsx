@@ -24,8 +24,8 @@ function App() {
           <Route path="/" element={<PrivateRoute />}>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/matching-form" element={<MatchingForm />} />
           </Route>
-          <Route path="/matching-form" element={<MatchingForm />} />
           <Route path="/userprofile" element={<UserProfile />} />
           <Route path="/matching" element={<MatchingPage />} />
         </Routes>
