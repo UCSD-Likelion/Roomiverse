@@ -21,7 +21,6 @@ export const login = async (user) => {
 
 export const fetchProfile = async () => {
   const token = localStorage.getItem("token");
-  console.log("Token:", token);
 
   if (!token) {
     console.error("Token not found");
@@ -40,7 +39,6 @@ export const fetchProfile = async () => {
 
 export const uploadProfilePicture = async (base64Image) => {
   const token = localStorage.getItem("token");
-  console.log("Token:", token);
 
   if (!token) {
     console.error("Token not found");
@@ -68,7 +66,6 @@ export const uploadProfilePicture = async (base64Image) => {
 
 export const updateAboutMe = async (aboutMe) => {
   const token = localStorage.getItem("token");
-  console.log("Token:", token);
 
   try {
     const response = await axios.post(
@@ -91,7 +88,6 @@ export const updateAboutMe = async (aboutMe) => {
 
 export const upsertPreferences = async (preferences) => {
   const token = localStorage.getItem("token");
-  console.log("Token:", token);
 
   if (!token) {
     console.error("Token not found");
@@ -115,7 +111,6 @@ export const upsertPreferences = async (preferences) => {
 
 export const fetchPreferences = async (userId) => {
   const token = localStorage.getItem("token");
-  console.log("Token:", token);
 
   if (!token) {
     console.error("Token not found");

@@ -120,8 +120,8 @@ export default function MatchingForm2({
                 },
               }}
             >
-              <MenuItem value="On-Campus">On-Campus</MenuItem>
-              <MenuItem value="Off-Campus">Off-Campus</MenuItem>
+              <MenuItem value="on-campus">On-Campus</MenuItem>
+              <MenuItem value="off-campus">Off-Campus</MenuItem>
             </Select>
           </FormControl>
         </Box>

@@ -142,7 +142,7 @@ const UserProfileModal = ({ open, onClose }) => {
                     }}
                   >
                     {[
-                      "Off-Campus",
+                      "Off-campus",
                       "Non-Smoker",
                       "Sleep time: 11:00-12:00",
                       "Wakeup time: 8:00-9:00",

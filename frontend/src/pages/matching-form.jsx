@@ -101,8 +101,7 @@ export default function MatchingForm() {
 
   const handleCollegeChange = (event) => setCollege(event.target.value);
 
-  const handlePreferenceChange = (event, newPreference) =>
-    setPreference(newPreference);
+  const handlePreferenceChange = (event) => setPreference(event.target.value);
 
   const handleSameGenderChange = (event) => setSameGender(event.target.value);
 
@@ -267,7 +266,6 @@ export default function MatchingForm() {
             cleaningFrequency={cleaningFrequency}
             onImportanceChange={handleSleepImportanceChange}
             setCurrentPage={setCurrentPage}
-            handlePreferenceChange={handlePreferenceChange}
             onFrequencyChange={handleCleaningFrequencyChange}
             onBedtimeChange={handleSleepChange}
             onWaketimeChange={handleWakeChange}
