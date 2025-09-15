@@ -216,6 +216,9 @@ export default function MatchingForm() {
             onWaketimeChange={handleWakeChange}
             bedtime={sleepTime}
             waketime={wakeTime}
+            offCampus={preference === "off-campus"}
+            handleSubmit={handleSubmit}
+            x
           />
         )}
 
