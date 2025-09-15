@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Box,
   Typography,
@@ -7,6 +6,7 @@ import {
   ToggleButton,
   ToggleButtonGroup,
   IconButton,
+  Button,
 } from "@mui/material";
 import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
 import ArrowCircleLeftOutlinedIcon from "@mui/icons-material/ArrowCircleLeftOutlined";
@@ -18,28 +18,14 @@ export default function MatchingForm4({
   waketime,
   onBedtimeChange,
   onWaketimeChange,
-  importance: initialImportance,
+  sleepImportance,
   onImportanceChange,
-  frequency: initialFrequency,
+  cleaningFrequency,
   onFrequencyChange,
   setCurrentPage,
+  offCampus,
+  handleSubmit,
 }) {
-  // local state for toggles
-  const [importance, setImportance] = useState(initialImportance || "");
-  const [frequency, setFrequency] = useState(initialFrequency || "");
-
-  const handleImportanceToggle = (_e, val) => {
-    const next = val === importance ? "" : val;
-    setImportance(next);
-    onImportanceChange(next);
-  };
-
-  const handleFrequencyToggle = (_e, val) => {
-    const next = val === frequency ? "" : val;
-    setFrequency(next);
-    onFrequencyChange(next);
-  };
-
   return (
     <>
       <Box
@@ -66,7 +52,6 @@ export default function MatchingForm4({
           }}
         />
       </Box>
-
       {/* Title */}
       <Typography
         variant="h4"
@@ -80,7 +65,6 @@ export default function MatchingForm4({
       >
         Daily Routine
       </Typography>
-
       {/* Bed & Wake Times */}
       <Box
         sx={{
@@ -130,7 +114,6 @@ export default function MatchingForm4({
           />
         </Box>
       </Box>
-
       <Box
         sx={{
           display: "flex",
@@ -176,9 +159,9 @@ export default function MatchingForm4({
           </Typography>
 
           <ToggleButtonGroup
-            value={importance}
+            value={sleepImportance}
             exclusive
-            onChange={handleImportanceToggle}
+            onChange={onImportanceChange}
             sx={{
               display: "flex",
               gap: 2,
@@ -215,7 +198,7 @@ export default function MatchingForm4({
                   "&:hover": { backgroundColor: "#95AAFF" },
                 }}
               >
-                {importance === v && <CheckIcon fontSize="small" />}
+                {sleepImportance === v && <CheckIcon fontSize="small" />}
               </ToggleButton>
             ))}
           </ToggleButtonGroup>
@@ -233,7 +216,6 @@ export default function MatchingForm4({
           </Typography>
         </Box>
       </Box>
-
       {/* Cleaning Frequency */}
       <Box
         sx={{
@@ -256,9 +238,9 @@ export default function MatchingForm4({
           How often do you clean your room?
         </Typography>
         <ToggleButtonGroup
-          value={frequency}
+          value={cleaningFrequency}
           exclusive
-          onChange={handleFrequencyToggle}
+          onChange={onFrequencyChange}
           sx={{
             display: "flex",
             gap: 3,
@@ -294,7 +276,6 @@ export default function MatchingForm4({
           ))}
         </ToggleButtonGroup>
       </Box>
-
       {/* Navigation Arrows */}
       <Box
         sx={{
@@ -322,23 +303,52 @@ export default function MatchingForm4({
             sx={{ fontSize: 40, color: "#4A4C54" }}
           />
         </IconButton>
-        <IconButton
-          onClick={() => setCurrentPage(4)}
-          sx={{
-            position: "absolute",
-            bottom: "30px",
-            right: "30px",
-            size: "large",
-            backgroundColor: "transparent",
-            border: "none",
-            cursor: "pointer",
-            padding: "2px",
-          }}
-        >
-          <ArrowCircleRightOutlinedIcon
-            sx={{ fontSize: 40, color: "#4A4C54" }}
-          />
-        </IconButton>
+        {offCampus ? (
+          <IconButton
+            onClick={() => setCurrentPage(4)}
+            sx={{
+              position: "absolute",
+              bottom: "30px",
+              right: "30px",
+              size: "large",
+              backgroundColor: "transparent",
+              border: "none",
+              cursor: "pointer",
+              padding: "2px",
+            }}
+          >
+            <ArrowCircleRightOutlinedIcon
+              sx={{ fontSize: 40, color: "#4A4C54" }}
+            />
+          </IconButton>
+        ) : (
+          <Button
+            variant="contained"
+            sx={{
+              backgroundColor: "#E2E8FF",
+              color: "#4A4C54",
+              fontSize: "18px",
+              fontWeight: "bold",
+              padding: "10px 24px",
+              borderRadius: "30px",
+              boxShadow: "none",
+              position: "absolute",
+              bottom: "30px",
+              right: "30px",
+              size: "large",
+              border: "none",
+              cursor: "pointer",
+              "&:hover": {
+                backgroundColor: "#95AAFF",
+                color: "white",
+                boxShadow: "none",
+              },
+            }}
+            onClick={handleSubmit}
+          >
+            Start Matching
+          </Button>
+        )}
       </Box>
     </>
   );

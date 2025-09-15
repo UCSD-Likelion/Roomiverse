@@ -1,19 +1,26 @@
-import { useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { Box } from "@mui/material";
-import logo from "/src/assets/images/logo.png";
 
 import MatchingForm1 from "../components/matching-form-1";
 import MatchingForm2 from "../components/matching-form-2";
 import MatchingForm3 from "../components/matching-form-3";
 import MatchingForm4 from "../components/matching-form-4";
 import MatchingForm5 from "../components/matching-form-5";
+import { upsertPreferences, fetchPreferences } from "../api";
+import { AuthContext } from "../context/AuthProvider";
+import {
+  SLEEP_IMPORTANCE_SCORES,
+  CLEANING_FREQUENCY_SCORES,
+  GUEST_FREQUENCY_SCORES,
+} from "../const";
 
 export default function MatchingForm() {
+  const { user } = useContext(AuthContext);
   const [ethnicity, setEthnicity] = useState("");
   const [major, setMajor] = useState("");
   const [college, setCollege] = useState("");
   const [preference, setPreference] = useState(null); // On-campus / Off-campus
-  const [sameGender, setSameGender] = useState(null); // Yes / No Preference
+  const [sameGender, setSameGender] = useState(""); // Yes / No Preference
   const [guestFrequency, setGuestFrequency] = useState(""); // Rarely / Often
   const [pets, setPets] = useState(""); // How do you feel about pets?
   const [smokes, setSmokes] = useState(""); // Do you smoke?
@@ -24,6 +31,69 @@ export default function MatchingForm() {
   const [roomType, setRoomType] = useState(""); // Preferred room type
   const [rent, setRent] = useState([900, 1100]); // Rent Range
   const [distance, setDistance] = useState([0, 5]); // Distance from Campus
+  const [sleepTime, setSleepTime] = useState(""); // Sleep time range
+  const [wakeTime, setWakeTime] = useState(""); // Wake time range
+  const [cleaningFrequency, setCleaningFrequency] = useState(""); // Cleaning frequency
+
+  useEffect(() => {
+    const loadPreferences = async () => {
+      if (user && user.id) {
+        try {
+          const data = await fetchPreferences(user.id);
+          if (data) {
+            setEthnicity(data.ethnicity || "");
+            setMajor(data.major || "");
+            setCollege(data.college || "");
+            setPreference(data.offCampus ? "off-campus" : "on-campus");
+            setSameGender(data.genderPreference || "");
+            setGuestFrequency(
+              Object.keys(GUEST_FREQUENCY_SCORES).find(
+                (key) => GUEST_FREQUENCY_SCORES[key] === data.guestFrequency
+              ) || ""
+            );
+            setPets(data.pets || "");
+            setSmokes(data.smokingStatus ? "yes" : "no");
+            setOkayWithSmoking(data.okayWithSmoker ? "yes" : "no");
+            setDrinks(data.drinkingStatus ? "yes" : "no");
+            setOkayWithDrinking(data.okayWithDrinker ? "yes" : "no");
+            setSleepImportance(
+              Object.keys(SLEEP_IMPORTANCE_SCORES).find(
+                (key) =>
+                  SLEEP_IMPORTANCE_SCORES[key] ===
+                  data.importanceOfSleepSchedule
+              ) || ""
+            );
+            setCleaningFrequency(
+              Object.keys(CLEANING_FREQUENCY_SCORES).find(
+                (key) =>
+                  CLEANING_FREQUENCY_SCORES[key] === data.cleaningFrequency
+              ) || ""
+            );
+            setSleepTime(data.sleepTime || "");
+            setWakeTime(data.wakeTime || "");
+
+            if (data.offCampusPreferences) {
+              setRoomType(data.offCampusPreferences.roomType || "");
+              if (data.offCampusPreferences.preferredPriceRange) {
+                const rentRange = data.offCampusPreferences.preferredPriceRange
+                  .split("-")
+                  .map(Number);
+                setRent(rentRange);
+              }
+              if (data.offCampusPreferences.distanceFromSchool) {
+                setDistance([0, data.offCampusPreferences.distanceFromSchool]);
+              }
+            }
+          }
+        } catch (error) {
+          console.error("Failed to load preferences:", error);
+          // If 404, it just means the user hasn't set preferences yet, which is fine.
+        }
+      }
+    };
+
+    loadPreferences();
+  }, [user]);
 
   const handleEthnicityChange = (event) => setEthnicity(event.target.value);
 
@@ -34,7 +104,7 @@ export default function MatchingForm() {
   const handlePreferenceChange = (event, newPreference) =>
     setPreference(newPreference);
 
-  const handleSameGenderChange = (event, newValue) => setSameGender(newValue);
+  const handleSameGenderChange = (event) => setSameGender(event.target.value);
 
   const handleGuestFrequencyChange = (event, newValue) =>
     setGuestFrequency(newValue);
@@ -60,14 +130,61 @@ export default function MatchingForm() {
 
   const handleDistanceChange = (event, newValue) => setDistance(newValue);
 
-  const valuetext = (value) => {
-    return `${value} miles`;
+  const handleSleepChange = (event) => setSleepTime(event.target.value);
+
+  const handleWakeChange = (event) => setWakeTime(event.target.value);
+
+  const handleCleaningFrequencyChange = (event, newValue) =>
+    setCleaningFrequency(newValue);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    const offCampusPreference = {
+      distanceFromSchool: distance[1], // Assuming the upper value of the range
+      preferredPriceRange: `${rent[0]}-${rent[1]}`,
+      roomType: roomType,
+    };
+
+    const preferences = {
+      userId: user.id,
+      offCampus: preference === "off-campus",
+      guestFrequency: GUEST_FREQUENCY_SCORES[guestFrequency],
+      genderPreference: sameGender,
+      pets: pets,
+      smokingStatus: smokes === "yes",
+      okayWithSmoker: okayWithSmoking === "yes",
+      drinkingStatus: drinks === "yes",
+      okayWithDrinker: okayWithDrinking === "yes",
+      sleepTime: sleepTime,
+      wakeTime: wakeTime,
+      importanceOfSleepSchedule: SLEEP_IMPORTANCE_SCORES[sleepImportance],
+      cleaningFrequency: CLEANING_FREQUENCY_SCORES[cleaningFrequency],
+      major: major,
+      college: college,
+      ethnicity: ethnicity,
+      offCampusPreferences:
+        preference === "off-campus" ? offCampusPreference : null,
+    };
+
+    console.log("Submitting preferences:", preferences);
+
+    try {
+      const response = await upsertPreferences(preferences);
+      if (response.status === 201 || response.status === 204) {
+        console.log("Preferences upserted successfully");
+        // Navigate to dashboard or profile page
+      } else {
+        console.error("Failed to upsert preferences:", response);
+      }
+    } catch (error) {
+      console.error("Error upserting preferences:", error);
+    }
   };
 
   // progress bar
   const [currentPage, setCurrentPage] = useState(0);
-  const totalPages = 5; // Total number of pages
-  console.log(currentPage);
+  const totalPages = 5;
   const progressValue = ((currentPage + 1) / totalPages) * 100;
 
   return (
@@ -147,11 +264,18 @@ export default function MatchingForm() {
           <MatchingForm4
             progressValue={progressValue}
             sleepImportance={sleepImportance}
-            handleSleepImportanceChange={handleSleepImportanceChange}
+            cleaningFrequency={cleaningFrequency}
+            onImportanceChange={handleSleepImportanceChange}
             setCurrentPage={setCurrentPage}
-            preference={preference}
             handlePreferenceChange={handlePreferenceChange}
-            sameGender={sameGender}
+            onFrequencyChange={handleCleaningFrequencyChange}
+            onBedtimeChange={handleSleepChange}
+            onWaketimeChange={handleWakeChange}
+            bedtime={sleepTime}
+            waketime={wakeTime}
+            offCampus={preference === "off-campus"}
+            handleSubmit={handleSubmit}
+            x
           />
         )}
 
@@ -165,6 +289,7 @@ export default function MatchingForm() {
             setCurrentPage={setCurrentPage}
             rent={rent}
             handleRentChange={handleRentChange}
+            handleSubmit={handleSubmit}
           />
         )}
       </Box>

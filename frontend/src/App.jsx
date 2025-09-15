@@ -7,7 +7,7 @@ import Signup from "./pages/signup";
 import ProfilePage from "./pages/profile";
 import Dashboard from "./pages/dashboard";
 import PrivateRoute from "./utils/private-route";
-import MatchingForm from "./pages/matchingForm";
+import MatchingForm from "./pages/matching-form";
 import MatchingPage from "./pages/matching-page";
 import HomePage from "./pages/homepage";
 
@@ -24,8 +24,8 @@ function App() {
           <Route path="/" element={<PrivateRoute />}>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/matching-form" element={<MatchingForm />} />
           </Route>
-          <Route path="/matching-form" element={<MatchingForm />} />
           <Route path="/userprofile" element={<UserProfile />} />
           <Route path="/matching" element={<MatchingPage />} />
         </Routes>

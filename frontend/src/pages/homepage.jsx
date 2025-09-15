@@ -80,6 +80,7 @@ export default function HomePage() {
                 fontSize: 26,
                 fontWeight: 700,
               }}
+              href="/matching-form"
             >
               Find your Roomie
             </Button>

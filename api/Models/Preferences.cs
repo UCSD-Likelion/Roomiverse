@@ -28,13 +28,13 @@ namespace api.Models
         public string? Pets { get; set; }
 
         [BsonElement("smokingStatus")]
-        public string? SmokingStatus { get; set; }
+        public bool? SmokingStatus { get; set; }
 
         [BsonElement("okayWithSmoker")]
         public bool? OkayWithSmoker { get; set; }
 
         [BsonElement("drinkingStatus")]
-        public string? DrinkingStatus { get; set; }
+        public bool? DrinkingStatus { get; set; }
 
         [BsonElement("okayWithDrinker")]
         public bool? OkayWithDrinker { get; set; }

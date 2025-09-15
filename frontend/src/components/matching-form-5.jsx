@@ -21,6 +21,7 @@ export default function MatchingForm5({
   roomType,
   handleRoomTypeChange,
   setCurrentPage,
+  handleSubmit,
 }) {
   return (
     <>
@@ -121,7 +122,7 @@ export default function MatchingForm5({
               >
                 <MenuItem value="Triple">Triple</MenuItem>
                 <MenuItem value="Double">Double</MenuItem>
-                <MenuItem value="Single">Singlke</MenuItem>
+                <MenuItem value="Single">Single</MenuItem>
                 <MenuItem value="Master Bedroom">Master Bedroom</MenuItem>
                 <MenuItem value="Don't Mind">Don't Mind</MenuItem>
               </Select>
@@ -358,7 +359,7 @@ export default function MatchingForm5({
               boxShadow: "none",
             },
           }}
-          onClick={() => alert("Matching started!")} // Replace with actual function
+          onClick={handleSubmit}
         >
           Start Matching
         </Button>
