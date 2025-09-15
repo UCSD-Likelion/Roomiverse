@@ -154,7 +154,12 @@ function Header() {
               >
                 Home
               </StyledMenuItem>
-              <StyledMenuItem onClick={handleCloseLogoMenu}>
+              <StyledMenuItem
+                onClick={() => {
+                  navigate("/matching-form");
+                  handleCloseLogoMenu();
+                }}
+              >
                 Find Roomies
               </StyledMenuItem>
               <StyledMenuItem onClick={handleCloseLogoMenu}>
