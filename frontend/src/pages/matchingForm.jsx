@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Box } from "@mui/material";
 
 import MatchingForm1 from "../components/matching-form-1";
@@ -7,13 +7,20 @@ import MatchingForm3 from "../components/matching-form-3";
 import MatchingForm4 from "../components/matching-form-4";
 import MatchingForm5 from "../components/matching-form-5";
 import { uploadPreferences } from "../api";
+import { AuthContext } from "../context/AuthProvider";
+import {
+  SLEEP_IMPORTANCE_SCORES,
+  CLEANING_FREQUENCY_SCORES,
+  GUEST_FREQUENCY_SCORES,
+} from "../const";
 
 export default function MatchingForm() {
+  const { user } = useContext(AuthContext);
   const [ethnicity, setEthnicity] = useState("");
   const [major, setMajor] = useState("");
   const [college, setCollege] = useState("");
   const [preference, setPreference] = useState(null); // On-campus / Off-campus
-  const [sameGender, setSameGender] = useState(null); // Yes / No Preference
+  const [sameGender, setSameGender] = useState(""); // Yes / No Preference
   const [guestFrequency, setGuestFrequency] = useState(""); // Rarely / Often
   const [pets, setPets] = useState(""); // How do you feel about pets?
   const [smokes, setSmokes] = useState(""); // Do you smoke?
@@ -24,8 +31,8 @@ export default function MatchingForm() {
   const [roomType, setRoomType] = useState(""); // Preferred room type
   const [rent, setRent] = useState([900, 1100]); // Rent Range
   const [distance, setDistance] = useState([0, 5]); // Distance from Campus
-  const [sleepTime, setSleepTime] = useState([22, 24]); // Sleep time range
-  const [wakeTime, setWakeTime] = useState([6, 8]); // Wake time range
+  const [sleepTime, setSleepTime] = useState(""); // Sleep time range
+  const [wakeTime, setWakeTime] = useState(""); // Wake time range
   const [cleaningFrequency, setCleaningFrequency] = useState(""); // Cleaning frequency
 
   const handleEthnicityChange = (event) => setEthnicity(event.target.value);
@@ -37,7 +44,7 @@ export default function MatchingForm() {
   const handlePreferenceChange = (event, newPreference) =>
     setPreference(newPreference);
 
-  const handleSameGenderChange = (event, newValue) => setSameGender(newValue);
+  const handleSameGenderChange = (event) => setSameGender(event.target.value);
 
   const handleGuestFrequencyChange = (event, newValue) =>
     setGuestFrequency(newValue);
@@ -63,69 +70,64 @@ export default function MatchingForm() {
 
   const handleDistanceChange = (event, newValue) => setDistance(newValue);
 
+  const handleSleepChange = (event) => setSleepTime(event.target.value);
+
+  const handleWakeChange = (event) => setWakeTime(event.target.value);
+
+  const handleCleaningFrequencyChange = (event, newValue) =>
+    setCleaningFrequency(newValue);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    // Helper function to convert value to integer
+    const toInt = (value) => (value ? parseInt(value, 10) : null);
+
     const offCampusPreference = {
-      distanceFromSchool: distance,
-      preferredPriceRange: rent,
+      distanceFromSchool: distance[1], // Assuming the upper value of the range
+      preferredPriceRange: `${rent[0]}-${rent[1]}`,
       roomType: roomType,
     };
+
     const preferences = {
+      userId: user.id,
       offCampus: preference === "off-campus",
-      guestFrequency: guestFrequency,
+      guestFrequency: GUEST_FREQUENCY_SCORES[guestFrequency],
       genderPreference: sameGender,
       pets: pets,
-      smokingStatus: smokes,
-      okayWithSmoking: okayWithSmoking,
-      drinkingStatus: drinks,
-      okayWithDrinking: okayWithDrinking,
+      smokingStatus: smokes === "yes",
+      okayWithSmoker: okayWithSmoking === "yes",
+      drinkingStatus: drinks === "yes",
+      okayWithDrinker: okayWithDrinking === "yes",
       sleepTime: sleepTime,
       wakeTime: wakeTime,
-      importanceOfSleepSchedule: sleepImportance,
-      cleaningFrequency: cleaningFrequency,
+      importanceOfSleepSchedule: SLEEP_IMPORTANCE_SCORES[sleepImportance],
+      cleaningFrequency: CLEANING_FREQUENCY_SCORES[cleaningFrequency],
       major: major,
       college: college,
       ethnicity: ethnicity,
-      offCampusPreferences: offCampusPreference,
+      offCampusPreferences:
+        preference === "off-campus" ? offCampusPreference : null,
     };
+
+    console.log("Submitting preferences:", preferences);
 
     try {
       const response = await uploadPreferences(preferences);
-      if (response) {
+      if (response.status === 201 || response.status === 204) {
         console.log("Preferences uploaded successfully");
+        // Navigate to dashboard or profile page
       } else {
-        console.error("Failed to upload preferences");
+        console.error("Failed to upload preferences:", response);
       }
     } catch (error) {
       console.error("Error uploading preferences:", error);
     }
-    // Reset form or navigate to another page after submission
-    setCurrentPage(0); // Reset to the first page
-    setEthnicity("");
-    setMajor("");
-    setCollege("");
-    setPreference(null);
-    setSameGender(null);
-    setGuestFrequency("");
-    setPets("");
-    setSmokes("");
-    setOkayWithSmoking("");
-    setDrinks("");
-    setOkayWithDrinking("");
-    setSleepImportance("");
-    setRoomType("");
-    setRent([900, 1100]);
-    setDistance([0, 5]);
-    setSleepTime([22, 24]);
-    setWakeTime([6, 8]);
-    setCleaningFrequency("");
-    console.log("Form submitted and preferences uploaded successfully");
   };
 
   // progress bar
   const [currentPage, setCurrentPage] = useState(0);
-  const totalPages = 5; // Total number of pages
-  console.log(currentPage);
+  const totalPages = 5;
   const progressValue = ((currentPage + 1) / totalPages) * 100;
 
   return (
@@ -205,11 +207,15 @@ export default function MatchingForm() {
           <MatchingForm4
             progressValue={progressValue}
             sleepImportance={sleepImportance}
-            handleSleepImportanceChange={handleSleepImportanceChange}
+            cleaningFrequency={cleaningFrequency}
+            onImportanceChange={handleSleepImportanceChange}
             setCurrentPage={setCurrentPage}
-            preference={preference}
             handlePreferenceChange={handlePreferenceChange}
-            sameGender={sameGender}
+            onFrequencyChange={handleCleaningFrequencyChange}
+            onBedtimeChange={handleSleepChange}
+            onWaketimeChange={handleWakeChange}
+            bedtime={sleepTime}
+            waketime={wakeTime}
           />
         )}
 
@@ -223,6 +229,7 @@ export default function MatchingForm() {
             setCurrentPage={setCurrentPage}
             rent={rent}
             handleRentChange={handleRentChange}
+            handleSubmit={handleSubmit}
           />
         )}
       </Box>

@@ -341,7 +341,7 @@ export default function MatchingForm2({
               }}
             ></ToggleButton>
             <ToggleButton
-              value="very-comfortable"
+              value="veryComfortable"
               sx={{
                 width: "73px",
                 height: "73px",

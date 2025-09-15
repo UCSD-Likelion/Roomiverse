@@ -18,28 +18,12 @@ export default function MatchingForm4({
   waketime,
   onBedtimeChange,
   onWaketimeChange,
-  importance: initialImportance,
+  sleepImportance,
   onImportanceChange,
-  frequency: initialFrequency,
+  cleaningFrequency,
   onFrequencyChange,
   setCurrentPage,
 }) {
-  // local state for toggles
-  const [importance, setImportance] = useState(initialImportance || "");
-  const [frequency, setFrequency] = useState(initialFrequency || "");
-
-  const handleImportanceToggle = (_e, val) => {
-    const next = val === importance ? "" : val;
-    setImportance(next);
-    onImportanceChange(next);
-  };
-
-  const handleFrequencyToggle = (_e, val) => {
-    const next = val === frequency ? "" : val;
-    setFrequency(next);
-    onFrequencyChange(next);
-  };
-
   return (
     <>
       <Box
@@ -176,9 +160,9 @@ export default function MatchingForm4({
           </Typography>
 
           <ToggleButtonGroup
-            value={importance}
+            value={sleepImportance}
             exclusive
-            onChange={handleImportanceToggle}
+            onChange={onImportanceChange}
             sx={{
               display: "flex",
               gap: 2,
@@ -215,7 +199,7 @@ export default function MatchingForm4({
                   "&:hover": { backgroundColor: "#95AAFF" },
                 }}
               >
-                {importance === v && <CheckIcon fontSize="small" />}
+                {sleepImportance === v && <CheckIcon fontSize="small" />}
               </ToggleButton>
             ))}
           </ToggleButtonGroup>
@@ -256,9 +240,9 @@ export default function MatchingForm4({
           How often do you clean your room?
         </Typography>
         <ToggleButtonGroup
-          value={frequency}
+          value={cleaningFrequency}
           exclusive
-          onChange={handleFrequencyToggle}
+          onChange={onFrequencyChange}
           sx={{
             display: "flex",
             gap: 3,

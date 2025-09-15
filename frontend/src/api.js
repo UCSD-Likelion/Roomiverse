@@ -99,7 +99,7 @@ export const uploadPreferences = async (preferences) => {
   }
 
   try {
-    const response = await axios.put(`${API_URL}/preferences`, preferences, {
+    const response = await axios.post(`${API_URL}/preferences`, preferences, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token.trim()}`,

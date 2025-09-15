@@ -320,7 +320,7 @@ export default function MatchingForm3({
             }}
           >
             <ToggleButton
-              value="I-smoke"
+              value="yes"
               sx={{
                 width: "230px",
                 height: "45px",
@@ -352,7 +352,7 @@ export default function MatchingForm3({
               Yes
             </ToggleButton>
             <ToggleButton
-              value="I-dont-smoke"
+              value="no"
               sx={{
                 width: "230px",
                 height: "45px",
@@ -530,7 +530,7 @@ export default function MatchingForm3({
             }}
           >
             <ToggleButton
-              value="I-drink"
+              value="yes"
               sx={{
                 width: "230px",
                 height: "45px",
@@ -562,7 +562,7 @@ export default function MatchingForm3({
               Yes
             </ToggleButton>
             <ToggleButton
-              value="I-dont-drink"
+              value="no"
               sx={{
                 width: "230px",
                 height: "45px",
