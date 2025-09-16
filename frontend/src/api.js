@@ -1,10 +1,30 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:5186/api";
+// Step 1: Create a reusable, configured Axios instance
+const apiClient = axios.create({
+  baseURL: "http://localhost:5186/api", // Your backend's base URL
+});
+
+// Step 2: Use an interceptor to automatically add the auth token to requests
+apiClient.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token"); // Use "token" as per your existing code
+    if (token) {
+      config.headers["Authorization"] = `Bearer ${token.trim()}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// --- Your Existing Functions (Now Refactored) ---
 
 export const registerUser = async (user) => {
   try {
-    const response = await axios.post(`${API_URL}/Users/register`, user);
+    // Use the apiClient instance. No need for the full URL.
+    const response = await apiClient.post("/Users/register", user);
     return response;
   } catch (error) {
     console.error("Failed to register: ", error);
@@ -13,49 +33,26 @@ export const registerUser = async (user) => {
 };
 
 export const login = async (user) => {
-  const response = await axios.post(`${API_URL}/Users/login`, user, {
+  // Login doesn't need the interceptor's token, which is fine.
+  const response = await apiClient.post("/Users/login", user, {
     withCredentials: true,
   });
   return response.data;
 };
 
 export const fetchProfile = async () => {
-  const token = localStorage.getItem("token");
-
-  if (!token) {
-    console.error("Token not found");
-    throw new Error("Token not found");
-  }
-
-  const response = await axios.get(`${API_URL}/Users/getuser`, {
-    headers: {
-      Authorization: `Bearer ${token.trim()}`,
-    },
-  });
-
+  // Notice how this is much simpler. No more manual token handling.
+  const response = await apiClient.get("/Users/getuser");
   console.log("Profile Data:", response.data);
   return response.data;
 };
 
 export const uploadProfilePicture = async (base64Image) => {
-  const token = localStorage.getItem("token");
-
-  if (!token) {
-    console.error("Token not found");
-    throw new Error("Token not found");
-  }
-
   try {
-    const response = await axios.post(
-      `${API_URL}/Users/upload`,
-      { Base64String: base64Image },
-      {
-        headers: {
-          Authorization: `Bearer ${token.trim()}`,
-        },
-      }
-    );
-
+    // Simplified: headers are now handled automatically by the interceptor.
+    const response = await apiClient.post("/Users/upload", {
+      Base64String: base64Image,
+    });
     console.log("Upload Response:", response.data);
     return response.data;
   } catch (error) {
@@ -65,20 +62,8 @@ export const uploadProfilePicture = async (base64Image) => {
 };
 
 export const updateAboutMe = async (aboutMe) => {
-  const token = localStorage.getItem("token");
-
   try {
-    const response = await axios.post(
-      `${API_URL}/Users/aboutme`,
-      { aboutMe },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-
+    const response = await apiClient.post("/Users/aboutme", { aboutMe });
     return response.status === 200;
   } catch (error) {
     console.error("Error updating About Me:", error);
@@ -87,21 +72,8 @@ export const updateAboutMe = async (aboutMe) => {
 };
 
 export const upsertPreferences = async (preferences) => {
-  const token = localStorage.getItem("token");
-
-  if (!token) {
-    console.error("Token not found");
-    throw new Error("Token not found");
-  }
-
   try {
-    const response = await axios.put(`${API_URL}/preferences`, preferences, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token.trim()}`,
-      },
-    });
-
+    const response = await apiClient.put("/preferences", preferences);
     return response;
   } catch (error) {
     console.error("Error upserting preferences:", error);
@@ -110,22 +82,43 @@ export const upsertPreferences = async (preferences) => {
 };
 
 export const fetchPreferences = async (userId) => {
-  const token = localStorage.getItem("token");
-
-  if (!token) {
-    console.error("Token not found");
-    throw new Error("Token not found");
-  }
-
   try {
-    const response = await axios.get(`${API_URL}/preferences/${userId}`, {
-      headers: {
-        Authorization: `Bearer ${token.trim()}`,
-      },
-    });
+    const response = await apiClient.get(`/preferences/${userId}`);
     return response.data;
   } catch (error) {
     console.error("Error fetching preferences:", error);
     throw new Error("Error fetching preferences: " + error.response.data);
+  }
+};
+
+// --- New Functions for the Matching Page ---
+
+/**
+ * Fetches a list of user IDs and their similarity scores for the current user.
+ * @param {string} userId - The ID of the currently logged-in user.
+ * @returns {Promise<Array<{userId: string, similarity: number}>>}
+ */
+export const getSimilarityMatches = async (userId) => {
+  try {
+    const response = await apiClient.get(`/CosineSimilarity/${userId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching similarity matches:", error);
+    throw new Error("Error fetching similarity matches: " + error.response.data);
+  }
+};
+
+/**
+ * Fetches the full profile details for a single user by their ID.
+ * @param {string} userId - The ID of the user to fetch.
+ * @returns {Promise<Object>}
+ */
+export const getUserById = async (userId) => {
+  try {
+    const response = await apiClient.get(`/Users/${userId}`);
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching user ${userId}:`, error);
+    throw new Error(`Error fetching user ${userId}: ` + error.response.data);
   }
 };
