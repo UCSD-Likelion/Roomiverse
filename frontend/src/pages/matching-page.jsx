@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import LocalBarIcon from "@mui/icons-material/LocalBar";
 import NoDrinksIcon from "@mui/icons-material/NoDrinks";
 import MaleIcon from "@mui/icons-material/Male";
@@ -6,23 +7,49 @@ import FemaleIcon from "@mui/icons-material/Female";
 import SmokingRoomsIcon from "@mui/icons-material/SmokingRooms";
 import SmokeFreeIcon from "@mui/icons-material/SmokeFree";
 import StarIcon from "@mui/icons-material/Star";
-import { Card, CardMedia, Typography, Box, IconButton } from "@mui/material";
+import {
+  Card,
+  CardMedia,
+  Typography,
+  Box,
+  IconButton,
+  CircularProgress,
+  Alert,
+} from "@mui/material";
 
+// Import assets
 import Portrait from "../assets/images/portrait.png";
 import YesPetsIcon from "../assets/images/yes-pets.png";
 import NoPetsIcon from "../assets/images/no-pets.png";
 
-const AVATAR_URL = Portrait;
-const NUM_MATCHES = 16;
+// Import the real API functions from your api.js file
+import {
+  fetchProfile,
+  getSimilarityMatches,
+  getUserById,
+  fetchPreferences,
+} from "../api"; // Adjust the path to your api.js file if necessary
 
 const FILTER_GROUPS = [
   [
-    { id: "alcohol", icon: <LocalBarIcon sx={{ fontSize: 28 }} />, label: "Alcohol" },
-    { id: "no-alcohol", icon: <NoDrinksIcon sx={{ fontSize: 28 }} />, label: "No Alcohol" },
+    {
+      id: "alcohol",
+      icon: <LocalBarIcon sx={{ fontSize: 28 }} />,
+      label: "Alcohol",
+    },
+    {
+      id: "no-alcohol",
+      icon: <NoDrinksIcon sx={{ fontSize: 28 }} />,
+      label: "No Alcohol",
+    },
   ],
   [
     { id: "male", icon: <MaleIcon sx={{ fontSize: 28 }} />, label: "Male" },
-    { id: "female", icon: <FemaleIcon sx={{ fontSize: 28 }} />, label: "Female" },
+    {
+      id: "female",
+      icon: <FemaleIcon sx={{ fontSize: 28 }} />,
+      label: "Female",
+    },
   ],
   [
     {
@@ -51,19 +78,98 @@ const FILTER_GROUPS = [
     },
   ],
   [
-    { id: "smoke", icon: <SmokingRoomsIcon sx={{ fontSize: 28 }} />, label: "Smoker" },
-    { id: "no-smoke", icon: <SmokeFreeIcon sx={{ fontSize: 28 }} />, label: "Non-Smoker" },
+    {
+      id: "smoke",
+      icon: <SmokingRoomsIcon sx={{ fontSize: 28 }} />,
+      label: "Smoker",
+    },
+    {
+      id: "no-smoke",
+      icon: <SmokeFreeIcon sx={{ fontSize: 28 }} />,
+      label: "Non-Smoker",
+    },
   ],
 ];
 
 export default function MatchingPage() {
   const [selected, setSelected] = useState({});
+  const [matches, setMatches] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   const handleSelect = (groupIndex, id) => {
     setSelected((prev) => ({
       ...prev,
       [groupIndex]: prev[groupIndex] === id ? null : id,
     }));
+    // Note: You can add client-side filtering logic here to filter the 'matches' array
+  };
+
+  useEffect(() => {
+    const fetchAllMatchData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        // First, fetch the current user's profile to get their ID and confirm they are logged in.
+        const currentUser = await fetchProfile();
+        if (!currentUser?.id) {
+          setError("User not found. Please log in.");
+          navigate("/login"); // Redirect to login if no user
+          return;
+        }
+
+        // Use the current user's ID to get a list of compatible user IDs.
+        const similarUsers = await getSimilarityMatches(currentUser.id);
+
+        if (!similarUsers || similarUsers.length === 0) {
+          setMatches([]);
+          setLoading(false);
+          return;
+        }
+
+        // For each compatible user, fetch their full details (user profile + preferences) in parallel.
+        const detailedMatchPromises = similarUsers.map((match) =>
+          Promise.all([
+            getUserById(match.userId), // Fetches name, age, picture, etc.
+            fetchPreferences(match.userId), // Fetches major, college, etc.
+          ])
+        );
+
+        const detailedMatchResponses = await Promise.all(detailedMatchPromises);
+
+        // Combine the user and preferences data for each match into a single object.
+        const combinedMatches = detailedMatchResponses.map(
+          ([user, preferences]) => ({
+            ...user, // Spread all properties from the user object
+            major: preferences.major, // Add the major from the preferences object
+          })
+        );
+
+        setMatches(combinedMatches);
+      } catch (err) {
+        console.error("Failed to fetch matches:", err);
+        setError("Could not load matches. You may need to log in again.");
+        // Redirect to login on token-related errors (e.g., 401 Unauthorized)
+        if (err.message.includes("401") || err.message.includes("token")) {
+          navigate("/login");
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAllMatchData();
+  }, [navigate]); // Add navigate to the dependency array as per React ESLint rules
+
+  // Helper function to calculate age from a birthdate string
+  const calculateAge = (birthdate) => {
+    if (!birthdate) return "N/A";
+    const birthday = new Date(birthdate);
+    const ageDifMs = Date.now() - birthday.getTime();
+    const ageDate = new Date(ageDifMs);
+    return Math.abs(ageDate.getUTCFullYear() - 1970);
   };
 
   return (
@@ -131,10 +237,15 @@ export default function MatchingPage() {
                         width: 95,
                         height: 48,
                         borderRadius: "40px",
-                        backgroundColor: isSelected ? "#4663DA" : "transparent",
+                        backgroundColor: isSelected
+                          ? "#4663DA"
+                          : "transparent",
                         color: isSelected ? "#fff" : "#FFFFFF",
                         p: 0,
-                        "&:hover": { backgroundColor: "#4663DA", color: "#fff" },
+                        "&:hover": {
+                          backgroundColor: "#4663DA",
+                          color: "#fff",
+                        },
                       }}
                     >
                       {icon}
@@ -157,74 +268,105 @@ export default function MatchingPage() {
           boxShadow: 3,
         }}
       >
-        <Box
-          sx={{
-            display: "grid",
-            gridTemplateColumns: "repeat(4, minmax(112px, 1fr))",
-            gap: 4,
-            justifyContent: "start",
-          }}
-        >
-          {Array.from({ length: NUM_MATCHES }, (_, i) => i + 1).map((rank) => (
-            <Box key={rank} sx={{ textAlign: "left", cursor: "pointer" }}>
-              <Card
-                sx={{
-                  position: "relative",
-                  width: "100%",
-                  aspectRatio: "1",
-                  borderRadius: 5,
-                  overflow: "hidden",
-                  bgcolor: "#D9D9D9",
-                  "&:hover": {
-                    transform: "scale(1.05)",
-                    transition: "transform 0.3s ease-in-out",
-                  },
-                }}
-              >
-                <CardMedia
-                  component="img"
-                  image={AVATAR_URL}
-                  alt={`Match ${rank}`}
-                  sx={{ width: "100%", height: "120%", objectFit: "cover" }}
-                />
+        {loading ? (
+          <Box sx={{ display: "flex", justifyContent: "center", my: 4 }}>
+            <CircularProgress />
+          </Box>
+        ) : error ? (
+          <Alert severity="error">{error}</Alert>
+        ) : (
+          <Box
+            sx={{
+              display: "grid",
+              gridTemplateColumns: "repeat(4, minmax(112px, 1fr))",
+              gap: 4,
+              justifyContent: "start",
+            }}
+          >
+            {matches.length > 0 ? (
+              matches.map((user, index) => (
                 <Box
-                  sx={{
-                    position: "absolute",
-                    top: 11,
-                    left: 11,
-                    width: 100,
-                    height: 20,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    bgcolor: "#95AAFF",
-                    color: "#fff",
-                    borderRadius: 2,
-                  }}
+                  key={user.id}
+                  sx={{ textAlign: "left", cursor: "pointer" }}
                 >
-                  <StarIcon sx={{ fontSize: 14, mr: 0.5, color: "#fff" }} />
-                  <Typography
-                    component="span"
-                    sx={{ fontWeight: 800, fontSize: "10px", color: "#fff" }}
+                  <Card
+                    sx={{
+                      position: "relative",
+                      width: "100%",
+                      aspectRatio: "1",
+                      borderRadius: 5,
+                      overflow: "hidden",
+                      bgcolor: "#D9D9D9",
+                      "&:hover": {
+                        transform: "scale(1.05)",
+                        transition: "transform 0.3s ease-in-out",
+                      },
+                    }}
                   >
-                    Best Match #{rank}
-                  </Typography>
+                    <CardMedia
+                      component="img"
+                      image={user.profilePicture || Portrait}
+                      alt={`Profile of ${user.name}`}
+                      sx={{
+                        width: "100%",
+                        height: "120%",
+                        objectFit: "cover",
+                      }}
+                    />
+                    <Box
+                      sx={{
+                        position: "absolute",
+                        top: 11,
+                        left: 11,
+                        width: 100,
+                        height: 20,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        bgcolor: "#95AAFF",
+                        color: "#fff",
+                        borderRadius: 2,
+                      }}
+                    >
+                      <StarIcon
+                        sx={{ fontSize: 14, mr: 0.5, color: "#fff" }}
+                      />
+                      <Typography
+                        component="span"
+                        sx={{
+                          fontWeight: 800,
+                          fontSize: "10px",
+                          color: "#fff",
+                        }}
+                      >
+                        Best Match #{index + 1}
+                      </Typography>
+                    </Box>
+                  </Card>
+                  <Box sx={{ mt: 1 }}>
+                    <Typography sx={{ fontWeight: 700, fontSize: "20px" }}>
+                      {user.name}
+                    </Typography>
+                    <Typography
+                      sx={{ fontSize: "16px", color: "text.secondary" }}
+                    >
+                      Age: {calculateAge(user.birthdate)}
+                    </Typography>
+                    <Typography
+                      sx={{ fontSize: "16px", color: "text.secondary" }}
+                    >
+                      Major: {user.major || "N/A"}
+                    </Typography>
+                  </Box>
                 </Box>
-              </Card>
-              <Box sx={{ mt: 1 }}>
-                <Typography sx={{ fontWeight: 700, fontSize: "20px" }}>
-                  Name {rank}
-                </Typography>
-                <Typography sx={{ fontSize: "16px", color: "text.secondary" }}>
-                  Age: {20 + rank}
-                </Typography>
-                <Typography sx={{ fontSize: "16px", color: "text.secondary" }}>
-                  Major: M{rank}
-                </Typography>
-              </Box>
-            </Box>
-          ))}
-        </Box>
+              ))
+            ) : (
+              <Typography sx={{ gridColumn: "1 / -1", textAlign: "center" }}>
+                No matches found. Try updating your preferences!
+              </Typography>
+            )}
+          </Box>
+        )}
       </Box>
     </Box>
   );

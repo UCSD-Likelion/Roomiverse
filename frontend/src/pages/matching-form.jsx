@@ -1,4 +1,5 @@
 import { useContext, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; // Step 1: Import useNavigate for redirection
 import { Box } from "@mui/material";
 
 import MatchingForm1 from "../components/matching-form-1";
@@ -16,6 +17,9 @@ import {
 
 export default function MatchingForm() {
   const { user } = useContext(AuthContext);
+  const navigate = useNavigate(); // Step 2: Initialize the navigate function
+
+  // ... (All of your existing state variables remain exactly the same)
   const [ethnicity, setEthnicity] = useState("");
   const [major, setMajor] = useState("");
   const [college, setCollege] = useState("");
@@ -34,6 +38,7 @@ export default function MatchingForm() {
   const [sleepTime, setSleepTime] = useState(""); // Sleep time range
   const [wakeTime, setWakeTime] = useState(""); // Wake time range
   const [cleaningFrequency, setCleaningFrequency] = useState(""); // Cleaning frequency
+
 
   useEffect(() => {
     const loadPreferences = async () => {
@@ -136,11 +141,12 @@ export default function MatchingForm() {
   const handleCleaningFrequencyChange = (event, newValue) =>
     setCleaningFrequency(newValue);
 
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     const offCampusPreference = {
-      distanceFromSchool: distance[1], // Assuming the upper value of the range
+      distanceFromSchool: distance[1],
       preferredPriceRange: `${rent[0]}-${rent[1]}`,
       roomType: roomType,
     };
@@ -172,7 +178,8 @@ export default function MatchingForm() {
       const response = await upsertPreferences(preferences);
       if (response.status === 201 || response.status === 204) {
         console.log("Preferences upserted successfully");
-        // Navigate to dashboard or profile page
+        // Step 3: Navigate to the matching results page on success
+        navigate("/matches");
       } else {
         console.error("Failed to upsert preferences:", response);
       }
@@ -181,7 +188,6 @@ export default function MatchingForm() {
     }
   };
 
-  // progress bar
   const [currentPage, setCurrentPage] = useState(0);
   const totalPages = 5;
   const progressValue = ((currentPage + 1) / totalPages) * 100;

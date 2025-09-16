@@ -27,7 +27,7 @@ function App() {
             <Route path="/matching-form" element={<MatchingForm />} />
           </Route>
           <Route path="/userprofile" element={<UserProfile />} />
-          <Route path="/matching" element={<MatchingPage />} />
+          <Route path="/matches" element={<MatchingPage />} />
         </Routes>
       </main>
     </BrowserRouter>
