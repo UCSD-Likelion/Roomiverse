@@ -105,7 +105,7 @@ function Header() {
         padding: "0 1rem",
       }}
     >
-      <Container maxWidth>
+      <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Box
             sx={{
