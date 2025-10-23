@@ -32,3 +32,65 @@ Roomiverse is a web application designed to help users find compatible roommates
 - **Machine Learning**: ML.NET (for Cosine Similarity)
 - **Authentication**: JSON Web Tokens (JWT)
 - **API Documentation**: Swashbuckle (Swagger)
+
+## Getting Started
+
+This section will guide you through setting up and running the Roomiverse application locally.
+
+### Prerequisites
+
+Make sure you have the following software installed on your system:
+
+-   [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
+-   [Node.js (v18 or later)](https://nodejs.org/)
+-   [MongoDB](https://www.mongodb.com/try/download/community)
+
+### Backend Setup (API)
+
+1.  **Navigate to the API directory:**
+    ```bash
+    cd api
+    ```
+
+2.  **Create an environment file:**
+    Create a new file named `.env` in the `api` directory and add the following environment variables.
+
+    ```
+    MONGO_URI="your_mongodb_connection_string"
+    JWT_KEY="a_super_secret_key_that_is_long_and_secure"
+    JWT_ISSUER="your_issuer"
+    JWT_AUDIENCE="your_audience"
+    ```
+    *Replace `"your_mongodb_connection_string"` with your actual MongoDB connection string.*
+
+3.  **Install dependencies:**
+    ```bash
+    dotnet restore
+    ```
+
+4.  **Run the backend server:**
+    ```bash
+    dotnet run
+    ```
+    The API will start, and by default, it should be accessible at `http://localhost:5129` and `https://localhost:7129`. Swagger UI will be available at `https://localhost:7129/swagger`.
+
+### Frontend Setup
+
+1.  **Navigate to the frontend directory:**
+    In a new terminal, go to the `frontend` directory.
+    ```bash
+    cd frontend
+    ```
+
+2.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
+
+3.  **Run the frontend development server:**
+    ```bash
+    npm run dev
+    ```
+
+4.  **Access the application:**
+    Open your web browser and navigate to `http://localhost:5173`.
