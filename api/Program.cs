@@ -6,18 +6,27 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
-var builder = WebApplication.CreateBuilder(args);
-
-if (!File.Exists(".env"))
-{
-    Console.WriteLine("No .env file found.");
-    Environment.Exit(1);
-}
+// if (!File.Exists(".env"))
+// {
+//     Console.WriteLine("No .env file found.");
+//     Environment.Exit(1);
+// }
 
 // .env 파일 로드
-DotNetEnv.Env.Load();
+// DotNetEnv.Env.Load();
+var builder = WebApplication.CreateBuilder(args);
+
+// --- CLOUD FIX START ---
+// Only load .env if it exists (Local dev), otherwise rely on Cloud Env Vars
+if (File.Exists(".env"))
+{
+    DotNetEnv.Env.Load();
+}
+// Removed the "Environment.Exit(1)" so it doesn't crash in AWS
+// --- CLOUD FIX END ---
 
 var jwtSettings = new JwtSettings
+
 {
     Key = Environment.GetEnvironmentVariable("JWT_KEY") ?? throw new Exception("JWT_KEY is required"),
     Issuer = Environment.GetEnvironmentVariable("JWT_ISSUER") ?? throw new Exception("JWT_ISSUER is required"),
@@ -50,13 +59,11 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("http://localhost:5173")
+        policy.AllowAnyOrigin()  // Allow S3, Localhost, Mobile, anything
               .AllowAnyMethod()
-              .AllowAnyHeader()
-              .AllowCredentials();
+              .AllowAnyHeader();
     });
 });
-
 // Controller 활성화
 builder.Services.AddControllers();
 

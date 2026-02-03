@@ -1,10 +1,11 @@
 import axios from "axios";
 
-// Step 1: Create a reusable, configured Axios instance
-const apiClient = axios.create({
-  baseURL: "http://localhost:5186/api", // Your backend's base URL
-});
-
+// // Step 1: Create a reusable, configured Axios instance
+// const apiClient = axios.create({
+//   baseURL: "http://localhost:5186/api", // Your backend's base URL
+// });
+// Make sure to remove the trailing slash if your code adds it later
+const API_URL = "http://18.218.54.69:8080/api";
 // Step 2: Use an interceptor to automatically add the auth token to requests
 apiClient.interceptors.request.use(
   (config) => {
